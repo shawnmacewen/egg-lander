@@ -1,50 +1,39 @@
-# Egg Lander (MVP)
+# egg-lander
 
-A tiny browser game where you pilot a fragile egg lander onto a nest platform.
+Initial scaffold for **Phaser 3 + TypeScript + Vite**.
 
-## MVP Features
+## Branch
 
-- Basic 2D physics loop (gravity, thrust, rotation, velocity)
-- Direct keyboard controls (arcade-style, non-rhythm)
-- Win condition: land on the nest softly and upright
-- Lose conditions: crash into ground/walls/ceiling or land too hard/tilted
-- HUD showing fuel, speed, attempts, and best landing speed
-- Restart flow with `R`
-- Visual style pass inspired by a Patapon-like vibe:
-  - flat, colorful palette with clean edges
-  - bold silhouette shapes and thick outlines
-  - lightweight multi-layer parallax background
-  - higher-contrast HUD and status banner for readability
+`feat/gdev-0001-phaser-scaffold`
 
-## Art Direction Note
-
-This version targets a playful "Patapon-like" feel in presentation only. Gameplay remains direct and responsive: you are steering continuously with the keyboard (no rhythm input layer, no tap timing system).
-
-## Run Locally
-
-No dependencies required.
-
-### Option 1: Open directly
-
-Open `index.html` in your browser.
-
-### Option 2: Serve as static files (recommended)
-
-From this folder:
+## Run
 
 ```bash
-python3 -m http.server 8080
+npm install
+npm run dev
 ```
 
-Then visit: <http://localhost:8080>
+## Build
 
-## Controls
+```bash
+npm run build
+npm run preview
+```
 
-- `←` / `→`: tilt left/right
-- `↑`: thrust (uses fuel)
-- `R`: restart round
+## Current status
 
-## Notes
+- Phaser wired into Vite/TS entrypoint
+- Minimal playable lander loop scaffolded
+- Keyboard controls (direct):
+  - `← / →` rotate
+  - `↑` thrust
+  - `R` restart
 
-- Landing safely requires both low speed and near-upright angle.
-- Best landing speed is tracked across attempts in the current session.
+## Art direction target
+
+Patapon-inspired visual style direction for future iterations:
+
+- simple, colorful palette
+- clean edges / bold silhouettes
+- parallax backgrounds
+- low complexity assets

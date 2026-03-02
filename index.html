@@ -4,20 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Egg Lander</title>
-    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <main class="wrap">
-      <h1>🥚 Egg Lander</h1>
-      <p class="subtitle">Arcade landing challenge with direct keyboard control — no rhythm/tap mechanic.</p>
-      <canvas id="game" width="800" height="500" aria-label="Egg Lander game canvas"></canvas>
-      <section class="controls" aria-label="Controls">
-        <strong>Controls</strong>
-        <span>← / → tilt</span>
-        <span>↑ thrust</span>
-        <span>R restart</span>
-      </section>
-    </main>
-    <script src="game.js"></script>
+    <div id="app"></div>
+    <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
