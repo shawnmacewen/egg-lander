@@ -10,44 +10,53 @@ body {
   margin: 0;
   min-height: 100vh;
   font-family: "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
-  background: #101419;
-  color: #f8f4dd;
+  background: radial-gradient(circle at 25% 20%, #2f4f78 0, #18263a 52%, #10161f 100%);
+  color: #f9f2dd;
 }
 
 .wrap {
-  max-width: 900px;
-  margin: 1.5rem auto;
-  padding: 0 1rem;
+  max-width: 920px;
+  margin: 1.2rem auto;
+  padding: 0 1rem 1.2rem;
   text-align: center;
 }
 
 h1 {
-  margin-bottom: 0.35rem;
+  margin: 0.4rem 0 0.2rem;
   letter-spacing: 0.03em;
+  text-shadow: 0 2px 0 #101010;
 }
 
 .subtitle {
-  margin-top: 0;
-  opacity: 0.9;
-  color: #ffe39e;
+  margin: 0 0 0.8rem;
+  color: #ffe39d;
 }
 
 canvas {
   width: 100%;
   max-width: 800px;
-  border: 4px solid #111;
-  border-radius: 10px;
+  border: 5px solid #0f0f0f;
+  border-radius: 12px;
   background: #203043;
   image-rendering: crisp-edges;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.42);
 }
 
 .controls {
-  margin-top: 0.85rem;
+  margin: 0.9rem auto 0;
+  width: fit-content;
   display: flex;
-  gap: 1rem;
-  justify-content: center;
+  gap: 0.9rem;
   flex-wrap: wrap;
-  opacity: 0.95;
-  color: #cfe6ff;
+  justify-content: center;
+  padding: 0.5rem 0.8rem;
+  border-radius: 999px;
+  border: 2px solid #1b1b1b;
+  background: #121a23;
+  color: #d8e9ff;
+}
+
+.controls strong {
+  color: #ffe06d;
+  margin-right: 0.2rem;
 }

@@ -5,16 +5,20 @@ A tiny browser game where you pilot a fragile egg lander onto a nest platform.
 ## MVP Features
 
 - Basic 2D physics loop (gravity, thrust, rotation, velocity)
-- Keyboard controls
+- Direct keyboard controls (arcade-style, non-rhythm)
 - Win condition: land on the nest softly and upright
 - Lose conditions: crash into ground/walls/ceiling or land too hard/tilted
 - HUD showing fuel, speed, attempts, and best landing speed
 - Restart flow with `R`
 - Visual style pass inspired by a Patapon-like vibe:
-  - flat colors
-  - bold outlines
-  - simple silhouette shapes
-  - lightweight parallax background layers
+  - flat, colorful palette with clean edges
+  - bold silhouette shapes and thick outlines
+  - lightweight multi-layer parallax background
+  - higher-contrast HUD and status banner for readability
+
+## Art Direction Note
+
+This version targets a playful "Patapon-like" feel in presentation only. Gameplay remains direct and responsive: you are steering continuously with the keyboard (no rhythm input layer, no tap timing system).
 
 ## Run Locally
 
@@ -36,7 +40,7 @@ Then visit: <http://localhost:8080>
 
 ## Controls
 
-- `←` / `→`: rotate egg
+- `←` / `→`: tilt left/right
 - `↑`: thrust (uses fuel)
 - `R`: restart round
 

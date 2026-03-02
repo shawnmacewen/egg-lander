@@ -56,7 +56,7 @@ function resetRun() {
 function crash(msg) {
   state.running = false;
   state.attempts += 1;
-  state.message = msg + ' Press R to retry.';
+  state.message = `${msg} Press R to retry.`;
 }
 
 function win() {
@@ -112,37 +112,66 @@ function update() {
   }
 }
 
-function drawParallaxLayer(yBase, height, color, speedFactor, bump) {
-  const offset = -((lander.x * speedFactor) % (W + 160));
-  ctx.fillStyle = color;
+function drawParallaxLayer(config) {
+  const {
+    yBase, fill, speedFactor, bump, step,
+  } = config;
+
+  const offset = -((lander.x * speedFactor) % (W + step * 2));
+  ctx.fillStyle = fill;
   ctx.beginPath();
   ctx.moveTo(0, H);
-  for (let x = -200; x <= W + 220; x += 80) {
+
+  for (let x = -step * 2; x <= W + step * 2; x += step) {
     const localX = x + offset;
-    const peak = yBase + Math.sin((x + offset) * 0.03) * bump;
-    ctx.lineTo(localX, peak);
+    const wave = Math.sin((x + offset) * 0.026) * bump;
+    ctx.lineTo(localX, yBase + wave);
   }
+
   ctx.lineTo(W, H);
   ctx.closePath();
   ctx.fill();
-
-  ctx.fillRect(0, yBase, W, height);
 }
 
-function drawTotems(speedFactor, color, y, height) {
-  const offset = -((lander.x * speedFactor) % 120);
-  ctx.fillStyle = color;
-  for (let x = -40; x < W + 80; x += 120) {
+function drawTotems(speedFactor, color, y, height, eyeColor = '#f8efcf') {
+  const spacing = 124;
+  const offset = -((lander.x * speedFactor) % spacing);
+
+  for (let x = -60; x < W + spacing; x += spacing) {
     const tx = x + offset;
-    ctx.fillRect(tx, y, 12, height);
-    ctx.beginPath();
-    ctx.arc(tx + 6, y, 10, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.fillStyle = '#f7f0ca';
-    ctx.fillRect(tx + 3, y - 3, 2, 2);
-    ctx.fillRect(tx + 7, y - 3, 2, 2);
     ctx.fillStyle = color;
+    ctx.fillRect(tx, y, 14, height);
+
+    ctx.beginPath();
+    ctx.arc(tx + 7, y, 11, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.fillStyle = eyeColor;
+    ctx.fillRect(tx + 3, y - 4, 3, 3);
+    ctx.fillRect(tx + 8, y - 4, 3, 3);
   }
+}
+
+function drawSkyDecor() {
+  ctx.fillStyle = '#203357';
+  ctx.fillRect(0, 0, W, 160);
+
+  ctx.fillStyle = '#f5c34b';
+  ctx.beginPath();
+  ctx.arc(660, 98, 42, 0, Math.PI * 2);
+  ctx.fill();
+
+  const clouds = [
+    { x: 120, y: 88, w: 70 },
+    { x: 300, y: 62, w: 82 },
+    { x: 520, y: 122, w: 64 },
+  ];
+
+  ctx.fillStyle = '#b4d2f5';
+  clouds.forEach((c) => {
+    ctx.fillRect(c.x, c.y, c.w, 10);
+    ctx.fillRect(c.x + 10, c.y - 10, c.w - 24, 8);
+  });
 }
 
 function drawEgg(x, y, angle, thrusting) {
@@ -150,38 +179,34 @@ function drawEgg(x, y, angle, thrusting) {
   ctx.translate(x, y);
   ctx.rotate(angle);
 
-  ctx.fillStyle = '#1b1b1b';
-  ctx.fillRect(-16, 14, 32, 8);
+  ctx.fillStyle = '#101010';
+  ctx.fillRect(-16, 14, 32, 7);
 
   ctx.beginPath();
   ctx.ellipse(0, 0, 14, 18, 0, 0, Math.PI * 2);
-  ctx.fillStyle = '#f9f3dc';
+  ctx.fillStyle = '#f7f0d6';
   ctx.fill();
   ctx.lineWidth = 3;
-  ctx.strokeStyle = '#1b1b1b';
+  ctx.strokeStyle = '#101010';
   ctx.stroke();
 
-  ctx.fillStyle = '#1b1b1b';
-  ctx.beginPath();
-  ctx.arc(-4, -4, 2.3, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.beginPath();
-  ctx.arc(4, -4, 2.3, 0, Math.PI * 2);
-  ctx.fill();
+  ctx.fillStyle = '#101010';
+  ctx.fillRect(-7, -7, 3, 3);
+  ctx.fillRect(4, -7, 3, 3);
 
   if (thrusting) {
-    ctx.fillStyle = '#ff8f2f';
+    ctx.fillStyle = '#ff8730';
     ctx.beginPath();
     ctx.moveTo(-7, 22);
-    ctx.lineTo(0, 31 + Math.random() * 9);
+    ctx.lineTo(0, 31 + Math.random() * 8);
     ctx.lineTo(7, 22);
     ctx.closePath();
     ctx.fill();
 
-    ctx.fillStyle = '#ffe066';
+    ctx.fillStyle = '#ffe06e';
     ctx.beginPath();
     ctx.moveTo(-4, 22);
-    ctx.lineTo(0, 28 + Math.random() * 5);
+    ctx.lineTo(0, 28 + Math.random() * 4);
     ctx.lineTo(4, 22);
     ctx.closePath();
     ctx.fill();
@@ -192,72 +217,88 @@ function drawEgg(x, y, angle, thrusting) {
 
 function drawHud() {
   const speed = Math.hypot(lander.vx, lander.vy);
-
-  ctx.fillStyle = '#111';
-  ctx.fillRect(12, 12, 280, 104);
-  ctx.strokeStyle = '#f3d24f';
-  ctx.lineWidth = 3;
-  ctx.strokeRect(12, 12, 280, 104);
-
-  ctx.font = 'bold 15px Trebuchet MS, sans-serif';
-  ctx.fillStyle = '#f8f4dd';
-  ctx.fillText(`FUEL ${lander.fuel.toFixed(0)}%`, 24, 36);
-  ctx.fillText(`SPD ${speed.toFixed(2)}`, 24, 58);
-  ctx.fillText(`TRY ${state.attempts}`, 24, 80);
   const best = state.bestLandingSpeed == null ? '-' : state.bestLandingSpeed.toFixed(2);
-  ctx.fillText(`BEST ${best}`, 24, 102);
 
-  const barX = 150;
+  ctx.fillStyle = '#141414';
+  ctx.fillRect(14, 14, 248, 112);
+  ctx.strokeStyle = '#ffe06d';
+  ctx.lineWidth = 3;
+  ctx.strokeRect(14, 14, 248, 112);
+
+  ctx.fillStyle = '#f5edd4';
+  ctx.font = 'bold 14px Trebuchet MS, sans-serif';
+  ctx.fillText(`FUEL  ${lander.fuel.toFixed(0)}%`, 26, 36);
+  ctx.fillText(`SPEED ${speed.toFixed(2)}`, 26, 58);
+  ctx.fillText(`TRIES ${state.attempts}`, 26, 80);
+  ctx.fillText(`BEST  ${best}`, 26, 102);
+
+  const barX = 152;
   const barY = 26;
-  const barW = 126;
-  ctx.fillStyle = '#282828';
-  ctx.fillRect(barX, barY, barW, 16);
-  ctx.fillStyle = lander.fuel > 35 ? '#80d957' : '#ff9251';
-  ctx.fillRect(barX + 2, barY + 2, (barW - 4) * (lander.fuel / 100), 12);
-  ctx.strokeStyle = '#f8f4dd';
+  const barW = 98;
+  ctx.fillStyle = '#292929';
+  ctx.fillRect(barX, barY, barW, 15);
+  ctx.fillStyle = lander.fuel > 35 ? '#8fd95f' : '#ff9259';
+  ctx.fillRect(barX + 2, barY + 2, (barW - 4) * (lander.fuel / 100), 11);
+  ctx.strokeStyle = '#f5edd4';
   ctx.lineWidth = 2;
-  ctx.strokeRect(barX, barY, barW, 16);
+  ctx.strokeRect(barX, barY, barW, 15);
 
+  ctx.fillStyle = '#111111';
+  ctx.fillRect(280, 16, W - 296, 38);
+  ctx.strokeStyle = '#67c4ff';
+  ctx.lineWidth = 3;
+  ctx.strokeRect(280, 16, W - 296, 38);
+
+  ctx.font = 'bold 18px Trebuchet MS, sans-serif';
+  ctx.fillStyle = '#f9f2dc';
   ctx.textAlign = 'center';
-  ctx.fillStyle = '#0f0f0f';
-  ctx.fillRect(250, 14, 536, 34);
-  ctx.strokeStyle = '#56b8f5';
-  ctx.strokeRect(250, 14, 536, 34);
-  ctx.fillStyle = '#f5f0dc';
-  ctx.font = 'bold 19px Trebuchet MS, sans-serif';
-  ctx.fillText(state.message, W / 2 + 118, 37);
+  ctx.fillText(state.message, 280 + (W - 296) / 2, 41);
   ctx.textAlign = 'start';
 }
 
 function drawScene() {
   ctx.clearRect(0, 0, W, H);
 
-  ctx.fillStyle = '#223a5f';
+  ctx.fillStyle = '#2e4f7a';
   ctx.fillRect(0, 0, W, H);
 
-  ctx.fillStyle = '#f7ce5c';
-  ctx.beginPath();
-  ctx.arc(660, 92, 44, 0, Math.PI * 2);
-  ctx.fill();
+  drawSkyDecor();
 
-  drawParallaxLayer(230, H - 230, '#2e4b7f', 0.12, 16);
-  drawTotems(0.18, '#0f1a2e', 245, 44);
-  drawParallaxLayer(290, H - 290, '#24385c', 0.24, 22);
-  drawTotems(0.34, '#101010', 302, 62);
+  drawParallaxLayer({
+    yBase: 216,
+    fill: '#3c5f92',
+    speedFactor: 0.1,
+    bump: 14,
+    step: 88,
+  });
+  drawTotems(0.17, '#1b2f4f', 228, 42);
 
-  ctx.fillStyle = '#3f7b3c';
+  drawParallaxLayer({
+    yBase: 278,
+    fill: '#2f4a73',
+    speedFactor: 0.22,
+    bump: 18,
+    step: 84,
+  });
+  drawTotems(0.32, '#101b2f', 292, 58, '#f6e39b');
+
+  ctx.fillStyle = '#4c8c44';
   ctx.fillRect(0, GROUND_Y, W, H - GROUND_Y);
 
-  ctx.fillStyle = '#1a1a1a';
+  ctx.fillStyle = '#141414';
   ctx.fillRect(0, GROUND_Y - 6, W, 6);
 
-  ctx.fillStyle = '#7a4b2d';
+  ctx.fillStyle = '#7d4e31';
   ctx.fillRect(pad.x, pad.y, pad.width, pad.height);
-  ctx.strokeStyle = '#1a1a1a';
+  ctx.strokeStyle = '#151515';
   ctx.lineWidth = 3;
   ctx.strokeRect(pad.x, pad.y, pad.width, pad.height);
-  ctx.fillStyle = '#d8b783';
+  ctx.fillStyle = '#debf8b';
   ctx.fillRect(pad.x + 10, pad.y - 8, pad.width - 20, 6);
+
+  ctx.fillStyle = '#ffe276';
+  ctx.font = 'bold 12px Trebuchet MS, sans-serif';
+  ctx.fillText('NEST', pad.x + 38, pad.y - 12);
 
   drawEgg(lander.x, lander.y, lander.angle, lander.thrusting);
   drawHud();
@@ -274,6 +315,7 @@ window.addEventListener('keydown', (e) => {
     resetRun();
     return;
   }
+
   if (['ArrowLeft', 'ArrowRight', 'ArrowUp'].includes(e.key)) {
     keys.add(e.key);
     e.preventDefault();
