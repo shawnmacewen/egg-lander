@@ -10,6 +10,11 @@ A tiny browser game where you pilot a fragile egg lander onto a nest platform.
 - Lose conditions: crash into ground/walls/ceiling or land too hard/tilted
 - HUD showing fuel, speed, attempts, and best landing speed
 - Restart flow with `R`
+- Visual style pass inspired by a Patapon-like vibe:
+  - flat colors
+  - bold outlines
+  - simple silhouette shapes
+  - lightweight parallax background layers
 
 ## Run Locally
 

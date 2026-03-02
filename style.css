@@ -9,9 +9,9 @@
 body {
   margin: 0;
   min-height: 100vh;
-  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-  background: radial-gradient(circle at top, #14213d, #0d1b2a 60%);
-  color: #e6edf7;
+  font-family: "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
+  background: #101419;
+  color: #f8f4dd;
 }
 
 .wrap {
@@ -23,20 +23,23 @@ body {
 
 h1 {
   margin-bottom: 0.35rem;
+  letter-spacing: 0.03em;
 }
 
 .subtitle {
   margin-top: 0;
-  opacity: 0.85;
+  opacity: 0.9;
+  color: #ffe39e;
 }
 
 canvas {
   width: 100%;
   max-width: 800px;
-  border: 2px solid #6aa9ff;
+  border: 4px solid #111;
   border-radius: 10px;
-  background: linear-gradient(#0f2942 0%, #10324f 60%, #203a19 60%, #1d4d1f 100%);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+  background: #203043;
+  image-rendering: crisp-edges;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
 }
 
 .controls {
@@ -46,4 +49,5 @@ canvas {
   justify-content: center;
   flex-wrap: wrap;
   opacity: 0.95;
+  color: #cfe6ff;
 }
