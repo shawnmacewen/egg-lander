@@ -99,7 +99,7 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ### 2026-03-03 00:58 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
-- Commit: pending (`gdev-0004` spear-boss + style pass)
+- Commit: `ca2f8c8` (`gdev-0004` spear-boss + style pass)
 - Summary: Added first boss-combat interaction (spear throws) to the on-foot phase and pushed another Patapon-inspired visual pass.
 - Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: add boss telegraph/attack behavior and tighten orbital docking presentation.
