@@ -42,3 +42,18 @@ For every build/change task going forward:
 1. Append an entry to this `CHANGELOG.md`.
 2. Include the exact summary sent to the user.
 3. Optionally add extra technical details (files changed, commands, commit hashes, blockers).
+
+---
+
+## 2026-03-03 — MVP gameplay + visual pass
+
+### Assistant summary (exact)
+Implemented a full MVP gameplay pass for Egg Lander: tighter keyboard flight feel, explicit landed/crashed state flow with feedback, reset-and-retry attempt loop with scoring, upgraded Patapon-inspired silhouette/parallax visuals, and verified production build on the Node-18-compatible Vite 5 toolchain.
+
+### Technical details
+- Reworked `src/main.ts` gameplay loop and state model (`flying`, `landed`, `crashed`).
+- Added score + attempts + fuel + velocity HUD and clearer control/status messaging.
+- Added landing quality evaluation and crash reasons (missed pad, bad angle, too fast down, drift).
+- Added explicit reset flow (`R`) for repeated runs while retaining cumulative score/attempts.
+- Improved visuals with layered silhouettes, cloud drift, parallax response, cleaner UI treatment, and simple thruster feedback.
+- Verified with `npm run build` (pass) on current environment.
