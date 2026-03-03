@@ -210,3 +210,15 @@ Good catch — I fixed `egg-refresh` so it works when run from the global symlin
 ### Technical details
 - Updated `refresh-local-game.sh` to resolve symlink chains and derive the real repo path.
 - This fixes `fatal: not a git repository` when launching `egg-refresh` via global PATH alias.
+
+## 2026-03-03 — gdev-0010 first asset integration (runner sheet)
+
+### Assistant summary (exact)
+Confirmed — I integrated your first runner character sheet into gameplay and replaced the placeholder on-foot block with sprite-driven idle/run/throw animations.
+
+### Technical details
+- Added asset: `public/assets/runner_sheet_v1.png`.
+- Added Phaser preload + animation clips (`runner-idle`, `runner-run`, `runner-throw`).
+- Replaced on-foot placeholder rectangle with animated sprite.
+- Hooked movement direction to sprite flip and throw action to spear timing.
+- Build verification: `npm run build` (pass).

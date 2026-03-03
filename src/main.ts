@@ -125,7 +125,7 @@ class EggLanderMissionScene extends Phaser.Scene {
   private planetPad!: Phaser.GameObjects.Rectangle
   private terrain!: Phaser.GameObjects.Rectangle
   private egg!: Phaser.GameObjects.Ellipse
-  private runner!: Phaser.GameObjects.Rectangle
+  private runner!: Phaser.GameObjects.Sprite
   private stationRing!: Phaser.GameObjects.Ellipse
   private stationCore!: Phaser.GameObjects.Rectangle
   private dockingTarget!: Phaser.GameObjects.Ellipse
@@ -169,6 +169,13 @@ class EggLanderMissionScene extends Phaser.Scene {
     super('EggLanderMissionScene')
   }
 
+  preload() {
+    this.load.spritesheet('runner-v1', '/assets/runner_sheet_v1.png', {
+      frameWidth: 256,
+      frameHeight: 256
+    })
+  }
+
   create() {
     const { width, height } = this.scale
 
@@ -186,7 +193,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.terrain = this.add.rectangle(width / 2, height - 8, width, 16, 0x130f2f)
     this.planetPad = this.add.rectangle(width / 2, height - 25, 170, 16, 0xc9f25a).setStrokeStyle(3, 0x151515)
     this.egg = this.add.ellipse(width - 140, height - 44, 24, 30, 0xfff2ba).setStrokeStyle(2, 0x242424)
-    this.runner = this.add.rectangle(width / 2, height - 48, 16, 28, 0xa7f07b).setVisible(false)
+    this.runner = this.add.sprite(width / 2, height - 48, 'runner-v1', 0).setVisible(false).setScale(0.42)
     this.bossBody = this.add.ellipse(width - 240, height - 52, 66, 66, 0x0c0c0c).setStrokeStyle(4, 0x1f1f1f).setVisible(false)
     this.bossEye = this.add.ellipse(width - 240, height - 52, 18, 18, 0xffffff).setVisible(false)
     this.planetLayer.add([skyBand, sunDisc, farMount, nearMount, eyeTotem, eyePupil, this.terrain, this.planetPad, this.egg, this.bossBody, this.bossEye, this.runner])
@@ -224,6 +231,12 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.keyA = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.A)
     this.keyD = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.D)
     this.keySpace = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
+
+    if (!this.anims.exists('runner-idle')) {
+      this.anims.create({ key: 'runner-idle', frames: this.anims.generateFrameNumbers('runner-v1', { start: 0, end: 3 }), frameRate: 7, repeat: -1 })
+      this.anims.create({ key: 'runner-run', frames: this.anims.generateFrameNumbers('runner-v1', { start: 6, end: 10 }), frameRate: 12, repeat: -1 })
+      this.anims.create({ key: 'runner-throw', frames: this.anims.generateFrameNumbers('runner-v1', { start: 12, end: 15 }), frameRate: 14, repeat: 0 })
+    }
 
     this.saveData = this.loadSave()
     this.enterLevelSelect()
@@ -319,10 +332,25 @@ class EggLanderMissionScene extends Phaser.Scene {
     const minX = this.scale.width / 2 - 26
     const maxX = this.scale.width / 2 + level.runDistance
 
-    if (this.cursors.right.isDown) this.runner.x = Math.min(maxX, this.runner.x + this.runnerSpeed * dt)
-    if (this.cursors.left.isDown) this.runner.x = Math.max(minX, this.runner.x - this.runnerSpeed * dt)
+    let moving = false
+    if (this.cursors.right.isDown) {
+      this.runner.x = Math.min(maxX, this.runner.x + this.runnerSpeed * dt)
+      this.runner.setFlipX(false)
+      moving = true
+    }
+    if (this.cursors.left.isDown) {
+      this.runner.x = Math.max(minX, this.runner.x - this.runnerSpeed * dt)
+      this.runner.setFlipX(true)
+      moving = true
+    }
 
     if (Phaser.Input.Keyboard.JustDown(this.keySpace)) this.throwSpear()
+
+    if (moving) {
+      if (this.runner.anims.currentAnim?.key !== 'runner-run') this.runner.play('runner-run', true)
+    } else if (!this.runner.anims.isPlaying || this.runner.anims.currentAnim?.key === 'runner-run') {
+      this.runner.play('runner-idle', true)
+    }
     this.updateSpears(dt)
     this.updateBossCombat(dt)
 
@@ -432,6 +460,8 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.ship.rotation = 0
     this.runner.x = this.ship.x + 8
     this.runner.setVisible(true)
+    this.runner.setFlipX(false)
+    this.runner.play('runner-idle', true)
 
     // Boss appears from level 2 onward.
     this.bossActive = LEVELS[this.levelIndex].id >= 2
@@ -454,10 +484,17 @@ class EggLanderMissionScene extends Phaser.Scene {
     if (now - this.lastSpearAt < 180) return
 
     this.lastSpearAt = now
-    const spear = this.add.rectangle(this.runner.x + 12, this.runner.y - 8, 20, 3, 0xe8f1ff)
+    this.runner.play('runner-throw', true)
+    this.runner.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
+      if (this.phase === 'on-foot') this.runner.play('runner-idle', true)
+    })
+
+    const dir = this.runner.flipX ? -1 : 1
+    const spear = this.add.rectangle(this.runner.x + 12 * dir, this.runner.y - 8, 20, 3, 0xe8f1ff)
       .setStrokeStyle(1, 0x111111)
+      .setRotation(dir < 0 ? Math.PI : 0)
     this.planetLayer.add(spear)
-    this.spears.push({ obj: spear, vx: 430, life: 1.25 })
+    this.spears.push({ obj: spear, vx: 430 * dir, life: 1.25 })
   }
 
   private updateSpears(dt: number) {

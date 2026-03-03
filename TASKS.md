@@ -18,3 +18,5 @@
 - `gdev-0008` — Global `egg-refresh` command installer (completed)
 
 - `gdev-0009` — Fix global `egg-refresh` symlink path resolution (completed)
+
+- `gdev-0010` — Integrate first runner sprite sheet + on-foot animations (completed)
