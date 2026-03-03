@@ -155,7 +155,7 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ### 2026-03-03 22:23 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
-- Commit: pending (`gdev-0011` remote validation + docs update)
+- Commit: `5d980aa` (`gdev-0011` remote validation + docs update)
 - Summary: Validated canonical remote via git and updated README to document `shawnmacewen/egg-lander` as canonical.
 - Files: `README.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: continue gameplay iteration work.
