@@ -165,3 +165,14 @@ Continuing — I implemented the next combat block: bosses now fire telegraphed 
 - Added cleanup/reset handling for boss projectiles across mission transitions.
 - Updated HUD to show HP during loop.
 - Build verification: `npm run build` (pass).
+
+## 2026-03-03 — gdev-0006 local refresh runner script
+
+### Assistant summary (exact)
+Done — I added a single script so you can refresh and run the game with one command: `./refresh-local-game.sh`.
+
+### Technical details
+- Added `refresh-local-game.sh` at repo root.
+- Script now runs: `git pull --ff-only`, `npm install --include=dev`, kills existing process on port 5173 when detectable, then starts `npm run dev -- --host 0.0.0.0 --port 5173`.
+- Marked script executable.
+- Updated `README.md` with usage instructions.

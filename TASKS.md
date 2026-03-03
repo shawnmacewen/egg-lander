@@ -10,3 +10,5 @@
 ## Notes
 - Egg Lander is being developed in **single-agent mode**.
 - No sub-agent delegation for project implementation tasks.
+
+- `gdev-0006` — One-command local refresh/run script (completed)

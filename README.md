@@ -13,6 +13,20 @@ npm install
 npm run dev
 ```
 
+## Quick refresh script (local)
+
+Use this after new pushes so you don’t have to run multiple commands manually:
+
+```bash
+./refresh-local-game.sh
+```
+
+What it does:
+1. `git pull --ff-only`
+2. `npm install --include=dev`
+3. stops existing process on port `5173` (if found)
+4. starts dev server on `0.0.0.0:5173`
+
 ## Build
 
 ```bash
