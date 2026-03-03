@@ -16,3 +16,5 @@
 - `gdev-0007` — Boss pattern variation + orbital docking UI polish (completed)
 
 - `gdev-0008` — Global `egg-refresh` command installer (completed)
+
+- `gdev-0009` — Fix global `egg-refresh` symlink path resolution (completed)

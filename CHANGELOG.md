@@ -201,3 +201,12 @@ Love it — I added `egg-refresh` support so you can run one command from anywhe
 - Added `install-egg-refresh.sh` to install a symlinked global command at `~/.local/bin/egg-refresh`.
 - Updated `README.md` with one-time install and PATH fallback instructions.
 - Existing `refresh-local-game.sh` remains the source runner.
+
+## 2026-03-03 — gdev-0009 egg-refresh symlink fix
+
+### Assistant summary (exact)
+Good catch — I fixed `egg-refresh` so it works when run from the global symlink (`~/.local/bin/egg-refresh`) by resolving the real script path before cd/git commands.
+
+### Technical details
+- Updated `refresh-local-game.sh` to resolve symlink chains and derive the real repo path.
+- This fixes `fatal: not a git repository` when launching `egg-refresh` via global PATH alias.
