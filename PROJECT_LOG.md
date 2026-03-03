@@ -34,7 +34,7 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ### 2026-03-03 00:07 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
-- Commit: pending (MVP gameplay + visual pass)
+- Commit: `dccb8a5`
 - Summary: Implemented stronger MVP loop with scoring/attempts/reset flow, explicit landed/crashed states, and improved silhouette/parallax presentation.
 - Files: `src/main.ts`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: commit, push, and backfill exact commit hash in durable logs.

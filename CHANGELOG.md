@@ -57,3 +57,4 @@ Implemented a full MVP gameplay pass for Egg Lander: tighter keyboard flight fee
 - Added explicit reset flow (`R`) for repeated runs while retaining cumulative score/attempts.
 - Improved visuals with layered silhouettes, cloud drift, parallax response, cleaner UI treatment, and simple thruster feedback.
 - Verified with `npm run build` (pass) on current environment.
+- Commit: `dccb8a5` — `gdev-0001: MVP gameplay pass + visual polish`
