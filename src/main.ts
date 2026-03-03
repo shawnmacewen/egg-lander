@@ -1,7 +1,9 @@
 import './style.css'
 import Phaser from 'phaser'
 
-type RoundState = 'flying' | 'landed' | 'crashed' | 'campaign-complete'
+type RoundState = 'transition' | 'flying' | 'landed' | 'crashed' | 'campaign-complete'
+
+type PowerupId = 'stability-thrusters' | 'shielded-hull' | 'fuel-gel'
 
 type LevelConfig = {
   id: number
@@ -19,12 +21,16 @@ type LevelConfig = {
 }
 
 type SaveData = {
+  version: number
   unlockedLevel: number
   highestLevelReached: number
   bestScore: number
+  unlockedPowerups: PowerupId[]
+  selectedPowerup: PowerupId | null
 }
 
-const SAVE_KEY = 'egg-lander-save-v1'
+const SAVE_VERSION = 2
+const SAVE_KEY = 'egg-lander-save'
 
 const LEVELS: LevelConfig[] = [
   {
@@ -71,6 +77,27 @@ const LEVELS: LevelConfig[] = [
   }
 ]
 
+const POWERUPS: Record<PowerupId, { name: string; unlockLevel: number; description: string; functional: boolean }> = {
+  'stability-thrusters': {
+    name: 'Stability Thrusters',
+    unlockLevel: 2,
+    description: 'Functional: reduces drift and gives safer landing angle window.',
+    functional: true
+  },
+  'shielded-hull': {
+    name: 'Shielded Hull',
+    unlockLevel: 3,
+    description: 'Placeholder: will absorb one hard landing impact in a future pass.',
+    functional: false
+  },
+  'fuel-gel': {
+    name: 'Fuel Gel',
+    unlockLevel: 3,
+    description: 'Placeholder: will improve burn efficiency in a future pass.',
+    functional: false
+  }
+}
+
 class EggLanderScene extends Phaser.Scene {
   private cursors!: Phaser.Types.Input.Keyboard.CursorKeys
   private resetKey!: Phaser.Input.Keyboard.Key
@@ -91,7 +118,7 @@ class EggLanderScene extends Phaser.Scene {
   private landingPad!: Phaser.GameObjects.Rectangle
 
   private velocity = new Phaser.Math.Vector2(0, 0)
-  private state: RoundState = 'flying'
+  private state: RoundState = 'transition'
 
   private sessionScore = 0
   private attempts = 0
@@ -99,9 +126,12 @@ class EggLanderScene extends Phaser.Scene {
   private currentLevelIndex = 0
 
   private saveData: SaveData = {
+    version: SAVE_VERSION,
     unlockedLevel: 1,
     highestLevelReached: 1,
-    bestScore: 0
+    bestScore: 0,
+    unlockedPowerups: [],
+    selectedPowerup: null
   }
 
   private readonly rotationSpeed = 2.7
@@ -158,7 +188,7 @@ class EggLanderScene extends Phaser.Scene {
       color: '#d6daff'
     })
 
-    this.hintText = this.add.text(14, 74, '← → rotate • ↑ thrust • R new session', {
+    this.hintText = this.add.text(14, 74, '← → rotate • ↑ thrust/launch • R new session', {
       fontFamily: 'monospace',
       fontSize: '14px',
       color: '#d4d7ff'
@@ -181,12 +211,23 @@ class EggLanderScene extends Phaser.Scene {
 
     this.animateBackground(dt)
 
+    if (this.state === 'transition') {
+      this.thruster.setVisible(false)
+      if (this.cursors.up?.isDown) {
+        this.state = 'flying'
+        this.statusText.setAlpha(0)
+        this.hintText.setText('Fly safe. Land to clear level. R starts a new session.')
+      }
+      return
+    }
+
     if (this.state !== 'flying') {
       this.thruster.setVisible(false)
       return
     }
 
     const level = LEVELS[this.currentLevelIndex]
+    const hasStabilityThrusters = this.saveData.selectedPowerup === 'stability-thrusters'
 
     this.velocity.y += level.gravity * dt
 
@@ -200,6 +241,11 @@ class EggLanderScene extends Phaser.Scene {
       this.velocity.y += Math.sin(direction) * level.thrust * dt
       this.fuel = Math.max(0, this.fuel - level.fuelBurnPerSecond * dt)
       thrusting = true
+    }
+
+    if (hasStabilityThrusters) {
+      this.velocity.x *= 1 - 0.6 * dt
+      this.ship.rotation *= 1 - 0.45 * dt
     }
 
     this.thruster
@@ -247,10 +293,13 @@ class EggLanderScene extends Phaser.Scene {
     const { width, height } = this.scale
     this.ship.y = height - 34
 
+    const stabilityBonus = this.saveData.selectedPowerup === 'stability-thrusters' ? 10 : 0
+    const angleBonus = this.saveData.selectedPowerup === 'stability-thrusters' ? 0.08 : 0
+
     const onPad = Math.abs(this.ship.x - width / 2) <= level.padWidth / 2
-    const safeVertical = Math.abs(this.velocity.y) <= level.safeVertical
-    const safeHorizontal = Math.abs(this.velocity.x) <= level.safeHorizontal
-    const upright = Math.abs(Phaser.Math.Angle.Wrap(this.ship.rotation)) <= level.safeAngle
+    const safeVertical = Math.abs(this.velocity.y) <= level.safeVertical + stabilityBonus
+    const safeHorizontal = Math.abs(this.velocity.x) <= level.safeHorizontal + stabilityBonus
+    const upright = Math.abs(Phaser.Math.Angle.Wrap(this.ship.rotation)) <= level.safeAngle + angleBonus
 
     if (onPad && safeVertical && safeHorizontal && upright) {
       this.completeLevel(level)
@@ -285,18 +334,19 @@ class EggLanderScene extends Phaser.Scene {
       this.saveData.unlockedLevel = nextLevel
     }
     this.saveData.highestLevelReached = Math.max(this.saveData.highestLevelReached, levelNumber)
-    this.saveSave(this.saveData)
+
+    const unlockedPowerupMessage = this.tryUnlockPowerupsForLevel(levelNumber)
 
     if (this.currentLevelIndex < LEVELS.length - 1) {
       this.statusText
-        .setText(`LEVEL CLEAR +${gained}`)
+        .setText(unlockedPowerupMessage ? `LEVEL CLEAR +${gained}\n${unlockedPowerupMessage}` : `LEVEL CLEAR +${gained}`)
         .setColor('#b9ff71')
         .setAlpha(1)
         .setStroke('#0f0f0f', 6)
 
       this.currentLevelIndex += 1
-      this.hintText.setText('Level cleared. Press ↑ to continue to next level, or R for new session.')
       this.prepareRoundForCurrentLevel()
+      this.saveSave(this.saveData)
       return
     }
 
@@ -313,6 +363,25 @@ class EggLanderScene extends Phaser.Scene {
     this.hintText.setText('All levels complete. Press R to start a fresh session.')
     this.updateHud()
     this.updateLevelUi()
+  }
+
+  private tryUnlockPowerupsForLevel(levelNumber: number): string {
+    const unlocked: string[] = []
+
+    ;(Object.keys(POWERUPS) as PowerupId[]).forEach((powerupId) => {
+      const definition = POWERUPS[powerupId]
+      if (levelNumber >= definition.unlockLevel && !this.saveData.unlockedPowerups.includes(powerupId)) {
+        this.saveData.unlockedPowerups.push(powerupId)
+        unlocked.push(definition.name)
+      }
+    })
+
+    if (!this.saveData.selectedPowerup && this.saveData.unlockedPowerups.includes('stability-thrusters')) {
+      this.saveData.selectedPowerup = 'stability-thrusters'
+      unlocked.push('Auto-equipped: Stability Thrusters')
+    }
+
+    return unlocked.length > 0 ? `Unlocked ${unlocked.join(' • ')}` : ''
   }
 
   private crash(reason: string) {
@@ -332,7 +401,6 @@ class EggLanderScene extends Phaser.Scene {
 
     this.time.delayedCall(700, () => {
       if (this.state === 'crashed') {
-        this.state = 'flying'
         this.prepareRoundForCurrentLevel()
       }
     })
@@ -347,14 +415,14 @@ class EggLanderScene extends Phaser.Scene {
       this.saveSave(latestSave)
     }
 
-    this.state = 'flying'
+    this.state = 'transition'
     this.sessionScore = 0
     this.attempts = 0
     this.currentLevelIndex = 0
     this.saveData = this.loadSave()
 
     this.statusText.setText('NEW SESSION').setColor('#f5f5f5').setAlpha(0)
-    this.hintText.setText('← → rotate • ↑ thrust • R new session')
+    this.hintText.setText('← → rotate • ↑ thrust/launch • R new session')
 
     this.prepareRoundForCurrentLevel()
     this.updateHud()
@@ -365,7 +433,7 @@ class EggLanderScene extends Phaser.Scene {
     const level = LEVELS[this.currentLevelIndex]
     const { width } = this.scale
 
-    this.state = 'flying'
+    this.state = 'transition'
     this.fuel = 100
     this.landingPad.setSize(level.padWidth, 16)
 
@@ -375,7 +443,18 @@ class EggLanderScene extends Phaser.Scene {
       .setFillStyle(0xffe48f)
 
     this.velocity.set(Phaser.Math.FloatBetween(-10, 10), Phaser.Math.FloatBetween(-6, 6))
-    this.statusText.setAlpha(0)
+
+    const powerupLine = this.saveData.selectedPowerup
+      ? `Powerup: ${POWERUPS[this.saveData.selectedPowerup].name}`
+      : 'Powerup: None'
+
+    this.statusText
+      .setText(`${level.name}\n${level.objective}`)
+      .setColor('#f5f5f5')
+      .setAlpha(1)
+      .setStroke('#0f0f0f', 6)
+
+    this.hintText.setText(`Press ↑ to launch • ${powerupLine} • R new session`)
 
     this.updateHud()
     this.updateLevelUi()
@@ -385,36 +464,49 @@ class EggLanderScene extends Phaser.Scene {
     const level = LEVELS[this.currentLevelIndex]
     const speedY = Math.abs(this.velocity.y).toFixed(1)
     const speedX = Math.abs(this.velocity.x).toFixed(1)
+    const powerupTag = this.saveData.selectedPowerup ? POWERUPS[this.saveData.selectedPowerup].name : 'None'
 
     this.hudText.setText(
-      `Session Score ${this.sessionScore}   Attempts ${this.attempts}   Fuel ${Math.round(this.fuel)}%   L${level.id} V ${speedY}   H ${speedX}`
+      `Session Score ${this.sessionScore}   Attempts ${this.attempts}   Fuel ${Math.round(this.fuel)}%   L${level.id} V ${speedY}   H ${speedX}   PWR ${powerupTag}`
     )
   }
 
   private updateLevelUi() {
     const level = LEVELS[this.currentLevelIndex]
+    const unlockedPowerups = this.saveData.unlockedPowerups.map((id) => POWERUPS[id].name).join(', ') || 'None'
+
     this.levelText.setText(
       `${level.name}   Unlocked: ${this.saveData.unlockedLevel}/${LEVELS.length}   Highest: ${this.saveData.highestLevelReached}   Best Score: ${this.saveData.bestScore}`
     )
-    this.objectiveText.setText(`Objective: ${level.objective}`)
+    this.objectiveText.setText(`Objective: ${level.objective}   Unlocks: ${unlockedPowerups}`)
   }
 
   private loadSave(): SaveData {
     const fallback: SaveData = {
+      version: SAVE_VERSION,
       unlockedLevel: 1,
       highestLevelReached: 1,
-      bestScore: 0
+      bestScore: 0,
+      unlockedPowerups: [],
+      selectedPowerup: null
     }
 
     try {
-      const raw = window.localStorage.getItem(SAVE_KEY)
+      const raw = window.localStorage.getItem(SAVE_KEY) ?? window.localStorage.getItem('egg-lander-save-v1')
       if (!raw) return fallback
 
       const parsed = JSON.parse(raw) as Partial<SaveData>
+      const unlockedPowerupsRaw = Array.isArray(parsed.unlockedPowerups) ? parsed.unlockedPowerups : []
+      const unlockedPowerups = unlockedPowerupsRaw.filter((id): id is PowerupId => id in POWERUPS)
+      const selectedPowerup = parsed.selectedPowerup && parsed.selectedPowerup in POWERUPS ? (parsed.selectedPowerup as PowerupId) : null
+
       return {
+        version: SAVE_VERSION,
         unlockedLevel: Phaser.Math.Clamp(Math.floor(parsed.unlockedLevel ?? 1), 1, LEVELS.length),
         highestLevelReached: Phaser.Math.Clamp(Math.floor(parsed.highestLevelReached ?? 1), 1, LEVELS.length),
-        bestScore: Math.max(0, Math.floor(parsed.bestScore ?? 0))
+        bestScore: Math.max(0, Math.floor(parsed.bestScore ?? 0)),
+        unlockedPowerups,
+        selectedPowerup
       }
     } catch {
       return fallback
@@ -423,7 +515,7 @@ class EggLanderScene extends Phaser.Scene {
 
   private saveSave(data: SaveData) {
     try {
-      window.localStorage.setItem(SAVE_KEY, JSON.stringify(data))
+      window.localStorage.setItem(SAVE_KEY, JSON.stringify({ ...data, version: SAVE_VERSION }))
     } catch {
       // Keep game playable even if storage is unavailable.
     }
