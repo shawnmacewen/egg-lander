@@ -12,3 +12,5 @@
 - No sub-agent delegation for project implementation tasks.
 
 - `gdev-0006` — One-command local refresh/run script (completed)
+
+- `gdev-0007` — Boss pattern variation + orbital docking UI polish (completed)

@@ -129,6 +129,7 @@ class EggLanderMissionScene extends Phaser.Scene {
   private stationRing!: Phaser.GameObjects.Ellipse
   private stationCore!: Phaser.GameObjects.Rectangle
   private dockingTarget!: Phaser.GameObjects.Ellipse
+  private dockingGuideOuter!: Phaser.GameObjects.Ellipse
   private bossBody!: Phaser.GameObjects.Ellipse
   private bossEye!: Phaser.GameObjects.Ellipse
 
@@ -158,7 +159,7 @@ class EggLanderMissionScene extends Phaser.Scene {
   private bossHp = 0
   private playerHp = 3
   private readonly spears: Array<{ obj: Phaser.GameObjects.Rectangle; vx: number; life: number }> = []
-  private readonly bossShots: Array<{ obj: Phaser.GameObjects.Ellipse; vx: number; life: number }> = []
+  private readonly bossShots: Array<{ obj: Phaser.GameObjects.Ellipse; vx: number; vy: number; life: number }> = []
   private lastSpearAt = 0
   private lastBossShotAt = 0
 
@@ -197,8 +198,9 @@ class EggLanderMissionScene extends Phaser.Scene {
     ])
     this.stationRing = this.add.ellipse(width - 180, 120, 122, 122, 0x6ea8ff).setStrokeStyle(4, 0xcfe7ff)
     this.stationCore = this.add.rectangle(width - 180, 120, 18, 98, 0xb9c7de)
+    this.dockingGuideOuter = this.add.ellipse(width - 180, 120, 78, 78, 0x75ffd2).setAlpha(0.22).setStrokeStyle(2, 0x75ffd2)
     this.dockingTarget = this.add.ellipse(width - 180, 120, 44, 44, 0x9ff6d2).setAlpha(0.7)
-    this.orbitalLayer.add([this.stationRing, this.stationCore, this.dockingTarget])
+    this.orbitalLayer.add([this.stationRing, this.stationCore, this.dockingGuideOuter, this.dockingTarget])
 
     this.ship = this.add.triangle(width / 2, 96, 0, 28, 20, -20, -20, -20, 0xffe48f).setStrokeStyle(4, 0x0f0f0f)
     this.thruster = this.add.triangle(this.ship.x, this.ship.y + 24, 0, 0, 8, 18, -8, 18, 0xff7a3d).setVisible(false)
@@ -395,6 +397,14 @@ class EggLanderMissionScene extends Phaser.Scene {
     const speed = this.velocity.length()
     const aligned = Math.abs(Phaser.Math.Angle.Wrap(this.ship.rotation)) < 0.22
 
+    const pulse = 0.8 + Math.sin(this.time.now / 180) * 0.2
+    this.dockingTarget.setScale(pulse)
+    this.dockingGuideOuter.setScale(1 + Math.sin(this.time.now / 260) * 0.06)
+
+    this.hintText.setText(
+      `Docking: dist ${Math.round(dist)} / ${level.orbitalDockRadius}, speed ${Math.round(speed)} / ${level.orbitalSafeSpeed}, ${aligned ? 'aligned' : 'tilted'}`
+    )
+
     if (dist <= level.orbitalDockRadius && speed <= level.orbitalSafeSpeed && aligned) {
       this.completeLevel()
     } else if (dist <= level.orbitalDockRadius && speed > level.orbitalSafeSpeed * 1.6) {
@@ -493,14 +503,28 @@ class EggLanderMissionScene extends Phaser.Scene {
   private updateBossCombat(dt: number) {
     if (!this.bossActive) return
 
+    const level = LEVELS[this.levelIndex]
     const now = this.time.now
-    if (now - this.lastBossShotAt > 950) {
+    const fireCadence = level.id >= 3 ? 700 : 950
+
+    if (now - this.lastBossShotAt > fireCadence) {
       this.lastBossShotAt = now
       const dx = this.runner.x - this.bossBody.x
-      const dir = Math.sign(dx) || -1
+      const dy = this.runner.y - this.bossBody.y
+      const dirX = Math.sign(dx) || -1
+      const dirY = Phaser.Math.Clamp(dy / 120, -0.75, 0.75)
+
       const shot = this.add.ellipse(this.bossBody.x, this.bossBody.y, 10, 10, 0xff6a6a).setStrokeStyle(2, 0x3a1111)
       this.planetLayer.add(shot)
-      this.bossShots.push({ obj: shot, vx: dir * 190, life: 2.2 })
+      this.bossShots.push({ obj: shot, vx: dirX * 190, vy: dirY * 110, life: 2.2 })
+
+      // Level 3+ gets a second angled shot for pattern pressure.
+      if (level.id >= 3) {
+        const shot2 = this.add.ellipse(this.bossBody.x, this.bossBody.y, 9, 9, 0xff9a6a).setStrokeStyle(2, 0x3a1111)
+        this.planetLayer.add(shot2)
+        this.bossShots.push({ obj: shot2, vx: dirX * 165, vy: -dirY * 85, life: 2.0 })
+      }
+
       this.bossEye.setScale(1.15)
       this.time.delayedCall(90, () => this.bossEye.setScale(1))
     }
@@ -508,6 +532,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     for (let i = this.bossShots.length - 1; i >= 0; i -= 1) {
       const b = this.bossShots[i]
       b.obj.x += b.vx * dt
+      b.obj.y += b.vy * dt
       b.life -= dt
 
       if (Phaser.Math.Distance.Between(b.obj.x, b.obj.y, this.runner.x, this.runner.y) < 14) {
@@ -523,7 +548,7 @@ class EggLanderMissionScene extends Phaser.Scene {
         continue
       }
 
-      if (b.life <= 0 || b.obj.x < -20 || b.obj.x > this.scale.width + 20) {
+      if (b.life <= 0 || b.obj.x < -20 || b.obj.x > this.scale.width + 20 || b.obj.y < 0 || b.obj.y > this.scale.height) {
         b.obj.destroy()
         this.bossShots.splice(i, 1)
       }

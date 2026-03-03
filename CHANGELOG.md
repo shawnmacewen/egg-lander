@@ -176,3 +176,18 @@ Done — I added a single script so you can refresh and run the game with one co
 - Script now runs: `git pull --ff-only`, `npm install --include=dev`, kills existing process on port 5173 when detectable, then starts `npm run dev -- --host 0.0.0.0 --port 5173`.
 - Marked script executable.
 - Updated `README.md` with usage instructions.
+
+## 2026-03-03 — gdev-0007 boss pattern variation + docking polish
+
+### Assistant summary (exact)
+Continuing — I shipped the next block: boss encounters now scale with level via faster cadence and multi-shot patterns, and orbital docking has clearer visual/UX guidance with live distance/speed/alignment feedback for precision docking.
+
+### Technical details
+- Boss combat now varies by level:
+  - higher levels fire more frequently
+  - level 3 adds a secondary angled projectile pattern
+- Boss projectiles now support vertical drift for less predictable dodging.
+- Orbital docking received visual polish:
+  - pulsing target ring and guide ring
+  - live HUD hint showing docking distance, speed threshold, and alignment state
+- Build verification: `npm run build` (pass).
