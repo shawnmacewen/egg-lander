@@ -67,3 +67,20 @@ Implemented a full MVP gameplay pass for Egg Lander: tighter keyboard flight fee
 - Improved visuals with layered silhouettes, cloud drift, parallax response, cleaner UI treatment, and simple thruster feedback.
 - Verified with `npm run build` (pass) on current environment.
 - Commit: `dccb8a5` — `gdev-0001: MVP gameplay pass + visual polish`
+
+---
+
+## 2026-03-03 — Level loop + progression persistence pass
+
+### Assistant summary (exact)
+Implemented the new level-loop direction: added a 3-level progression system with increasing difficulty, made level clear the primary score event, relaxed landing checks for casual arcade feel, made `R` start a fresh session, added localStorage persistence for unlocked/highest/best score, and added HUD/UI for current level objective and progression status. Verified with `npm run build`.
+
+### Technical details
+- Added `LEVELS` configuration (3 levels) with escalating gravity, pad width, fuel burn, and landing thresholds.
+- Scoring now centers on level completion (`completionScore` + small fuel bonus), not per-attempt micro-judging.
+- Landing acceptance tuned to forgiving arcade thresholds per level.
+- Reset behavior changed: `R` now starts a brand-new session (score, attempts, level index reset).
+- Added persistence (`localStorage`): unlocked level, highest level reached, best session score.
+- Added UI lines for level name, objective, unlocked/highest progression, and best score.
+- Build verification passed: `npm run build`.
+- Commit: `88b99a5` — `gdev-0001: add level progression, casual landing, and save data`
