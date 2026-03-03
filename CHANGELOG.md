@@ -191,3 +191,13 @@ Continuing — I shipped the next block: boss encounters now scale with level vi
   - pulsing target ring and guide ring
   - live HUD hint showing docking distance, speed threshold, and alignment state
 - Build verification: `npm run build` (pass).
+
+## 2026-03-03 — gdev-0008 global egg-refresh command
+
+### Assistant summary (exact)
+Love it — I added `egg-refresh` support so you can run one command from anywhere after a one-time install.
+
+### Technical details
+- Added `install-egg-refresh.sh` to install a symlinked global command at `~/.local/bin/egg-refresh`.
+- Updated `README.md` with one-time install and PATH fallback instructions.
+- Existing `refresh-local-game.sh` remains the source runner.

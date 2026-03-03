@@ -128,3 +128,11 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 - Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: add first powerup-gated optional side objective and tighten on-foot animation feedback.
 - Blockers: none.
+
+### 2026-03-03 01:16 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: pending (`gdev-0008` global egg-refresh installer)
+- Summary: Added one-time installer for global `egg-refresh` command so game refresh can be run from any directory.
+- Files: `install-egg-refresh.sh`, `README.md`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue gameplay iteration blocks.
+- Blockers: none.

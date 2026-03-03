@@ -14,3 +14,5 @@
 - `gdev-0006` — One-command local refresh/run script (completed)
 
 - `gdev-0007` — Boss pattern variation + orbital docking UI polish (completed)
+
+- `gdev-0008` — Global `egg-refresh` command installer (completed)

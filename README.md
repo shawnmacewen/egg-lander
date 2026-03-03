@@ -27,6 +27,26 @@ What it does:
 3. stops existing process on port `5173` (if found)
 4. starts dev server on `0.0.0.0:5173`
 
+## Optional global command: `egg-refresh`
+
+Install once from repo root:
+
+```bash
+./install-egg-refresh.sh
+```
+
+Then run from anywhere:
+
+```bash
+egg-refresh
+```
+
+If command is not found, add this to `~/.bashrc` and open a new shell:
+
+```bash
+export PATH="$HOME/.local/bin:$PATH"
+```
+
 ## Build
 
 ```bash
