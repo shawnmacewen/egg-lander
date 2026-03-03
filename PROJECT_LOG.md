@@ -139,7 +139,7 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ### 2026-03-03 01:20 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
-- Commit: pending (`gdev-0009` symlink path fix)
+- Commit: `dc7ad81` (`gdev-0009` symlink path fix)
 - Summary: Fixed global `egg-refresh` command path resolution so it operates from repo root even when invoked via symlink.
 - Files: `refresh-local-game.sh`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: continue gameplay iteration blocks.
