@@ -100,3 +100,12 @@ Shipped a progression UX and persistence upgrade: added launch/objective transit
 - Upgraded persistence schema to versioned save format (`version`, progression fields, unlocked powerups, selected powerup) with fallback read from prior v1 key.
 - Verified production build: `npm run build` (pass).
 - Commit: `9f6b6b3` — `gdev-0001: add powerup unlocks, save schema v2, and transition UX`
+
+## 2026-03-03 — mission loop direction update
+
+### Assistant summary (exact)
+This is actually a pretty good start. The game loop will be land, exit lander, run right to steal the egg, run back to lander, take off and then on a seperate screen land at the delivery base, then then we would likely have some sort of level select, then the loop starts over. The delivery base might be an orbital base like a space station with almost no gravity and the goal is instead presice docking. So the loop is land on planet, get egg, get back to lander to take off, then dock with orbital space station.
+
+### Technical details
+- Updated `PRD.md` with a formal mission loop section and revised MVP criteria.
+- Added orbital near-zero-gravity docking objective as a core loop requirement.

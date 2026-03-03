@@ -71,3 +71,11 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 - Files: `src/main.ts`.
 - Next: expose manual powerup selection UI and add first gated level objective tied to required powerup.
 - Blockers: none.
+
+### 2026-03-03 00:41 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: pending (PRD mission-loop update)
+- Summary: Integrated new canonical mission loop and orbital docking design into PRD.
+- Files: `PRD.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: implement multi-phase loop in-game (planet land, on-foot extraction, return, takeoff, orbital dock).
+- Blockers: none.
