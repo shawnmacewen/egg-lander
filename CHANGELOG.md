@@ -124,3 +124,18 @@ Implemented the confirmed canonical mission loop end-to-end in gameplay: level-s
 - Task ID: `gdev-0002` (single-agent implementation; no delegation).
 - Build verification: `npm run build` (pass).
 - Commit: `06df680` — `gdev-0001: implement canonical mission loop with orbital docking`.
+
+## 2026-03-03 — gdev-0003 loadout selection + level gate pass
+
+### Assistant summary (exact)
+Done — I implemented the next loop block directly: level-select now supports powerup loadout cycling, Level 3 is now powerup-gated, and the powerup effects pass is expanded (`fuel-gel` efficiency + `shielded-hull` forgiveness), with build verification passing.
+
+### Technical details
+- Added level-select loadout controls: `A / D` cycles selected powerup from unlocked set (including None).
+- Added explicit level requirement metadata (`requiredPowerup`) and enforced launch gating in mission start.
+- Set Level 3 to require `Stability Thrusters` unlock.
+- Expanded powerup effects:
+  - `fuel-gel`: reduced fuel burn multiplier.
+  - `shielded-hull`: modestly widened safe landing envelope.
+- Updated HUD/level text to display level requirements and selected loadout context.
+- Build verification: `npm run build` (pass).

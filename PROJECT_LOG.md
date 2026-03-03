@@ -88,3 +88,11 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 - Files: `src/main.ts`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: tune feel values (run speed, docking radius/safe speed by level) and optionally add explicit station-side level-select screen polish.
 - Blockers: none.
+
+### 2026-03-03 00:53 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: pending (`gdev-0003` loadout + gate pass)
+- Summary: Added selectable loadouts, first practical powerup gate, and expanded powerup effects to support progression loop depth.
+- Files: `src/main.ts`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: implement station-side level completion panel polish and add first explicit boss encounter stub for loop extension.
+- Blockers: none.

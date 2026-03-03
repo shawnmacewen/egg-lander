@@ -29,6 +29,7 @@ type LevelConfig = {
   orbitalDockRadius: number
   orbitalSafeSpeed: number
   completionScore: number
+  requiredPowerup?: PowerupId
 }
 
 type SaveData = {
@@ -93,7 +94,8 @@ const LEVELS: LevelConfig[] = [
     orbitalThrust: 245,
     orbitalDockRadius: 36,
     orbitalSafeSpeed: 62,
-    completionScore: 1800
+    completionScore: 1800,
+    requiredPowerup: 'stability-thrusters'
   }
 ]
 
@@ -108,6 +110,8 @@ class EggLanderMissionScene extends Phaser.Scene {
   private keyR!: Phaser.Input.Keyboard.Key
   private keyN!: Phaser.Input.Keyboard.Key
   private keyL!: Phaser.Input.Keyboard.Key
+  private keyA!: Phaser.Input.Keyboard.Key
+  private keyD!: Phaser.Input.Keyboard.Key
 
   private hudText!: Phaser.GameObjects.Text
   private levelText!: Phaser.GameObjects.Text
@@ -198,6 +202,8 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.keyR = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.R)
     this.keyN = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.N)
     this.keyL = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.L)
+    this.keyA = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.A)
+    this.keyD = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.D)
 
     this.saveData = this.loadSave()
     this.enterLevelSelect()
@@ -223,6 +229,8 @@ class EggLanderMissionScene extends Phaser.Scene {
       if (Phaser.Input.Keyboard.JustDown(this.cursors.up)) {
         this.beginPlanetBrief()
       }
+      if (Phaser.Input.Keyboard.JustDown(this.keyA)) this.cycleSelectedPowerup(-1)
+      if (Phaser.Input.Keyboard.JustDown(this.keyD)) this.cycleSelectedPowerup(1)
       return
     }
 
@@ -252,12 +260,13 @@ class EggLanderMissionScene extends Phaser.Scene {
     if (this.cursors.left.isDown) this.ship.rotation -= this.rotationSpeed * dt
     if (this.cursors.right.isDown) this.ship.rotation += this.rotationSpeed * dt
 
+    const fuelBurnMultiplier = this.saveData.selectedPowerup === 'fuel-gel' ? 0.75 : 1
     let thrusting = false
     if (this.cursors.up.isDown && this.fuel > 0) {
       const direction = this.ship.rotation - Math.PI / 2
       this.velocity.x += Math.cos(direction) * level.thrust * dt
       this.velocity.y += Math.sin(direction) * level.thrust * dt
-      this.fuel = Math.max(0, this.fuel - level.fuelBurnPerSecond * dt)
+      this.fuel = Math.max(0, this.fuel - level.fuelBurnPerSecond * fuelBurnMultiplier * dt)
       thrusting = true
     }
 
@@ -271,9 +280,10 @@ class EggLanderMissionScene extends Phaser.Scene {
     if (this.ship.y >= this.scale.height - 34) {
       this.ship.y = this.scale.height - 34
       const onPad = Math.abs(this.ship.x - this.scale.width / 2) <= level.padWidth / 2
-      const stableY = Math.abs(this.velocity.y) <= level.safeVertical
-      const stableX = Math.abs(this.velocity.x) <= level.safeHorizontal
-      const upright = Math.abs(Phaser.Math.Angle.Wrap(this.ship.rotation)) <= level.safeAngle
+      const shieldBonus = this.saveData.selectedPowerup === 'shielded-hull' ? 1.15 : 1
+      const stableY = Math.abs(this.velocity.y) <= level.safeVertical * shieldBonus
+      const stableX = Math.abs(this.velocity.x) <= level.safeHorizontal * shieldBonus
+      const upright = Math.abs(Phaser.Math.Angle.Wrap(this.ship.rotation)) <= level.safeAngle * shieldBonus
 
       if (onPad && stableY && stableX && upright) {
         this.startOnFootPhase()
@@ -318,12 +328,13 @@ class EggLanderMissionScene extends Phaser.Scene {
     if (this.cursors.left.isDown) this.ship.rotation -= this.rotationSpeed * dt
     if (this.cursors.right.isDown) this.ship.rotation += this.rotationSpeed * dt
 
+    const fuelBurnMultiplier = this.saveData.selectedPowerup === 'fuel-gel' ? 0.75 : 1
     let thrusting = false
     if (this.cursors.up.isDown && this.fuel > 0) {
       const direction = this.ship.rotation - Math.PI / 2
       this.velocity.x += Math.cos(direction) * level.thrust * dt
       this.velocity.y += Math.sin(direction) * level.thrust * dt
-      this.fuel = Math.max(0, this.fuel - level.fuelBurnPerSecond * dt)
+      this.fuel = Math.max(0, this.fuel - level.fuelBurnPerSecond * fuelBurnMultiplier * dt)
       thrusting = true
     }
 
@@ -341,12 +352,13 @@ class EggLanderMissionScene extends Phaser.Scene {
     if (this.cursors.left.isDown) this.ship.rotation -= this.rotationSpeed * dt * 0.85
     if (this.cursors.right.isDown) this.ship.rotation += this.rotationSpeed * dt * 0.85
 
+    const fuelBurnMultiplier = this.saveData.selectedPowerup === 'fuel-gel' ? 0.75 : 1
     let thrusting = false
     if (this.cursors.up.isDown && this.fuel > 0) {
       const direction = this.ship.rotation - Math.PI / 2
       this.velocity.x += Math.cos(direction) * level.orbitalThrust * dt
       this.velocity.y += Math.sin(direction) * level.orbitalThrust * dt
-      this.fuel = Math.max(0, this.fuel - level.fuelBurnPerSecond * 0.6 * dt)
+      this.fuel = Math.max(0, this.fuel - level.fuelBurnPerSecond * 0.6 * fuelBurnMultiplier * dt)
       thrusting = true
     }
 
@@ -402,11 +414,19 @@ class EggLanderMissionScene extends Phaser.Scene {
   }
 
   private beginPlanetBrief() {
+    const level = LEVELS[this.levelIndex]
+    if (level.requiredPowerup && !this.saveData.unlockedPowerups.includes(level.requiredPowerup)) {
+      const requiredName = POWERUPS[level.requiredPowerup].name
+      this.statusText.setText(`Level locked: requires ${requiredName}`)
+      this.hintText.setText('Complete earlier levels to unlock required powerup')
+      return
+    }
+
     this.phase = 'planet-brief'
     this.planetLayer.setVisible(true)
     this.orbitalLayer.setVisible(false)
     this.resetMissionEntities()
-    this.statusText.setText(`${LEVELS[this.levelIndex].name}\n1) Land 2) Steal egg 3) Return 4) Take off`) 
+    this.statusText.setText(`${level.name}\n1) Land 2) Steal egg 3) Return 4) Take off`)
     this.hintText.setText('Press ↑ to start landing run • R new session')
   }
 
@@ -478,7 +498,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.ship.rotation = 0
     this.velocity.set(0, 0)
     this.thruster.setVisible(false)
-    this.statusText.setText(`Level Select\nL / N choose • ↑ launch mission`)
+    this.statusText.setText(`Level Select\nL / N choose • A / D powerup • ↑ launch mission`)
     this.hintText.setText('R starts a fresh session (keeps saved progression)')
     this.resetMissionEntities()
     this.updateUi()
@@ -502,8 +522,9 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.hudText.setText(
       `Score ${this.sessionScore}   Attempts ${this.attempts}   Fuel ${Math.round(this.fuel)}%   V ${Math.abs(this.velocity.y).toFixed(1)}   H ${Math.abs(this.velocity.x).toFixed(1)}   PWR ${powerup}`
     )
+    const required = level.requiredPowerup ? POWERUPS[level.requiredPowerup].name : 'None'
     this.levelText.setText(
-      `Level ${level.id}/${LEVELS.length}: ${level.name}   Unlocked ${this.saveData.unlockedLevel}/${LEVELS.length}   Best ${this.saveData.bestScore}`
+      `Level ${level.id}/${LEVELS.length}: ${level.name}   Requires ${required}   Unlocked ${this.saveData.unlockedLevel}/${LEVELS.length}   Best ${this.saveData.bestScore}`
     )
 
     let objective = 'Land on planet, grab egg on foot, return, launch, then precision dock in orbit.'
@@ -512,6 +533,21 @@ class EggLanderMissionScene extends Phaser.Scene {
     if (this.phase === 'orbital-docking') objective = 'Near-zero-G docking: low speed + upright alignment in ring.'
 
     this.objectiveText.setText(`Objective: ${objective}`)
+  }
+
+  private cycleSelectedPowerup(direction: 1 | -1) {
+    const options: (PowerupId | null)[] = [null, ...this.saveData.unlockedPowerups]
+    if (options.length === 0) return
+
+    const currentIndex = options.findIndex((id) => id === this.saveData.selectedPowerup)
+    const base = currentIndex >= 0 ? currentIndex : 0
+    const nextIndex = (base + direction + options.length) % options.length
+    this.saveData.selectedPowerup = options[nextIndex]
+    this.saveSave(this.saveData)
+
+    const selectedName = this.saveData.selectedPowerup ? POWERUPS[this.saveData.selectedPowerup].name : 'None'
+    this.statusText.setText(`Loadout set: ${selectedName}`)
+    this.hintText.setText('Level select: L/N level • A/D powerup • ↑ launch')
   }
 
   private tryUnlockPowerupsForLevel(levelNumber: number) {
