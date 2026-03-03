@@ -1,22 +1,33 @@
 import './style.css'
 import Phaser from 'phaser'
 
-type RoundState = 'transition' | 'flying' | 'landed' | 'crashed' | 'campaign-complete'
-
 type PowerupId = 'stability-thrusters' | 'shielded-hull' | 'fuel-gel'
+
+type MissionPhase =
+  | 'level-select'
+  | 'planet-brief'
+  | 'planet-flying'
+  | 'on-foot'
+  | 'takeoff'
+  | 'orbital-docking'
+  | 'level-complete'
+  | 'crashed'
 
 type LevelConfig = {
   id: number
   name: string
-  objective: string
   gravity: number
   thrust: number
-  fuelBurnPerSecond: number
   padWidth: number
-  startY: number
+  fuelBurnPerSecond: number
   safeVertical: number
   safeHorizontal: number
   safeAngle: number
+  runDistance: number
+  orbitalGravity: number
+  orbitalThrust: number
+  orbitalDockRadius: number
+  orbitalSafeSpeed: number
   completionScore: number
 }
 
@@ -35,96 +46,90 @@ const SAVE_KEY = 'egg-lander-save'
 const LEVELS: LevelConfig[] = [
   {
     id: 1,
-    name: 'Level 1 — Warmup',
-    objective: 'Touch down anywhere on the big pad.',
-    gravity: 245,
+    name: 'Warmup Delivery',
+    gravity: 240,
     thrust: 430,
-    fuelBurnPerSecond: 20,
-    padWidth: 190,
-    startY: 98,
-    safeVertical: 112,
-    safeHorizontal: 82,
-    safeAngle: 0.66,
-    completionScore: 800
+    padWidth: 180,
+    fuelBurnPerSecond: 18,
+    safeVertical: 118,
+    safeHorizontal: 84,
+    safeAngle: 0.67,
+    runDistance: 260,
+    orbitalGravity: 22,
+    orbitalThrust: 225,
+    orbitalDockRadius: 48,
+    orbitalSafeSpeed: 80,
+    completionScore: 900
   },
   {
     id: 2,
-    name: 'Level 2 — Crosswind',
-    objective: 'Land with less drift on a smaller pad.',
+    name: 'Crosswind Heist',
     gravity: 285,
-    thrust: 445,
-    fuelBurnPerSecond: 24,
-    padWidth: 150,
-    startY: 84,
-    safeVertical: 102,
-    safeHorizontal: 72,
+    thrust: 448,
+    padWidth: 148,
+    fuelBurnPerSecond: 23,
+    safeVertical: 106,
+    safeHorizontal: 74,
     safeAngle: 0.6,
-    completionScore: 1200
+    runDistance: 310,
+    orbitalGravity: 28,
+    orbitalThrust: 235,
+    orbitalDockRadius: 42,
+    orbitalSafeSpeed: 70,
+    completionScore: 1300
   },
   {
     id: 3,
-    name: 'Level 3 — Crunch Time',
-    objective: 'Fast gravity, tight pad. Keep it smooth.',
+    name: 'Tight Delivery',
     gravity: 330,
-    thrust: 460,
-    fuelBurnPerSecond: 28,
+    thrust: 465,
     padWidth: 120,
-    startY: 70,
-    safeVertical: 92,
-    safeHorizontal: 62,
+    fuelBurnPerSecond: 28,
+    safeVertical: 94,
+    safeHorizontal: 64,
     safeAngle: 0.55,
-    completionScore: 1700
+    runDistance: 350,
+    orbitalGravity: 35,
+    orbitalThrust: 245,
+    orbitalDockRadius: 36,
+    orbitalSafeSpeed: 62,
+    completionScore: 1800
   }
 ]
 
-const POWERUPS: Record<PowerupId, { name: string; unlockLevel: number; description: string; functional: boolean }> = {
-  'stability-thrusters': {
-    name: 'Stability Thrusters',
-    unlockLevel: 2,
-    description: 'Functional: reduces drift and gives safer landing angle window.',
-    functional: true
-  },
-  'shielded-hull': {
-    name: 'Shielded Hull',
-    unlockLevel: 3,
-    description: 'Placeholder: will absorb one hard landing impact in a future pass.',
-    functional: false
-  },
-  'fuel-gel': {
-    name: 'Fuel Gel',
-    unlockLevel: 3,
-    description: 'Placeholder: will improve burn efficiency in a future pass.',
-    functional: false
-  }
+const POWERUPS: Record<PowerupId, { name: string; unlockLevel: number; functional: boolean }> = {
+  'stability-thrusters': { name: 'Stability Thrusters', unlockLevel: 2, functional: true },
+  'shielded-hull': { name: 'Shielded Hull', unlockLevel: 3, functional: false },
+  'fuel-gel': { name: 'Fuel Gel', unlockLevel: 3, functional: false }
 }
 
-class EggLanderScene extends Phaser.Scene {
+class EggLanderMissionScene extends Phaser.Scene {
   private cursors!: Phaser.Types.Input.Keyboard.CursorKeys
-  private resetKey!: Phaser.Input.Keyboard.Key
+  private keyR!: Phaser.Input.Keyboard.Key
+  private keyN!: Phaser.Input.Keyboard.Key
+  private keyL!: Phaser.Input.Keyboard.Key
+
+  private hudText!: Phaser.GameObjects.Text
+  private levelText!: Phaser.GameObjects.Text
+  private objectiveText!: Phaser.GameObjects.Text
+  private statusText!: Phaser.GameObjects.Text
+  private hintText!: Phaser.GameObjects.Text
+
+  private planetLayer!: Phaser.GameObjects.Container
+  private orbitalLayer!: Phaser.GameObjects.Container
+  private planetPad!: Phaser.GameObjects.Rectangle
+  private terrain!: Phaser.GameObjects.Rectangle
+  private egg!: Phaser.GameObjects.Ellipse
+  private runner!: Phaser.GameObjects.Rectangle
+  private stationRing!: Phaser.GameObjects.Ellipse
+  private stationCore!: Phaser.GameObjects.Rectangle
+  private dockingTarget!: Phaser.GameObjects.Ellipse
 
   private ship!: Phaser.GameObjects.Triangle
   private thruster!: Phaser.GameObjects.Triangle
 
-  private statusText!: Phaser.GameObjects.Text
-  private hudText!: Phaser.GameObjects.Text
-  private levelText!: Phaser.GameObjects.Text
-  private objectiveText!: Phaser.GameObjects.Text
-  private hintText!: Phaser.GameObjects.Text
-
-  private nearMountains!: Phaser.GameObjects.Rectangle
-  private farMountains!: Phaser.GameObjects.Rectangle
-  private cloudA!: Phaser.GameObjects.Ellipse
-  private cloudB!: Phaser.GameObjects.Ellipse
-  private landingPad!: Phaser.GameObjects.Rectangle
-
-  private velocity = new Phaser.Math.Vector2(0, 0)
-  private state: RoundState = 'transition'
-
-  private sessionScore = 0
-  private attempts = 0
-  private fuel = 100
-  private currentLevelIndex = 0
-
+  private phase: MissionPhase = 'level-select'
+  private levelIndex = 0
   private saveData: SaveData = {
     version: SAVE_VERSION,
     unlockedLevel: 1,
@@ -134,108 +139,121 @@ class EggLanderScene extends Phaser.Scene {
     selectedPowerup: null
   }
 
-  private readonly rotationSpeed = 2.7
+  private sessionScore = 0
+  private attempts = 0
+  private fuel = 100
+  private velocity = new Phaser.Math.Vector2(0, 0)
+
+  private runnerSpeed = 210
+  private hasEgg = false
+  private eggStolen = false
+
+  private readonly rotationSpeed = 2.75
 
   constructor() {
-    super('EggLanderScene')
+    super('EggLanderMissionScene')
   }
 
   create() {
     const { width, height } = this.scale
 
     this.add.rectangle(width / 2, height / 2, width, height, 0x1a1e3d)
-    this.add.rectangle(width / 2, height - 180, width + 100, 230, 0x353b82).setAlpha(0.45)
+    this.planetLayer = this.add.container()
+    this.orbitalLayer = this.add.container()
 
-    this.farMountains = this.add.rectangle(width / 2, height - 96, width + 160, 130, 0x40316f).setAlpha(0.95)
-    this.nearMountains = this.add.rectangle(width / 2, height - 62, width + 220, 110, 0x2b204f)
+    const farMount = this.add.rectangle(width / 2, height - 96, width + 200, 140, 0x40316f).setAlpha(0.95)
+    const nearMount = this.add.rectangle(width / 2, height - 62, width + 220, 110, 0x2b204f)
+    this.terrain = this.add.rectangle(width / 2, height - 8, width, 16, 0x171135)
+    this.planetPad = this.add.rectangle(width / 2, height - 25, 170, 16, 0xc9f25a).setStrokeStyle(3, 0x151515)
+    this.egg = this.add.ellipse(width - 140, height - 44, 24, 30, 0xfff2ba).setStrokeStyle(2, 0x242424)
+    this.runner = this.add.rectangle(width / 2, height - 48, 16, 28, 0xa7f07b).setVisible(false)
+    this.planetLayer.add([farMount, nearMount, this.terrain, this.planetPad, this.egg, this.runner])
 
-    this.cloudA = this.add.ellipse(220, 118, 240, 46, 0x626bd1).setAlpha(0.35)
-    this.cloudB = this.add.ellipse(720, 162, 200, 40, 0x7b87e3).setAlpha(0.25)
+    this.orbitalLayer.add([
+      this.add.rectangle(width / 2, height / 2, width, height, 0x070b17),
+      this.add.ellipse(width / 2 - 180, height / 2 + 120, 560, 220, 0x16213c).setAlpha(0.55),
+      this.add.ellipse(width / 2 + 260, height / 2 - 150, 380, 180, 0x111933).setAlpha(0.45)
+    ])
+    this.stationRing = this.add.ellipse(width - 180, 120, 122, 122, 0x6ea8ff).setStrokeStyle(4, 0xcfe7ff)
+    this.stationCore = this.add.rectangle(width - 180, 120, 18, 98, 0xb9c7de)
+    this.dockingTarget = this.add.ellipse(width - 180, 120, 44, 44, 0x9ff6d2).setAlpha(0.7)
+    this.orbitalLayer.add([this.stationRing, this.stationCore, this.dockingTarget])
 
-    this.add.rectangle(width / 2, height - 8, width, 16, 0x171135)
-    this.landingPad = this.add.rectangle(width / 2, height - 25, 170, 16, 0xc9f25a).setStrokeStyle(3, 0x151515)
+    this.ship = this.add.triangle(width / 2, 96, 0, 28, 20, -20, -20, -20, 0xffe48f).setStrokeStyle(4, 0x0f0f0f)
+    this.thruster = this.add.triangle(this.ship.x, this.ship.y + 24, 0, 0, 8, 18, -8, 18, 0xff7a3d).setVisible(false)
 
-    this.ship = this.add.triangle(width / 2, 96, 0, 28, 20, -20, -20, -20, 0xffe48f)
-    this.ship.setStrokeStyle(4, 0x0f0f0f)
-
-    this.thruster = this.add.triangle(this.ship.x, this.ship.y + 24, 0, 0, 8, 18, -8, 18, 0xff7a3d)
-    this.thruster.setVisible(false)
-
-    this.statusText = this.add
-      .text(width / 2, height / 2 - 30, 'READY', {
-        fontFamily: 'monospace',
-        fontSize: '34px',
-        color: '#f5f5f5'
-      })
-      .setOrigin(0.5)
-      .setAlpha(0)
-
-    this.hudText = this.add.text(14, 10, '', {
+    this.statusText = this.add.text(width / 2, height / 2 - 30, '', {
       fontFamily: 'monospace',
-      fontSize: '16px',
-      color: '#f8f8f8'
-    })
+      fontSize: '30px',
+      color: '#f5f5f5',
+      align: 'center'
+    }).setOrigin(0.5).setStroke('#0f0f0f', 6)
 
-    this.levelText = this.add.text(14, 32, '', {
-      fontFamily: 'monospace',
-      fontSize: '14px',
-      color: '#e8ebff'
-    })
-
-    this.objectiveText = this.add.text(14, 52, '', {
-      fontFamily: 'monospace',
-      fontSize: '14px',
-      color: '#d6daff'
-    })
-
-    this.hintText = this.add.text(14, 74, '← → rotate • ↑ thrust/launch • R new session', {
-      fontFamily: 'monospace',
-      fontSize: '14px',
-      color: '#d4d7ff'
-    })
+    this.hudText = this.add.text(14, 10, '', { fontFamily: 'monospace', fontSize: '15px', color: '#f8f8f8' })
+    this.levelText = this.add.text(14, 30, '', { fontFamily: 'monospace', fontSize: '14px', color: '#dce2ff' })
+    this.objectiveText = this.add.text(14, 50, '', { fontFamily: 'monospace', fontSize: '14px', color: '#cfd6ff' })
+    this.hintText = this.add.text(14, 72, '', { fontFamily: 'monospace', fontSize: '14px', color: '#d4d7ff' })
 
     this.cursors = this.input.keyboard!.createCursorKeys()
-    this.resetKey = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.R)
+    this.keyR = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.R)
+    this.keyN = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.N)
+    this.keyL = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.L)
 
     this.saveData = this.loadSave()
-    this.startNewSession()
+    this.enterLevelSelect()
   }
 
   update(_: number, deltaMs: number) {
     const dt = deltaMs / 1000
 
-    if (Phaser.Input.Keyboard.JustDown(this.resetKey)) {
+    if (Phaser.Input.Keyboard.JustDown(this.keyR)) {
       this.startNewSession()
       return
     }
 
-    this.animateBackground(dt)
-
-    if (this.state === 'transition') {
-      this.thruster.setVisible(false)
-      if (this.cursors.up?.isDown) {
-        this.state = 'flying'
-        this.statusText.setAlpha(0)
-        this.hintText.setText('Fly safe. Land to clear level. R starts a new session.')
+    if (this.phase === 'level-select') {
+      if (Phaser.Input.Keyboard.JustDown(this.keyN)) {
+        this.levelIndex = Math.min(this.levelIndex + 1, this.saveData.unlockedLevel - 1)
+        this.updateUi()
+      }
+      if (Phaser.Input.Keyboard.JustDown(this.keyL)) {
+        this.levelIndex = Math.max(this.levelIndex - 1, 0)
+        this.updateUi()
+      }
+      if (Phaser.Input.Keyboard.JustDown(this.cursors.up)) {
+        this.beginPlanetBrief()
       }
       return
     }
 
-    if (this.state !== 'flying') {
-      this.thruster.setVisible(false)
-      return
+    if (this.phase === 'planet-brief' && Phaser.Input.Keyboard.JustDown(this.cursors.up)) {
+      this.phase = 'planet-flying'
+      this.statusText.setText('Planet landing in progress')
+      this.hintText.setText('← → rotate • ↑ thrust • R new session')
     }
 
-    const level = LEVELS[this.currentLevelIndex]
-    const hasStabilityThrusters = this.saveData.selectedPowerup === 'stability-thrusters'
+    if (this.phase === 'planet-flying') this.updatePlanetFlight(dt)
+    if (this.phase === 'on-foot') this.updateOnFoot(dt)
+    if (this.phase === 'takeoff') this.updateTakeoff(dt)
+    if (this.phase === 'orbital-docking') this.updateOrbitalDocking(dt)
 
+    if (this.phase === 'level-complete') {
+      if (Phaser.Input.Keyboard.JustDown(this.keyN)) this.advanceFromComplete()
+      if (Phaser.Input.Keyboard.JustDown(this.keyL)) this.enterLevelSelect()
+    }
+
+    this.updateUi()
+  }
+
+  private updatePlanetFlight(dt: number) {
+    const level = LEVELS[this.levelIndex]
     this.velocity.y += level.gravity * dt
 
-    if (this.cursors.left?.isDown) this.ship.rotation -= this.rotationSpeed * dt
-    if (this.cursors.right?.isDown) this.ship.rotation += this.rotationSpeed * dt
+    if (this.cursors.left.isDown) this.ship.rotation -= this.rotationSpeed * dt
+    if (this.cursors.right.isDown) this.ship.rotation += this.rotationSpeed * dt
 
     let thrusting = false
-    if (this.cursors.up?.isDown && this.fuel > 0) {
+    if (this.cursors.up.isDown && this.fuel > 0) {
       const direction = this.ship.rotation - Math.PI / 2
       this.velocity.x += Math.cos(direction) * level.thrust * dt
       this.velocity.y += Math.sin(direction) * level.thrust * dt
@@ -243,242 +261,276 @@ class EggLanderScene extends Phaser.Scene {
       thrusting = true
     }
 
-    if (hasStabilityThrusters) {
-      this.velocity.x *= 1 - 0.6 * dt
-      this.ship.rotation *= 1 - 0.45 * dt
+    if (this.saveData.selectedPowerup === 'stability-thrusters') {
+      this.velocity.x *= 1 - 0.55 * dt
+      this.ship.rotation *= 1 - 0.42 * dt
     }
+
+    this.moveShip(dt, thrusting)
+
+    if (this.ship.y >= this.scale.height - 34) {
+      this.ship.y = this.scale.height - 34
+      const onPad = Math.abs(this.ship.x - this.scale.width / 2) <= level.padWidth / 2
+      const stableY = Math.abs(this.velocity.y) <= level.safeVertical
+      const stableX = Math.abs(this.velocity.x) <= level.safeHorizontal
+      const upright = Math.abs(Phaser.Math.Angle.Wrap(this.ship.rotation)) <= level.safeAngle
+
+      if (onPad && stableY && stableX && upright) {
+        this.startOnFootPhase()
+      } else {
+        this.failMission(onPad ? 'Hard landing' : 'Missed landing pad')
+      }
+    }
+  }
+
+  private updateOnFoot(dt: number) {
+    this.thruster.setVisible(false)
+    const level = LEVELS[this.levelIndex]
+    const minX = this.scale.width / 2 - 26
+    const maxX = this.scale.width / 2 + level.runDistance
+
+    if (this.cursors.right.isDown) this.runner.x = Math.min(maxX, this.runner.x + this.runnerSpeed * dt)
+    if (this.cursors.left.isDown) this.runner.x = Math.max(minX, this.runner.x - this.runnerSpeed * dt)
+
+    if (!this.eggStolen && Math.abs(this.runner.x - this.egg.x) < 16) {
+      this.eggStolen = true
+      this.hasEgg = true
+      this.egg.setVisible(false)
+      this.statusText.setText('Egg stolen! Return to lander')
+    }
+
+    if (this.hasEgg && Math.abs(this.runner.x - this.ship.x) < 20) {
+      this.runner.setVisible(false)
+      this.phase = 'takeoff'
+      this.statusText.setText('Boarded with egg: launch to orbit')
+      this.hintText.setText('↑ thrust • ←/→ rotate • R new session')
+      this.ship.setFillStyle(0xffd889)
+      this.velocity.set(0, -8)
+      this.ship.rotation = 0
+      this.ship.y = this.scale.height - 46
+    }
+  }
+
+  private updateTakeoff(dt: number) {
+    const level = LEVELS[this.levelIndex]
+    this.velocity.y += level.gravity * dt * 0.6
+
+    if (this.cursors.left.isDown) this.ship.rotation -= this.rotationSpeed * dt
+    if (this.cursors.right.isDown) this.ship.rotation += this.rotationSpeed * dt
+
+    let thrusting = false
+    if (this.cursors.up.isDown && this.fuel > 0) {
+      const direction = this.ship.rotation - Math.PI / 2
+      this.velocity.x += Math.cos(direction) * level.thrust * dt
+      this.velocity.y += Math.sin(direction) * level.thrust * dt
+      this.fuel = Math.max(0, this.fuel - level.fuelBurnPerSecond * dt)
+      thrusting = true
+    }
+
+    this.moveShip(dt, thrusting)
+
+    if (this.ship.y < 26) {
+      this.startOrbitalDockingPhase()
+    }
+  }
+
+  private updateOrbitalDocking(dt: number) {
+    const level = LEVELS[this.levelIndex]
+    this.velocity.y += level.orbitalGravity * dt
+
+    if (this.cursors.left.isDown) this.ship.rotation -= this.rotationSpeed * dt * 0.85
+    if (this.cursors.right.isDown) this.ship.rotation += this.rotationSpeed * dt * 0.85
+
+    let thrusting = false
+    if (this.cursors.up.isDown && this.fuel > 0) {
+      const direction = this.ship.rotation - Math.PI / 2
+      this.velocity.x += Math.cos(direction) * level.orbitalThrust * dt
+      this.velocity.y += Math.sin(direction) * level.orbitalThrust * dt
+      this.fuel = Math.max(0, this.fuel - level.fuelBurnPerSecond * 0.6 * dt)
+      thrusting = true
+    }
+
+    this.velocity.x *= 1 - 0.08 * dt
+    this.moveShip(dt, thrusting)
+
+    const dist = Phaser.Math.Distance.Between(this.ship.x, this.ship.y, this.dockingTarget.x, this.dockingTarget.y)
+    const speed = this.velocity.length()
+    const aligned = Math.abs(Phaser.Math.Angle.Wrap(this.ship.rotation)) < 0.22
+
+    if (dist <= level.orbitalDockRadius && speed <= level.orbitalSafeSpeed && aligned) {
+      this.completeLevel()
+    } else if (dist <= level.orbitalDockRadius && speed > level.orbitalSafeSpeed * 1.6) {
+      this.failMission('Docking impact too fast')
+    }
+  }
+
+  private moveShip(dt: number, thrusting: boolean) {
+    this.ship.x += this.velocity.x * dt
+    this.ship.y += this.velocity.y * dt
+
+    if (this.ship.x < -12) this.ship.x = this.scale.width + 12
+    if (this.ship.x > this.scale.width + 12) this.ship.x = -12
 
     this.thruster
       .setVisible(thrusting)
       .setPosition(this.ship.x + Math.cos(this.ship.rotation + Math.PI / 2) * 18, this.ship.y + Math.sin(this.ship.rotation + Math.PI / 2) * 18)
       .setRotation(this.ship.rotation)
-      .setScale(1, 0.9 + Math.random() * 0.55)
-
-    this.ship.x += this.velocity.x * dt
-    this.ship.y += this.velocity.y * dt
-
-    const { width, height } = this.scale
-    if (this.ship.x < -10) this.ship.x = width + 10
-    if (this.ship.x > width + 10) this.ship.x = -10
-
-    if (this.ship.y < 18) {
-      this.ship.y = 18
-      this.velocity.y = Math.max(this.velocity.y, 0)
-    }
-
-    if (this.ship.y >= height - 34) {
-      this.evaluateLanding(level)
-    }
-
-    this.updateHud()
+      .setScale(1, 0.9 + Math.random() * 0.5)
   }
 
-  private animateBackground(dt: number) {
-    const vx = this.velocity.x
-    this.farMountains.x -= vx * dt * 0.035
-    this.nearMountains.x -= vx * dt * 0.07
-    this.cloudA.x -= 7 * dt
-    this.cloudB.x -= 11 * dt
-
-    const { width } = this.scale
-    if (this.cloudA.x < -120) this.cloudA.x = width + 120
-    if (this.cloudB.x < -100) this.cloudB.x = width + 100
-
-    const center = width / 2
-    this.farMountains.x = Phaser.Math.Clamp(this.farMountains.x, center - 36, center + 36)
-    this.nearMountains.x = Phaser.Math.Clamp(this.nearMountains.x, center - 56, center + 56)
+  private startOnFootPhase() {
+    this.phase = 'on-foot'
+    this.velocity.set(0, 0)
+    this.ship.rotation = 0
+    this.runner.x = this.ship.x + 8
+    this.runner.setVisible(true)
+    this.statusText.setText('Landed. Exit, steal egg, return')
+    this.hintText.setText('On foot: ←/→ run • steal egg then return to lander')
   }
 
-  private evaluateLanding(level: LevelConfig) {
-    const { width, height } = this.scale
-    this.ship.y = height - 34
+  private startOrbitalDockingPhase() {
+    this.phase = 'orbital-docking'
+    this.planetLayer.setVisible(false)
+    this.orbitalLayer.setVisible(true)
 
-    const stabilityBonus = this.saveData.selectedPowerup === 'stability-thrusters' ? 10 : 0
-    const angleBonus = this.saveData.selectedPowerup === 'stability-thrusters' ? 0.08 : 0
+    this.ship.setPosition(120, this.scale.height - 80)
+    this.ship.rotation = 0
+    this.velocity.set(30, -18)
 
-    const onPad = Math.abs(this.ship.x - width / 2) <= level.padWidth / 2
-    const safeVertical = Math.abs(this.velocity.y) <= level.safeVertical + stabilityBonus
-    const safeHorizontal = Math.abs(this.velocity.x) <= level.safeHorizontal + stabilityBonus
-    const upright = Math.abs(Phaser.Math.Angle.Wrap(this.ship.rotation)) <= level.safeAngle + angleBonus
-
-    if (onPad && safeVertical && safeHorizontal && upright) {
-      this.completeLevel(level)
-      return
-    }
-
-    const reason = !onPad
-      ? 'Missed pad'
-      : !upright
-        ? 'Too tilted'
-        : Math.abs(this.velocity.y) > level.safeVertical
-          ? 'Too fast down'
-          : 'Too much drift'
-
-    this.crash(reason)
+    this.statusText.setText('Orbital docking: near-zero-G precision')
+    this.hintText.setText('Dock softly and upright inside ring • ↑ thrust • ←/→ rotate')
   }
 
-  private completeLevel(level: LevelConfig) {
-    this.state = 'landed'
+  private beginPlanetBrief() {
+    this.phase = 'planet-brief'
+    this.planetLayer.setVisible(true)
+    this.orbitalLayer.setVisible(false)
+    this.resetMissionEntities()
+    this.statusText.setText(`${LEVELS[this.levelIndex].name}\n1) Land 2) Steal egg 3) Return 4) Take off`) 
+    this.hintText.setText('Press ↑ to start landing run • R new session')
+  }
+
+  private resetMissionEntities() {
+    const level = LEVELS[this.levelIndex]
+    this.fuel = 100
+    this.hasEgg = false
+    this.eggStolen = false
+    this.egg.setVisible(true)
+
+    this.planetPad.setSize(level.padWidth, 16)
+    this.egg.x = this.scale.width / 2 + level.runDistance
+
+    this.ship.setPosition(this.scale.width / 2 + Phaser.Math.Between(-120, 120), 90)
+    this.ship.setRotation(Phaser.Math.FloatBetween(-0.08, 0.08))
+    this.velocity.set(Phaser.Math.FloatBetween(-8, 8), Phaser.Math.FloatBetween(-4, 4))
+
+    this.runner.setVisible(false)
+  }
+
+  private failMission(reason: string) {
+    this.phase = 'crashed'
     this.attempts += 1
     this.velocity.set(0, 0)
-    this.ship.rotation *= 0.15
+    this.ship.setFillStyle(0xff6b6b)
+    this.statusText.setText(`Mission failed: ${reason}`)
+    this.hintText.setText('Retrying this level… (R new session)')
 
-    const fuelBonus = Math.round(this.fuel * 0.45)
-    const gained = level.completionScore + fuelBonus
+    this.time.delayedCall(900, () => {
+      this.ship.setFillStyle(0xffe48f)
+      this.beginPlanetBrief()
+    })
+  }
+
+  private completeLevel() {
+    const level = LEVELS[this.levelIndex]
+    this.phase = 'level-complete'
+    this.attempts += 1
+    this.velocity.set(0, 0)
+
+    const gained = level.completionScore + Math.round(this.fuel * 0.5)
     this.sessionScore += gained
 
-    const levelNumber = this.currentLevelIndex + 1
+    const levelNumber = this.levelIndex + 1
     const nextLevel = levelNumber + 1
-
-    if (nextLevel <= LEVELS.length && this.saveData.unlockedLevel < nextLevel) {
-      this.saveData.unlockedLevel = nextLevel
-    }
+    if (nextLevel <= LEVELS.length) this.saveData.unlockedLevel = Math.max(this.saveData.unlockedLevel, nextLevel)
     this.saveData.highestLevelReached = Math.max(this.saveData.highestLevelReached, levelNumber)
 
-    const unlockedPowerupMessage = this.tryUnlockPowerupsForLevel(levelNumber)
-
-    if (this.currentLevelIndex < LEVELS.length - 1) {
-      this.statusText
-        .setText(unlockedPowerupMessage ? `LEVEL CLEAR +${gained}\n${unlockedPowerupMessage}` : `LEVEL CLEAR +${gained}`)
-        .setColor('#b9ff71')
-        .setAlpha(1)
-        .setStroke('#0f0f0f', 6)
-
-      this.currentLevelIndex += 1
-      this.prepareRoundForCurrentLevel()
-      this.saveSave(this.saveData)
-      return
-    }
-
-    this.state = 'campaign-complete'
+    this.tryUnlockPowerupsForLevel(levelNumber)
     this.saveData.bestScore = Math.max(this.saveData.bestScore, this.sessionScore)
     this.saveSave(this.saveData)
 
-    this.statusText
-      .setText(`SESSION CLEAR! SCORE ${this.sessionScore}`)
-      .setColor('#b9ff71')
-      .setAlpha(1)
-      .setStroke('#0f0f0f', 6)
-
-    this.hintText.setText('All levels complete. Press R to start a fresh session.')
-    this.updateHud()
-    this.updateLevelUi()
+    this.statusText.setText(`Dock complete! +${gained}\nN next level • L level select`)
+    this.hintText.setText('Mission loop clear: land → run → steal → return → takeoff → dock')
   }
 
-  private tryUnlockPowerupsForLevel(levelNumber: number): string {
-    const unlocked: string[] = []
+  private advanceFromComplete() {
+    if (this.levelIndex < this.saveData.unlockedLevel - 1 && this.levelIndex < LEVELS.length - 1) {
+      this.levelIndex += 1
+    }
+    this.enterLevelSelect()
+  }
 
-    ;(Object.keys(POWERUPS) as PowerupId[]).forEach((powerupId) => {
-      const definition = POWERUPS[powerupId]
-      if (levelNumber >= definition.unlockLevel && !this.saveData.unlockedPowerups.includes(powerupId)) {
-        this.saveData.unlockedPowerups.push(powerupId)
-        unlocked.push(definition.name)
+  private enterLevelSelect() {
+    this.phase = 'level-select'
+    this.planetLayer.setVisible(true)
+    this.orbitalLayer.setVisible(false)
+    this.ship.setPosition(this.scale.width / 2, 90)
+    this.ship.rotation = 0
+    this.velocity.set(0, 0)
+    this.thruster.setVisible(false)
+    this.statusText.setText(`Level Select\nL / N choose • ↑ launch mission`)
+    this.hintText.setText('R starts a fresh session (keeps saved progression)')
+    this.resetMissionEntities()
+    this.updateUi()
+  }
+
+  private startNewSession() {
+    this.saveData.bestScore = Math.max(this.saveData.bestScore, this.sessionScore)
+    this.saveSave(this.saveData)
+
+    this.sessionScore = 0
+    this.attempts = 0
+    this.levelIndex = 0
+    this.saveData = this.loadSave()
+    this.enterLevelSelect()
+  }
+
+  private updateUi() {
+    const level = LEVELS[this.levelIndex]
+    const powerup = this.saveData.selectedPowerup ? POWERUPS[this.saveData.selectedPowerup].name : 'None'
+
+    this.hudText.setText(
+      `Score ${this.sessionScore}   Attempts ${this.attempts}   Fuel ${Math.round(this.fuel)}%   V ${Math.abs(this.velocity.y).toFixed(1)}   H ${Math.abs(this.velocity.x).toFixed(1)}   PWR ${powerup}`
+    )
+    this.levelText.setText(
+      `Level ${level.id}/${LEVELS.length}: ${level.name}   Unlocked ${this.saveData.unlockedLevel}/${LEVELS.length}   Best ${this.saveData.bestScore}`
+    )
+
+    let objective = 'Land on planet, grab egg on foot, return, launch, then precision dock in orbit.'
+    if (this.phase === 'on-foot' && !this.hasEgg) objective = 'Run right to steal egg.'
+    if (this.phase === 'on-foot' && this.hasEgg) objective = 'Run back left to board lander with egg.'
+    if (this.phase === 'orbital-docking') objective = 'Near-zero-G docking: low speed + upright alignment in ring.'
+
+    this.objectiveText.setText(`Objective: ${objective}`)
+  }
+
+  private tryUnlockPowerupsForLevel(levelNumber: number) {
+    const unlocked: PowerupId[] = []
+    ;(Object.keys(POWERUPS) as PowerupId[]).forEach((id) => {
+      if (levelNumber >= POWERUPS[id].unlockLevel && !this.saveData.unlockedPowerups.includes(id)) {
+        this.saveData.unlockedPowerups.push(id)
+        unlocked.push(id)
       }
     })
 
     if (!this.saveData.selectedPowerup && this.saveData.unlockedPowerups.includes('stability-thrusters')) {
       this.saveData.selectedPowerup = 'stability-thrusters'
-      unlocked.push('Auto-equipped: Stability Thrusters')
     }
 
-    return unlocked.length > 0 ? `Unlocked ${unlocked.join(' • ')}` : ''
-  }
-
-  private crash(reason: string) {
-    this.state = 'crashed'
-    this.attempts += 1
-    this.velocity.set(0, 0)
-
-    this.ship.setFillStyle(0xff6b6b)
-
-    this.statusText
-      .setText(`CRASHED: ${reason}`)
-      .setColor('#ff6b6b')
-      .setAlpha(1)
-      .setStroke('#0f0f0f', 6)
-
-    this.hintText.setText('Crash! Auto-retrying this level… (R starts a fresh session)')
-
-    this.time.delayedCall(700, () => {
-      if (this.state === 'crashed') {
-        this.prepareRoundForCurrentLevel()
-      }
-    })
-
-    this.updateHud()
-  }
-
-  private startNewSession() {
-    if (this.sessionScore > 0) {
-      const latestSave = this.loadSave()
-      latestSave.bestScore = Math.max(latestSave.bestScore, this.sessionScore)
-      this.saveSave(latestSave)
+    if (unlocked.length > 0) {
+      const names = unlocked.map((id) => POWERUPS[id].name).join(' • ')
+      this.statusText.setText(`${this.statusText.text}\nUnlocked: ${names}`)
     }
-
-    this.state = 'transition'
-    this.sessionScore = 0
-    this.attempts = 0
-    this.currentLevelIndex = 0
-    this.saveData = this.loadSave()
-
-    this.statusText.setText('NEW SESSION').setColor('#f5f5f5').setAlpha(0)
-    this.hintText.setText('← → rotate • ↑ thrust/launch • R new session')
-
-    this.prepareRoundForCurrentLevel()
-    this.updateHud()
-    this.updateLevelUi()
-  }
-
-  private prepareRoundForCurrentLevel() {
-    const level = LEVELS[this.currentLevelIndex]
-    const { width } = this.scale
-
-    this.state = 'transition'
-    this.fuel = 100
-    this.landingPad.setSize(level.padWidth, 16)
-
-    this.ship
-      .setPosition(width / 2 + Phaser.Math.Between(-180, 180), level.startY)
-      .setRotation(Phaser.Math.FloatBetween(-0.12, 0.12))
-      .setFillStyle(0xffe48f)
-
-    this.velocity.set(Phaser.Math.FloatBetween(-10, 10), Phaser.Math.FloatBetween(-6, 6))
-
-    const powerupLine = this.saveData.selectedPowerup
-      ? `Powerup: ${POWERUPS[this.saveData.selectedPowerup].name}`
-      : 'Powerup: None'
-
-    this.statusText
-      .setText(`${level.name}\n${level.objective}`)
-      .setColor('#f5f5f5')
-      .setAlpha(1)
-      .setStroke('#0f0f0f', 6)
-
-    this.hintText.setText(`Press ↑ to launch • ${powerupLine} • R new session`)
-
-    this.updateHud()
-    this.updateLevelUi()
-  }
-
-  private updateHud() {
-    const level = LEVELS[this.currentLevelIndex]
-    const speedY = Math.abs(this.velocity.y).toFixed(1)
-    const speedX = Math.abs(this.velocity.x).toFixed(1)
-    const powerupTag = this.saveData.selectedPowerup ? POWERUPS[this.saveData.selectedPowerup].name : 'None'
-
-    this.hudText.setText(
-      `Session Score ${this.sessionScore}   Attempts ${this.attempts}   Fuel ${Math.round(this.fuel)}%   L${level.id} V ${speedY}   H ${speedX}   PWR ${powerupTag}`
-    )
-  }
-
-  private updateLevelUi() {
-    const level = LEVELS[this.currentLevelIndex]
-    const unlockedPowerups = this.saveData.unlockedPowerups.map((id) => POWERUPS[id].name).join(', ') || 'None'
-
-    this.levelText.setText(
-      `${level.name}   Unlocked: ${this.saveData.unlockedLevel}/${LEVELS.length}   Highest: ${this.saveData.highestLevelReached}   Best Score: ${this.saveData.bestScore}`
-    )
-    this.objectiveText.setText(`Objective: ${level.objective}   Unlocks: ${unlockedPowerups}`)
   }
 
   private loadSave(): SaveData {
@@ -517,7 +569,7 @@ class EggLanderScene extends Phaser.Scene {
     try {
       window.localStorage.setItem(SAVE_KEY, JSON.stringify({ ...data, version: SAVE_VERSION }))
     } catch {
-      // Keep game playable even if storage is unavailable.
+      // keep playable even without storage
     }
   }
 }
@@ -528,5 +580,5 @@ new Phaser.Game({
   width: 960,
   height: 540,
   backgroundColor: '#1a1e3d',
-  scene: [EggLanderScene]
+  scene: [EggLanderMissionScene]
 })
