@@ -91,7 +91,7 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ### 2026-03-03 00:53 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
-- Commit: pending (`gdev-0003` loadout + gate pass)
+- Commit: `5e0782e` (`gdev-0003` loadout + gate pass)
 - Summary: Added selectable loadouts, first practical powerup gate, and expanded powerup effects to support progression loop depth.
 - Files: `src/main.ts`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: implement station-side level completion panel polish and add first explicit boss encounter stub for loop extension.
