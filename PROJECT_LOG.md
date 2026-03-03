@@ -104,3 +104,11 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 - Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: add boss telegraph/attack behavior and tighten orbital docking presentation.
 - Blockers: none.
+
+### 2026-03-03 01:01 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: pending (`gdev-0005` boss telegraph + dodge pass)
+- Summary: Added boss projectile attacks and player HP to turn spear phase into a dodge-and-attack encounter.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: add station-side docking UI polish and first boss pattern variation by level.
+- Blockers: none.

@@ -5,6 +5,7 @@
 - `gdev-0002` — Canonical mission loop implementation (completed)
 - `gdev-0003` — Loadout selection + level gate pass (completed)
 - `gdev-0004` — On-foot spear combat boss stub + Patapon-style visual pass (completed)
+- `gdev-0005` — Boss telegraph/attack + dodge pressure pass (completed)
 
 ## Notes
 - Egg Lander is being developed in **single-agent mode**.

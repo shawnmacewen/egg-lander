@@ -152,3 +152,16 @@ Done — I added spear-throw boss combat to the on-foot phase and shipped anothe
 - Updated on-foot objectives/HUD hints to guide boss flow.
 - Added stronger Patapon-like visual motifs (high-contrast eye totem + simplified silhouette layering).
 - Build verification: `npm run build` (pass).
+
+## 2026-03-03 — gdev-0005 boss telegraph + dodge pass
+
+### Assistant summary (exact)
+Continuing — I implemented the next combat block: bosses now fire telegraphed projectiles in the on-foot phase, the player has HP and can fail from hits, and spear combat now has real dodge pressure while keeping the same arcade simplicity.
+
+### Technical details
+- Added boss ranged attack loop with visible shot telegraph cadence.
+- Added boss projectile entities and collision checks against runner.
+- Added player HP (3) for on-foot phase and fail condition on depletion.
+- Added cleanup/reset handling for boss projectiles across mission transitions.
+- Updated HUD to show HP during loop.
+- Build verification: `npm run build` (pass).

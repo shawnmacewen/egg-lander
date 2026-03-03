@@ -156,8 +156,11 @@ class EggLanderMissionScene extends Phaser.Scene {
   private eggStolen = false
   private bossActive = false
   private bossHp = 0
+  private playerHp = 3
   private readonly spears: Array<{ obj: Phaser.GameObjects.Rectangle; vx: number; life: number }> = []
+  private readonly bossShots: Array<{ obj: Phaser.GameObjects.Ellipse; vx: number; life: number }> = []
   private lastSpearAt = 0
+  private lastBossShotAt = 0
 
   private readonly rotationSpeed = 2.75
 
@@ -319,6 +322,7 @@ class EggLanderMissionScene extends Phaser.Scene {
 
     if (Phaser.Input.Keyboard.JustDown(this.keySpace)) this.throwSpear()
     this.updateSpears(dt)
+    this.updateBossCombat(dt)
 
     if (!this.eggStolen && Math.abs(this.runner.x - this.egg.x) < 16) {
       if (this.bossActive) {
@@ -422,6 +426,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     // Boss appears from level 2 onward.
     this.bossActive = LEVELS[this.levelIndex].id >= 2
     this.bossHp = this.bossActive ? 3 : 0
+    this.playerHp = 3
     this.bossBody.setVisible(this.bossActive)
     this.bossEye.setVisible(this.bossActive)
     if (this.bossActive) {
@@ -485,6 +490,46 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.hintText.setText('Dock softly and upright inside ring • ↑ thrust • ←/→ rotate')
   }
 
+  private updateBossCombat(dt: number) {
+    if (!this.bossActive) return
+
+    const now = this.time.now
+    if (now - this.lastBossShotAt > 950) {
+      this.lastBossShotAt = now
+      const dx = this.runner.x - this.bossBody.x
+      const dir = Math.sign(dx) || -1
+      const shot = this.add.ellipse(this.bossBody.x, this.bossBody.y, 10, 10, 0xff6a6a).setStrokeStyle(2, 0x3a1111)
+      this.planetLayer.add(shot)
+      this.bossShots.push({ obj: shot, vx: dir * 190, life: 2.2 })
+      this.bossEye.setScale(1.15)
+      this.time.delayedCall(90, () => this.bossEye.setScale(1))
+    }
+
+    for (let i = this.bossShots.length - 1; i >= 0; i -= 1) {
+      const b = this.bossShots[i]
+      b.obj.x += b.vx * dt
+      b.life -= dt
+
+      if (Phaser.Math.Distance.Between(b.obj.x, b.obj.y, this.runner.x, this.runner.y) < 14) {
+        b.obj.destroy()
+        this.bossShots.splice(i, 1)
+        this.playerHp -= 1
+        this.statusText.setText(`Hit! HP ${this.playerHp}/3`)
+        this.hintText.setText('Dodge boss shots and throw spears (Space)')
+        if (this.playerHp <= 0) {
+          this.failMission('On-foot defeat')
+          return
+        }
+        continue
+      }
+
+      if (b.life <= 0 || b.obj.x < -20 || b.obj.x > this.scale.width + 20) {
+        b.obj.destroy()
+        this.bossShots.splice(i, 1)
+      }
+    }
+  }
+
   private beginPlanetBrief() {
     const level = LEVELS[this.levelIndex]
     if (level.requiredPowerup && !this.saveData.unlockedPowerups.includes(level.requiredPowerup)) {
@@ -510,12 +555,17 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.egg.setVisible(true)
     this.bossActive = false
     this.bossHp = 0
+    this.playerHp = 3
     this.bossBody.setVisible(false)
     this.bossEye.setVisible(false)
 
     for (let i = this.spears.length - 1; i >= 0; i -= 1) {
       this.spears[i].obj.destroy()
       this.spears.splice(i, 1)
+    }
+    for (let i = this.bossShots.length - 1; i >= 0; i -= 1) {
+      this.bossShots[i].obj.destroy()
+      this.bossShots.splice(i, 1)
     }
 
     this.planetPad.setSize(level.padWidth, 16)
@@ -601,7 +651,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     const powerup = this.saveData.selectedPowerup ? POWERUPS[this.saveData.selectedPowerup].name : 'None'
 
     this.hudText.setText(
-      `Score ${this.sessionScore}   Attempts ${this.attempts}   Fuel ${Math.round(this.fuel)}%   V ${Math.abs(this.velocity.y).toFixed(1)}   H ${Math.abs(this.velocity.x).toFixed(1)}   PWR ${powerup}`
+      `Score ${this.sessionScore}   Attempts ${this.attempts}   Fuel ${Math.round(this.fuel)}%   HP ${this.playerHp}   V ${Math.abs(this.velocity.y).toFixed(1)}   H ${Math.abs(this.velocity.x).toFixed(1)}   PWR ${powerup}`
     )
     const required = level.requiredPowerup ? POWERUPS[level.requiredPowerup].name : 'None'
     this.levelText.setText(
