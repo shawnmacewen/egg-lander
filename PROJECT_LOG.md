@@ -63,3 +63,11 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 - Files: `PRD.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: continue implementing remaining MVP criteria from PRD.
 - Blockers: none.
+
+### 2026-03-03 00:31 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: `9f6b6b3`
+- Summary: Shipped progression UX + powerup scaffold: added launch/objective transitions, placeholder unlocks with functional Stability Thrusters, and versioned localStorage schema (v2) for progress + unlock persistence.
+- Files: `src/main.ts`.
+- Next: expose manual powerup selection UI and add first gated level objective tied to required powerup.
+- Blockers: none.

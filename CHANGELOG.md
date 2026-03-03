@@ -84,3 +84,19 @@ Implemented the new level-loop direction: added a 3-level progression system wit
 - Added UI lines for level name, objective, unlocked/highest progression, and best score.
 - Build verification passed: `npm run build`.
 - Commit: `88b99a5` — `gdev-0001: add level progression, casual landing, and save data`
+
+## 2026-03-03 — Progression UX + powerup scaffold + save schema v2
+
+### Assistant summary (exact)
+Shipped a progression UX and persistence upgrade: added launch/objective transitions between levels, introduced powerup unlock placeholders with functional Stability Thrusters effect, and migrated save data to schema v2 with versioned progress+unlocks; build passes.
+
+### Technical details
+- Added pre-launch transition flow per level (`Press ↑ to launch`) with clearer state messaging for flying/crash/clear transitions.
+- Added powerup system scaffold with unlock placeholders:
+  - `Stability Thrusters` (functional now)
+  - `Shielded Hull` (placeholder)
+  - `Fuel Gel` (placeholder)
+- Implemented one functional effect: `Stability Thrusters` now dampens drift/rotation and slightly widens safe landing windows.
+- Upgraded persistence schema to versioned save format (`version`, progression fields, unlocked powerups, selected powerup) with fallback read from prior v1 key.
+- Verified production build: `npm run build` (pass).
+- Commit: `9f6b6b3` — `gdev-0001: add powerup unlocks, save schema v2, and transition UX`
