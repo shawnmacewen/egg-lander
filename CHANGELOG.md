@@ -37,6 +37,15 @@ I’m fixing this in-repo now so you can run immediately on your machine:
 - Updated `vite` from `^7.3.1` to `^5.4.19` in `package.json` (Node 18 compatible).
 - Refreshed lockfile.
 
+## 2026-03-03 — PRD update from confirmed decisions
+
+### Assistant summary (exact)
+Done — I updated the PRD with all the recent decisions we just confirmed.
+
+### Technical details
+- Added new `PRD.md` with sections for scoring, landing strictness, reset/session behavior, level progression, persistence, and MVP completion criteria.
+- Included a dated decision log capturing today’s confirmed product calls.
+
 ## Process rule (agreed)
 For every build/change task going forward:
 1. Append an entry to this `CHANGELOG.md`.
