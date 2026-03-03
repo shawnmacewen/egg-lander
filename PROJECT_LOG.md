@@ -39,3 +39,11 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 - Files: `src/main.ts`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: commit, push, and backfill exact commit hash in durable logs.
 - Blockers: no PRD yet; tuned thresholds via gameplay judgment.
+
+### 2026-03-03 00:08 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: `84ba898`
+- Summary: Backfilled exact gameplay-pass commit hash in CHANGELOG/PROJECT_LOG for durable traceability.
+- Files: `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: push branch and continue MVP tuning.
+- Blockers: none.
