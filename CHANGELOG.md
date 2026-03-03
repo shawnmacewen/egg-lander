@@ -222,3 +222,14 @@ Confirmed — I integrated your first runner character sheet into gameplay and r
 - Replaced on-foot placeholder rectangle with animated sprite.
 - Hooked movement direction to sprite flip and throw action to spear timing.
 - Build verification: `npm run build` (pass).
+
+## 2026-03-03 — gdev-0011 remote validation + docs update
+
+### Assistant summary (exact)
+Validated with git: canonical remote `https://github.com/shawnmacewen/egg-lander.git` is reachable and legacy `OddEye-Agent/egg-lander` is not found; updated project docs to mark `shawnmacewen` as canonical.
+
+### Technical details
+- Verified with `git ls-remote`:
+  - `shawnmacewen/egg-lander` reachable
+  - `OddEye-Agent/egg-lander` not found
+- Updated `README.md` with canonical remote section.

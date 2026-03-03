@@ -152,3 +152,11 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 - Files: `src/main.ts`, `public/assets/runner_sheet_v1.png`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: integrate boss sprite sheet + projectile/fx assets as soon as provided.
 - Blockers: waiting for export-ready boss/weapons sheets metadata.
+
+### 2026-03-03 22:23 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: pending (`gdev-0011` remote validation + docs update)
+- Summary: Validated canonical remote via git and updated README to document `shawnmacewen/egg-lander` as canonical.
+- Files: `README.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue gameplay iteration work.
+- Blockers: none.

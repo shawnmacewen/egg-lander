@@ -6,6 +6,14 @@ Initial scaffold for **Phaser 3 + TypeScript + Vite**.
 
 `feat/gdev-0001-phaser-scaffold`
 
+## Canonical Git Remote
+
+`origin` is canonical and should point to:
+
+`https://github.com/shawnmacewen/egg-lander.git`
+
+Legacy org remote `OddEye-Agent/egg-lander` is no longer used.
+
 ## Run
 
 ```bash
