@@ -123,7 +123,7 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ### 2026-03-03 01:06 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
-- Commit: pending (`gdev-0007` boss pattern + docking polish)
+- Commit: `1a3d6c9` (`gdev-0007` boss pattern + docking polish)
 - Summary: Increased boss encounter depth with level-scaled projectile patterns and improved orbital docking readability with live precision feedback.
 - Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: add first powerup-gated optional side objective and tighten on-foot animation feedback.
