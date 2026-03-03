@@ -147,7 +147,7 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ### 2026-03-03 06:13 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
-- Commit: pending (`gdev-0010` runner sheet integration)
+- Commit: `9884194` (`gdev-0010` runner sheet integration)
 - Summary: Integrated first delivered runner sprite sheet into on-foot loop with idle/run/throw animation playback and directional flipping.
 - Files: `src/main.ts`, `public/assets/runner_sheet_v1.png`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: integrate boss sprite sheet + projectile/fx assets as soon as provided.
