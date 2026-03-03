@@ -110,7 +110,7 @@ This is actually a pretty good start. The game loop will be land, exit lander, r
 - Updated `PRD.md` with a formal mission loop section and revised MVP criteria.
 - Added orbital near-zero-gravity docking objective as a core loop requirement.
 
-## 2026-03-03 — canonical mission loop implementation pass
+## 2026-03-03 — gdev-0002 canonical mission loop implementation pass
 
 ### Assistant summary (exact)
 Implemented the confirmed canonical mission loop end-to-end in gameplay: level-select into mission, planetary landing, on-foot egg theft and return, relaunch, separate near-zero-gravity orbital docking screen with stricter alignment/speed checks, then level-complete transition back to next-level or level-select; kept progression persistence hooks intact and verified `npm run build` passes.
@@ -121,4 +121,6 @@ Implemented the confirmed canonical mission loop end-to-end in gameplay: level-s
 - Added distinct orbital delivery screen/layer with near-zero-G tuning and tighter docking requirement (radius + speed + upright alignment).
 - Added level-complete controls for `N` next level and `L` level select, preserving reset semantics via `R` new session.
 - Preserved and reused persistence/progression schema (`version`, unlocked/highest/best, powerup unlock scaffold).
+- Task ID: `gdev-0002` (single-agent implementation; no delegation).
 - Build verification: `npm run build` (pass).
+- Commit: `06df680` — `gdev-0001: implement canonical mission loop with orbital docking`.

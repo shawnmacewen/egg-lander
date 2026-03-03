@@ -74,7 +74,7 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ### 2026-03-03 00:41 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
-- Commit: pending (PRD mission-loop update)
+- Commit: `cff01ef`
 - Summary: Integrated new canonical mission loop and orbital docking design into PRD.
 - Files: `PRD.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: implement multi-phase loop in-game (planet land, on-foot extraction, return, takeoff, orbital dock).
@@ -82,7 +82,8 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ### 2026-03-03 00:51 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
-- Commit: pending (canonical mission loop implementation pass)
+- Commit: `06df680`
+- Task ID: `gdev-0002` (single-agent)
 - Summary: Replaced the previous land-only loop with a full canonical mission flow including on-foot egg theft/return and a separate orbital docking phase with tighter precision requirements.
 - Files: `src/main.ts`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: tune feel values (run speed, docking radius/safe speed by level) and optionally add explicit station-side level-select screen polish.
