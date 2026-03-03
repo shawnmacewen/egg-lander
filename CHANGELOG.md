@@ -139,3 +139,16 @@ Done — I implemented the next loop block directly: level-select now supports p
   - `shielded-hull`: modestly widened safe landing envelope.
 - Updated HUD/level text to display level requirements and selected loadout context.
 - Build verification: `npm run build` (pass).
+
+## 2026-03-03 — gdev-0004 spear boss + Patapon visual pass
+
+### Assistant summary (exact)
+Done — I added spear-throw boss combat to the on-foot phase and shipped another Patapon-style visual pass (bold silhouette motifs + cleaner layered colors), while keeping controls simple and arcade-focused.
+
+### Technical details
+- Added on-foot spear throw (`Space`) with lightweight projectile logic.
+- Added boss encounter stub (levels 2+) that must be defeated before egg pickup.
+- Added boss HP loop and collision handling for spear hits.
+- Updated on-foot objectives/HUD hints to guide boss flow.
+- Added stronger Patapon-like visual motifs (high-contrast eye totem + simplified silhouette layering).
+- Build verification: `npm run build` (pass).

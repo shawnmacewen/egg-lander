@@ -96,3 +96,11 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 - Files: `src/main.ts`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: implement station-side level completion panel polish and add first explicit boss encounter stub for loop extension.
 - Blockers: none.
+
+### 2026-03-03 00:58 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: pending (`gdev-0004` spear-boss + style pass)
+- Summary: Added first boss-combat interaction (spear throws) to the on-foot phase and pushed another Patapon-inspired visual pass.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: add boss telegraph/attack behavior and tighten orbital docking presentation.
+- Blockers: none.

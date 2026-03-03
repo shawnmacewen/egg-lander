@@ -112,6 +112,7 @@ class EggLanderMissionScene extends Phaser.Scene {
   private keyL!: Phaser.Input.Keyboard.Key
   private keyA!: Phaser.Input.Keyboard.Key
   private keyD!: Phaser.Input.Keyboard.Key
+  private keySpace!: Phaser.Input.Keyboard.Key
 
   private hudText!: Phaser.GameObjects.Text
   private levelText!: Phaser.GameObjects.Text
@@ -128,6 +129,8 @@ class EggLanderMissionScene extends Phaser.Scene {
   private stationRing!: Phaser.GameObjects.Ellipse
   private stationCore!: Phaser.GameObjects.Rectangle
   private dockingTarget!: Phaser.GameObjects.Ellipse
+  private bossBody!: Phaser.GameObjects.Ellipse
+  private bossEye!: Phaser.GameObjects.Ellipse
 
   private ship!: Phaser.GameObjects.Triangle
   private thruster!: Phaser.GameObjects.Triangle
@@ -151,6 +154,10 @@ class EggLanderMissionScene extends Phaser.Scene {
   private runnerSpeed = 210
   private hasEgg = false
   private eggStolen = false
+  private bossActive = false
+  private bossHp = 0
+  private readonly spears: Array<{ obj: Phaser.GameObjects.Rectangle; vx: number; life: number }> = []
+  private lastSpearAt = 0
 
   private readonly rotationSpeed = 2.75
 
@@ -165,13 +172,20 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.planetLayer = this.add.container()
     this.orbitalLayer = this.add.container()
 
-    const farMount = this.add.rectangle(width / 2, height - 96, width + 200, 140, 0x40316f).setAlpha(0.95)
-    const nearMount = this.add.rectangle(width / 2, height - 62, width + 220, 110, 0x2b204f)
-    this.terrain = this.add.rectangle(width / 2, height - 8, width, 16, 0x171135)
+    // Patapon-inspired: bold silhouettes + simple colorful strata
+    const skyBand = this.add.rectangle(width / 2, height / 2, width, height, 0x20244f)
+    const sunDisc = this.add.circle(width - 120, 90, 46, 0xffd46b).setAlpha(0.9)
+    const farMount = this.add.rectangle(width / 2, height - 106, width + 220, 160, 0x4e3b7e).setAlpha(0.95)
+    const nearMount = this.add.rectangle(width / 2, height - 66, width + 220, 120, 0x2f235a)
+    const eyeTotem = this.add.ellipse(120, height - 90, 70, 86, 0x111111).setStrokeStyle(4, 0x000000)
+    const eyePupil = this.add.circle(120, height - 90, 11, 0xffffff)
+    this.terrain = this.add.rectangle(width / 2, height - 8, width, 16, 0x130f2f)
     this.planetPad = this.add.rectangle(width / 2, height - 25, 170, 16, 0xc9f25a).setStrokeStyle(3, 0x151515)
     this.egg = this.add.ellipse(width - 140, height - 44, 24, 30, 0xfff2ba).setStrokeStyle(2, 0x242424)
     this.runner = this.add.rectangle(width / 2, height - 48, 16, 28, 0xa7f07b).setVisible(false)
-    this.planetLayer.add([farMount, nearMount, this.terrain, this.planetPad, this.egg, this.runner])
+    this.bossBody = this.add.ellipse(width - 240, height - 52, 66, 66, 0x0c0c0c).setStrokeStyle(4, 0x1f1f1f).setVisible(false)
+    this.bossEye = this.add.ellipse(width - 240, height - 52, 18, 18, 0xffffff).setVisible(false)
+    this.planetLayer.add([skyBand, sunDisc, farMount, nearMount, eyeTotem, eyePupil, this.terrain, this.planetPad, this.egg, this.bossBody, this.bossEye, this.runner])
 
     this.orbitalLayer.add([
       this.add.rectangle(width / 2, height / 2, width, height, 0x070b17),
@@ -204,6 +218,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.keyL = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.L)
     this.keyA = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.A)
     this.keyD = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.D)
+    this.keySpace = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
 
     this.saveData = this.loadSave()
     this.enterLevelSelect()
@@ -302,11 +317,18 @@ class EggLanderMissionScene extends Phaser.Scene {
     if (this.cursors.right.isDown) this.runner.x = Math.min(maxX, this.runner.x + this.runnerSpeed * dt)
     if (this.cursors.left.isDown) this.runner.x = Math.max(minX, this.runner.x - this.runnerSpeed * dt)
 
+    if (Phaser.Input.Keyboard.JustDown(this.keySpace)) this.throwSpear()
+    this.updateSpears(dt)
+
     if (!this.eggStolen && Math.abs(this.runner.x - this.egg.x) < 16) {
-      this.eggStolen = true
-      this.hasEgg = true
-      this.egg.setVisible(false)
-      this.statusText.setText('Egg stolen! Return to lander')
+      if (this.bossActive) {
+        this.statusText.setText('Boss blocks the egg — throw spears (Space)!')
+      } else {
+        this.eggStolen = true
+        this.hasEgg = true
+        this.egg.setVisible(false)
+        this.statusText.setText('Egg stolen! Return to lander')
+      }
     }
 
     if (this.hasEgg && Math.abs(this.runner.x - this.ship.x) < 20) {
@@ -396,8 +418,58 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.ship.rotation = 0
     this.runner.x = this.ship.x + 8
     this.runner.setVisible(true)
-    this.statusText.setText('Landed. Exit, steal egg, return')
-    this.hintText.setText('On foot: ←/→ run • steal egg then return to lander')
+
+    // Boss appears from level 2 onward.
+    this.bossActive = LEVELS[this.levelIndex].id >= 2
+    this.bossHp = this.bossActive ? 3 : 0
+    this.bossBody.setVisible(this.bossActive)
+    this.bossEye.setVisible(this.bossActive)
+    if (this.bossActive) {
+      this.statusText.setText('Landed. Defeat boss with spears, then steal egg')
+      this.hintText.setText('On foot: ←/→ run • Space throw spear')
+    } else {
+      this.statusText.setText('Landed. Exit, steal egg, return')
+      this.hintText.setText('On foot: ←/→ run • steal egg then return to lander')
+    }
+  }
+
+  private throwSpear() {
+    if (this.phase !== 'on-foot') return
+    const now = this.time.now
+    if (now - this.lastSpearAt < 180) return
+
+    this.lastSpearAt = now
+    const spear = this.add.rectangle(this.runner.x + 12, this.runner.y - 8, 20, 3, 0xe8f1ff)
+      .setStrokeStyle(1, 0x111111)
+    this.planetLayer.add(spear)
+    this.spears.push({ obj: spear, vx: 430, life: 1.25 })
+  }
+
+  private updateSpears(dt: number) {
+    for (let i = this.spears.length - 1; i >= 0; i -= 1) {
+      const s = this.spears[i]
+      s.obj.x += s.vx * dt
+      s.life -= dt
+
+      if (this.bossActive && Phaser.Math.Distance.Between(s.obj.x, s.obj.y, this.bossBody.x, this.bossBody.y) < 36) {
+        this.bossHp -= 1
+        s.obj.destroy()
+        this.spears.splice(i, 1)
+
+        if (this.bossHp <= 0) {
+          this.bossActive = false
+          this.bossBody.setVisible(false)
+          this.bossEye.setVisible(false)
+          this.statusText.setText('Boss down! Grab the egg and return')
+        }
+        continue
+      }
+
+      if (s.life <= 0 || s.obj.x > this.scale.width + 40) {
+        s.obj.destroy()
+        this.spears.splice(i, 1)
+      }
+    }
   }
 
   private startOrbitalDockingPhase() {
@@ -436,6 +508,15 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.hasEgg = false
     this.eggStolen = false
     this.egg.setVisible(true)
+    this.bossActive = false
+    this.bossHp = 0
+    this.bossBody.setVisible(false)
+    this.bossEye.setVisible(false)
+
+    for (let i = this.spears.length - 1; i >= 0; i -= 1) {
+      this.spears[i].obj.destroy()
+      this.spears.splice(i, 1)
+    }
 
     this.planetPad.setSize(level.padWidth, 16)
     this.egg.x = this.scale.width / 2 + level.runDistance
@@ -528,7 +609,9 @@ class EggLanderMissionScene extends Phaser.Scene {
     )
 
     let objective = 'Land on planet, grab egg on foot, return, launch, then precision dock in orbit.'
-    if (this.phase === 'on-foot' && !this.hasEgg) objective = 'Run right to steal egg.'
+    if (this.phase === 'on-foot' && !this.hasEgg) {
+      objective = this.bossActive ? 'Defeat boss with Space spears, then steal egg.' : 'Run right to steal egg.'
+    }
     if (this.phase === 'on-foot' && this.hasEgg) objective = 'Run back left to board lander with egg.'
     if (this.phase === 'orbital-docking') objective = 'Near-zero-G docking: low speed + upright alignment in ring.'
 
