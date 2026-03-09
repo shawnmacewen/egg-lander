@@ -18,7 +18,7 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ### 2026-03-09 18:03 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
-- Commit: `pending` (`gdev-0151`; see git history)
+- Commit: `982f770` (`gdev-0151`)
 - Summary: Added shared flight-assist pressure-shape telemetry (`Shape PINPOINT/SPLIT/EVEN`) to landing and docking cues so pilots can quickly read whether limiter pressure is concentrated or distributed across multiple control dimensions.
 - Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: continue safe in-run readability polish that improves pilot decision quality without changing mission balance.
