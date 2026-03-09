@@ -16,6 +16,14 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ## Entries
 
+### 2026-03-09 14:47 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: pending (`gdev-0111`; see git history)
+- Summary: Added in-run WASD control parity (`A/D` rotate/run + `W` thrust) across flight/takeoff/orbital/on-foot phases, and updated control hint/overlay copy to match new aliases.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue safe, incremental gameplay QoL/readability improvements that reduce control friction and repeated setup.
+- Blockers: none.
+
 ### 2026-03-09 14:38 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
 - Commit: `3aad522` (`gdev-0110`)

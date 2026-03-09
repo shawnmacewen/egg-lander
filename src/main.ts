@@ -524,7 +524,7 @@ class EggLanderMissionScene extends Phaser.Scene {
       this.phase = 'planet-flying'
       this.missionStartAt = this.time.now
       this.statusText.setText('Planet landing in progress')
-      this.hintText.setText('← → rotate • ↑ thrust • T retry • Esc/L level select • P pause • H HUD mode • R new session')
+      this.hintText.setText('←/→ or A/D rotate • ↑/W thrust • T retry • Esc/L level select • P pause • H HUD mode • R new session')
     }
 
     if (this.phase === 'planet-flying') this.updatePlanetFlight(dt)
@@ -542,6 +542,18 @@ class EggLanderMissionScene extends Phaser.Scene {
     }
 
     this.updateUi()
+  }
+
+  private isTurnLeftDown() {
+    return this.cursors.left.isDown || this.keyA.isDown
+  }
+
+  private isTurnRightDown() {
+    return this.cursors.right.isDown || this.keyD.isDown
+  }
+
+  private isThrustDown() {
+    return this.cursors.up.isDown || this.keyW.isDown
   }
 
   private canTogglePause() {
@@ -620,12 +632,12 @@ class EggLanderMissionScene extends Phaser.Scene {
     const level = LEVELS[this.levelIndex]
     this.velocity.y += level.gravity * dt
 
-    if (this.cursors.left.isDown) this.ship.rotation -= this.rotationSpeed * dt
-    if (this.cursors.right.isDown) this.ship.rotation += this.rotationSpeed * dt
+    if (this.isTurnLeftDown()) this.ship.rotation -= this.rotationSpeed * dt
+    if (this.isTurnRightDown()) this.ship.rotation += this.rotationSpeed * dt
 
     const fuelBurnMultiplier = this.saveData.selectedPowerup === 'fuel-gel' ? 0.75 : 1
     let thrusting = false
-    if (this.cursors.up.isDown && this.fuel > 0) {
+    if (this.isThrustDown() && this.fuel > 0) {
       const direction = this.ship.rotation - Math.PI / 2
       this.velocity.x += Math.cos(direction) * level.thrust * dt
       this.velocity.y += Math.sin(direction) * level.thrust * dt
@@ -663,12 +675,12 @@ class EggLanderMissionScene extends Phaser.Scene {
     const maxX = this.scale.width / 2 + level.runDistance
 
     let moving = false
-    if (this.cursors.right.isDown) {
+    if (this.cursors.right.isDown || this.keyD.isDown) {
       this.runner.x = Math.min(maxX, this.runner.x + this.runnerSpeed * dt)
       this.runner.setFlipX(false)
       moving = true
     }
-    if (this.cursors.left.isDown) {
+    if (this.cursors.left.isDown || this.keyA.isDown) {
       this.runner.x = Math.max(minX, this.runner.x - this.runnerSpeed * dt)
       this.runner.setFlipX(true)
       moving = true
@@ -713,7 +725,7 @@ class EggLanderMissionScene extends Phaser.Scene {
       this.runner.setVisible(false)
       this.phase = 'takeoff'
       this.statusText.setText('Boarded with egg: launch to orbit')
-      this.hintText.setText('↑ thrust • ←/→ rotate • T retry • Esc/L level select • P pause • H HUD mode • R new session')
+      this.hintText.setText('↑/W thrust • ←/→ or A/D rotate • Space spear • T retry • Esc/L level select • P pause • H HUD mode • R new session')
       this.ship.setFillStyle(0xffd889)
       this.velocity.set(0, -8)
       this.ship.rotation = 0
@@ -725,12 +737,12 @@ class EggLanderMissionScene extends Phaser.Scene {
     const level = LEVELS[this.levelIndex]
     this.velocity.y += level.gravity * dt * 0.6
 
-    if (this.cursors.left.isDown) this.ship.rotation -= this.rotationSpeed * dt
-    if (this.cursors.right.isDown) this.ship.rotation += this.rotationSpeed * dt
+    if (this.isTurnLeftDown()) this.ship.rotation -= this.rotationSpeed * dt
+    if (this.isTurnRightDown()) this.ship.rotation += this.rotationSpeed * dt
 
     const fuelBurnMultiplier = this.saveData.selectedPowerup === 'fuel-gel' ? 0.75 : 1
     let thrusting = false
-    if (this.cursors.up.isDown && this.fuel > 0) {
+    if (this.isThrustDown() && this.fuel > 0) {
       const direction = this.ship.rotation - Math.PI / 2
       this.velocity.x += Math.cos(direction) * level.thrust * dt
       this.velocity.y += Math.sin(direction) * level.thrust * dt
@@ -749,12 +761,12 @@ class EggLanderMissionScene extends Phaser.Scene {
     const level = LEVELS[this.levelIndex]
     this.velocity.y += level.orbitalGravity * dt
 
-    if (this.cursors.left.isDown) this.ship.rotation -= this.rotationSpeed * dt * 0.85
-    if (this.cursors.right.isDown) this.ship.rotation += this.rotationSpeed * dt * 0.85
+    if (this.isTurnLeftDown()) this.ship.rotation -= this.rotationSpeed * dt * 0.85
+    if (this.isTurnRightDown()) this.ship.rotation += this.rotationSpeed * dt * 0.85
 
     const fuelBurnMultiplier = this.saveData.selectedPowerup === 'fuel-gel' ? 0.75 : 1
     let thrusting = false
-    if (this.cursors.up.isDown && this.fuel > 0) {
+    if (this.isThrustDown() && this.fuel > 0) {
       const direction = this.ship.rotation - Math.PI / 2
       this.velocity.x += Math.cos(direction) * level.orbitalThrust * dt
       this.velocity.y += Math.sin(direction) * level.orbitalThrust * dt
@@ -901,7 +913,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.dockingVelocityLine.setVisible(true)
 
     this.statusText.setText('Orbital docking: near-zero-G precision')
-    this.hintText.setText('Dock softly and upright inside ring • ↑ thrust • ←/→ rotate • T retry • Esc/L level select • P pause • H HUD mode')
+    this.hintText.setText('Dock softly and upright inside ring • ↑/W thrust • ←/→ or A/D rotate • T retry • Esc/L level select • P pause • H HUD mode')
   }
 
   private updateBossCombat(dt: number) {
@@ -2052,8 +2064,8 @@ class EggLanderMissionScene extends Phaser.Scene {
               ]
             : [
                 'CONTROLS',
-                '↑  Thrust / confirm',
-                '←/→  Rotate / run',
+                '↑/W  Thrust / confirm',
+                '←/→ or A/D  Rotate / run',
                 'Space  Spear throw',
                 'T  Quick retry',
                 'Esc/L  Back to level select',

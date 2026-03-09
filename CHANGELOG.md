@@ -1,5 +1,20 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0111 in-run WASD control parity pass
+
+### Assistant summary (exact)
+Implemented the next highest-impact control-flow improvement: in-run gameplay now supports WASD parity (`A/D` for rotate/run, `W` for thrust) alongside arrow keys, with hint and controls-overlay copy updated so keyboard users can play comfortably without arrow-key dependence. Verified with `npm run build`.
+
+### Technical details
+- Added shared input helpers (`isTurnLeftDown`, `isTurnRightDown`, `isThrustDown`) to unify arrow + WASD handling.
+- Applied WASD parity across flight/takeoff/orbital phases:
+  - `A/D` rotate in ship-control phases.
+  - `W` thrust in ship-control phases.
+- Added on-foot movement parity (`A/D` run) while preserving existing spear throw on `Space`.
+- Updated in-run hint strings and controls overlay copy to advertise `↑/W` thrust and `←/→ or A/D` rotate/run.
+- Updated task registry with `gdev-0111` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0110 numpad level-jump parity in level select
 
 ### Assistant summary (exact)
