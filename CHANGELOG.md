@@ -1824,3 +1824,17 @@ Added wrap-around level-select navigation so level cycling (`←/→`, `L/N`, `W
 - Updated level-select hint copy to advertise wrap behavior for level and loadout cycling.
 - Updated task registry in `TASKS.md` with `gdev-0117` marked completed.
 - Build verification: `npm run build` (pass).
+
+## 2026-03-09 — gdev-0122 wider stage + solid boundaries + ground color pass
+
+### Assistant summary (exact)
+Done — I widened the playable stage, removed horizontal wrap-through behavior, and added proper green/brown ground treatment so the world reads like land you can crash against.
+
+### Technical details
+- Increased game canvas size from `960x540` to `1280x720`.
+- Removed horizontal screen-wrap in ship movement.
+- Added hard world-boundary crash handling during active ship phases (`planet-flying`, `takeoff`, `orbital-docking`).
+- Updated terrain visuals to a layered ground treatment:
+  - green grass top strip
+  - brown soil base
+- Build verification: `npm run build` (pass).

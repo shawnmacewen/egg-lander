@@ -807,8 +807,12 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.ship.x += this.velocity.x * dt
     this.ship.y += this.velocity.y * dt
 
-    if (this.ship.x < -12) this.ship.x = this.scale.width + 12
-    if (this.ship.x > this.scale.width + 12) this.ship.x = -12
+    if (this.phase === 'planet-flying' || this.phase === 'takeoff' || this.phase === 'orbital-docking') {
+      if (this.ship.x < 12 || this.ship.x > this.scale.width - 12) {
+        this.failMission('Hit world boundary')
+        return
+      }
+    }
 
     this.thruster
       .setVisible(thrusting)
@@ -2321,8 +2325,8 @@ class EggLanderMissionScene extends Phaser.Scene {
 new Phaser.Game({
   type: Phaser.AUTO,
   parent: 'app',
-  width: 960,
-  height: 540,
+  width: 1280,
+  height: 720,
   backgroundColor: '#1a1e3d',
   scene: [EggLanderMissionScene]
 })
