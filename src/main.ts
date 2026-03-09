@@ -266,6 +266,8 @@ class EggLanderMissionScene extends Phaser.Scene {
   private pauseStatusBackup = ''
   private pauseHintBackup = ''
   private pendingCrashRetryTimer: Phaser.Time.TimerEvent | null = null
+  private crashRetryDueAt = 0
+  private lastFailReason = ''
   private lastSpearAt = 0
   private lastBossShotAt = 0
   private lastDockGrade = '-'
@@ -458,6 +460,8 @@ class EggLanderMissionScene extends Phaser.Scene {
       this.pendingCrashRetryTimer.remove(false)
       this.pendingCrashRetryTimer = null
     }
+    this.crashRetryDueAt = 0
+    this.lastFailReason = ''
     this.ship.setFillStyle(0xffe48f)
     this.beginPlanetBrief()
   }
@@ -467,6 +471,8 @@ class EggLanderMissionScene extends Phaser.Scene {
       this.pendingCrashRetryTimer.remove(false)
       this.pendingCrashRetryTimer = null
     }
+    this.crashRetryDueAt = 0
+    this.lastFailReason = ''
     this.ship.setFillStyle(0xffe48f)
     this.enterLevelSelect()
   }
@@ -925,12 +931,16 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.dockingApproachLine.setVisible(false)
     this.dockingVelocityLine.setVisible(false)
     this.ship.setFillStyle(0xff6b6b)
+    this.lastFailReason = reason
+    this.crashRetryDueAt = this.time.now + 900
     this.statusText.setText(`Mission failed: ${reason}`)
     this.hintText.setText('Retrying this level… (T now • L level select • R new session)')
     this.saveSave(this.saveData)
 
     this.pendingCrashRetryTimer = this.time.delayedCall(900, () => {
       this.pendingCrashRetryTimer = null
+      this.crashRetryDueAt = 0
+      this.lastFailReason = ''
       this.ship.setFillStyle(0xffe48f)
       this.beginPlanetBrief()
     })
@@ -1836,6 +1846,14 @@ class EggLanderMissionScene extends Phaser.Scene {
     const fullLevelTelemetry = `HUD ${hudMode}   Level ${level.id}/${LEVELS.length}: ${level.name}   Requires ${required}   Unlocked ${this.saveData.unlockedLevel}/${LEVELS.length}   Best ${this.saveData.bestScore}   Best Streak ${this.saveData.bestStreak}   Best Run ${levelBestScore}   Best Time ${this.formatMs(levelBestTimeMs)}   Best Dock ${levelBestDockGrade}   Record ${levelClears}/${levelAttempts} (${levelClearRate})   ${retriesReadout}   ${missionPressureReadout}   ${missionOutlookReadout}   ${missionMatchReadout}   ${missionConfidenceReadout}   ${missionPlanReadout}   ${missionPaceReadout}   ${missionScoreTargetReadout}   ${missionReadinessReadout}   ${missionRiskBudgetReadout}   ${missionRecoveryReadout}   ${missionWindowReadout}   ${missionCallReadout}   ${missionWinConditionReadout}   ${missionFailCostReadout}   ${missionEdgeReadout}   ${missionCommitReadout}   ${missionFallbackReadout}   ${missionExecutionReadout}   ${missionCadenceReadout}   ${missionStopReadout}   ${missionResetReadout}   ${missionLaunchCheckReadout}   ${missionWarmupReadout}   ${missionDrillReadout}   ${missionSetSizeReadout}   ${missionReassessReadout}   ${missionSessionGoalReadout}   ${missionExitReadout}   ${missionDebriefReadout}   ${missionFocusReadout}   ${missionLoadoutReadout}   ${missionCommandReadout}   ${missionCheckpointReadout}   ${missionGoSignalReadout}   ${missionNoGoReadout}   ${missionPriorityReadout}   ${missionStabilityReadout}   ${missionDisciplineReadout}   ${coachReadout}   First Try ${levelFirstTryClears}/${levelClears} (${levelFirstTryRate})   Clean ${levelCleanClears}/${levelClears} (${levelCleanRate})   Relic ${levelRelicCompletions}/${levelClears} (${levelRelicRate})   S Dock ${levelSDockClears}/${levelClears} (${levelSDockRate})   Mastery ${masteryTier} (${masteryScore}, ${masteryTierProgress})   ${masteryMixReadout}   ${masteryCapsReadout}   Next ${masteryFocus}   Lifetime ${totalLevelClears}/${totalAttempts} (${lifetimeClearRate})   Fastest ${fastestLevelTag}   Perk: ${powerupDescription}`
     this.levelText.setText(this.isHudCompact ? conciseLevelTelemetry : fullLevelTelemetry)
 
+    if (this.phase === 'crashed') {
+      const retryMs = this.crashRetryDueAt > 0 ? Math.max(0, this.crashRetryDueAt - this.time.now) : 0
+      const retryCountdown = retryMs > 0 ? `${Math.ceil(retryMs / 10) * 10}ms` : 'now'
+      const failReason = this.lastFailReason || 'run failed'
+      this.statusText.setText(`Mission failed: ${failReason} • auto-retry ${retryCountdown}`)
+      this.hintText.setText('Crash flow: T instant retry • L level select • R new session')
+    }
+
     let objective = 'Land on planet, grab egg on foot, return, launch, then precision dock in orbit.'
     if (this.phase === 'on-foot' && !this.hasEgg) {
       if (this.bonusObjectiveActive && !this.bonusObjectiveCollected) {
@@ -1878,8 +1896,11 @@ class EggLanderMissionScene extends Phaser.Scene {
         return '5/5 Orbital docking'
       case 'level-complete':
         return 'Complete ✓'
-      case 'crashed':
-        return 'Failed ✕ (auto-retry • L level select)'
+      case 'crashed': {
+        const retryMs = this.crashRetryDueAt > 0 ? Math.max(0, this.crashRetryDueAt - this.time.now) : 0
+        const retryCountdown = retryMs > 0 ? `${Math.ceil(retryMs / 10) * 10}ms` : 'now'
+        return `Failed ✕ (auto ${retryCountdown} • L level select)`
+      }
       default:
         return this.phase
     }

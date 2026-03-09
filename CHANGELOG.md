@@ -1,5 +1,18 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0089 crash-state auto-retry countdown telemetry
+
+### Assistant summary (exact)
+Implemented the next high-impact crash-flow readability pass: crash state now shows a live auto-retry countdown in status/phase telemetry, making the fail-delay explicit while preserving instant override controls (`T` retry now, `L` level select). Verified with `npm run build`.
+
+### Technical details
+- Added crash-state timing fields to track retry due time and fail reason.
+- Updated crash flow handlers to set/clear countdown metadata on fail, instant retry, level-select escape, and auto-retry execution.
+- Added dynamic crash-state status text (`auto-retry <ms>/now`) and explicit crash-control hint copy.
+- Updated phase guide crash readout to include live retry countdown.
+- Updated task registry with `gdev-0089` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0088 crash-state quick exit to level select
 
 ### Assistant summary (exact)

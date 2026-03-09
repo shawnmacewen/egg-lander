@@ -97,3 +97,4 @@
 - `gdev-0086` — Persist HUD detail preference (`H`) across sessions and reloads (completed)
 - `gdev-0087` — Crash-state instant retry hotkey (`T`) to skip fail-delay downtime (completed)
 - `gdev-0088` — Crash-state quick exit hotkey (`L`) to cancel auto-retry and return to level select (completed)
+- `gdev-0089` — Crash-state auto-retry countdown telemetry + HUD clarity pass (completed)

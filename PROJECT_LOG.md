@@ -16,6 +16,14 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ## Entries
 
+### 2026-03-09 12:55 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: pending (`gdev-0089`; see git history)
+- Summary: Added crash-state auto-retry countdown telemetry so fail-delay timing is visible in status/phase UI while preserving instant override controls (`T` retry now, `L` level select).
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue safe, incremental gameplay QoL/readability improvements.
+- Blockers: none.
+
 ### 2026-03-09 12:49 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
 - Commit: pending (`gdev-0088`; see git history)
