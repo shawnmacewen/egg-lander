@@ -105,3 +105,4 @@
 - `gdev-0094` — Level-select vertical movement hotkeys (`W/S`) alongside `L/N` and `←/→` (completed)
 - `gdev-0095` — Universal in-run quick-abort hotkey (`Esc`) to return safely to level select from active mission states (completed)
 - `gdev-0096` — Crash/clear quick-action alias keys (`Enter`/`Space`) for instant retry + next-level flow (completed)
+- `gdev-0097` — Toggleable in-game controls overlay (`/`) for quick hotkey reference across level-select and mission phases (completed)

@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0097 toggleable controls overlay (`/`)
+
+### Assistant summary (exact)
+Implemented the next highest-impact input-readability QoL pass: added a toggleable controls overlay on `/` so players can pull up a concise hotkey reference instantly during level-select and active mission phases without leaving gameplay. Verified with `npm run build`.
+
+### Technical details
+- Added `FORWARD_SLASH` key binding and toggle state in `EggLanderMissionScene`.
+- Added a dedicated top-right controls panel (`controlsOverlayText`) with phase-aware content (level-select vs in-mission).
+- Wired overlay refresh into `updateUi()` and added discoverability cue to phase text (`/ controls`).
+- Updated task registry with `gdev-0097` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0096 crash/clear quick-action alias keys
 
 ### Assistant summary (exact)

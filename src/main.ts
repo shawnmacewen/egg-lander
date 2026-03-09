@@ -200,6 +200,7 @@ class EggLanderMissionScene extends Phaser.Scene {
   private key4!: Phaser.Input.Keyboard.Key
   private keyEnter!: Phaser.Input.Keyboard.Key
   private keyEsc!: Phaser.Input.Keyboard.Key
+  private keySlash!: Phaser.Input.Keyboard.Key
 
   private hudText!: Phaser.GameObjects.Text
   private levelText!: Phaser.GameObjects.Text
@@ -207,6 +208,7 @@ class EggLanderMissionScene extends Phaser.Scene {
   private phaseText!: Phaser.GameObjects.Text
   private statusText!: Phaser.GameObjects.Text
   private hintText!: Phaser.GameObjects.Text
+  private controlsOverlayText!: Phaser.GameObjects.Text
 
   private planetLayer!: Phaser.GameObjects.Container
   private orbitalLayer!: Phaser.GameObjects.Container
@@ -273,6 +275,7 @@ class EggLanderMissionScene extends Phaser.Scene {
   private bossTelegraph!: Phaser.GameObjects.Ellipse
   private isPaused = false
   private isHudCompact = false
+  private controlsOverlayVisible = false
   private pauseStatusBackup = ''
   private pauseHintBackup = ''
   private pendingCrashRetryTimer: Phaser.Time.TimerEvent | null = null
@@ -348,6 +351,14 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.objectiveText = this.add.text(14, 50, '', { fontFamily: 'monospace', fontSize: '14px', color: '#cfd6ff' })
     this.phaseText = this.add.text(14, 72, '', { fontFamily: 'monospace', fontSize: '14px', color: '#9ee7ff' })
     this.hintText = this.add.text(14, 94, '', { fontFamily: 'monospace', fontSize: '14px', color: '#d4d7ff' })
+    this.controlsOverlayText = this.add.text(width - 12, 12, '', {
+      fontFamily: 'monospace',
+      fontSize: '13px',
+      color: '#f4f6ff',
+      backgroundColor: '#0a1028cc',
+      padding: { left: 10, right: 10, top: 8, bottom: 8 },
+      align: 'left'
+    }).setOrigin(1, 0).setDepth(30).setVisible(false)
 
     this.cursors = this.input.keyboard!.createCursorKeys()
     this.keyR = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.R)
@@ -369,6 +380,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.key4 = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.FOUR)
     this.keyEnter = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER)
     this.keyEsc = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.ESC)
+    this.keySlash = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.FORWARD_SLASH)
 
     if (!this.anims.exists('runner-idle')) {
       this.anims.create({ key: 'runner-idle', frames: this.anims.generateFrameNumbers('runner-v1', { start: 0, end: 3 }), frameRate: 7, repeat: -1 })
@@ -393,6 +405,11 @@ class EggLanderMissionScene extends Phaser.Scene {
       this.isHudCompact = !this.isHudCompact
       this.saveData.hudCompact = this.isHudCompact
       this.saveSave(this.saveData)
+      this.updateUi()
+    }
+
+    if (Phaser.Input.Keyboard.JustDown(this.keySlash)) {
+      this.controlsOverlayVisible = !this.controlsOverlayVisible
       this.updateUi()
     }
 
@@ -1922,7 +1939,41 @@ class EggLanderMissionScene extends Phaser.Scene {
 
     const phaseGuide = this.getPhaseGuide()
     this.objectiveText.setText(`Objective: ${objective}`)
-    this.phaseText.setText(`Phase: ${phaseGuide}`)
+    this.phaseText.setText(`Phase: ${phaseGuide} • / controls`)
+    this.updateControlsOverlay()
+  }
+
+  private updateControlsOverlay() {
+    if (!this.controlsOverlayVisible) {
+      this.controlsOverlayText.setVisible(false)
+      return
+    }
+
+    const controls = this.phase === 'level-select'
+      ? [
+          'CONTROLS',
+          '↑ / Enter / Space  Launch',
+          '←/→ or W/S or L/N  Level',
+          'A/D or Q/E  Loadout',
+          '1-4  Jump to unlocked level',
+          'H  HUD detail',
+          '/  Hide this panel',
+          'R  New session'
+        ]
+      : [
+          'CONTROLS',
+          '↑  Thrust / confirm',
+          '←/→  Rotate / run',
+          'Space  Spear throw',
+          'T  Quick retry',
+          'Esc/L  Back to level select',
+          'P  Pause/resume',
+          'H  HUD detail',
+          '/  Hide this panel',
+          'R  New session'
+        ]
+
+    this.controlsOverlayText.setText(controls.join('\n')).setVisible(true)
   }
 
   private formatMs(ms: number): string {

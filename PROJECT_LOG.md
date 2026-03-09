@@ -16,6 +16,14 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ## Entries
 
+### 2026-03-09 13:33 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: pending (`gdev-0097`; see git history)
+- Summary: Added a toggleable controls overlay on `/` with phase-aware hotkey reference content, so players can quickly recall controls mid-run and in level select without pausing flow.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue safe, incremental gameplay QoL/readability improvements that reduce control friction and misinputs.
+- Blockers: none.
+
 ### 2026-03-09 13:30 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
 - Commit: `12ea7a5` (`gdev-0096`)
