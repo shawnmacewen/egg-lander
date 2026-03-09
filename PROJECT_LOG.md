@@ -18,7 +18,7 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ### 2026-03-09 14:00 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
-- Commit: pending (`gdev-0102`; see git history)
+- Commit: `51eff44` (`gdev-0102`)
 - Summary: Added universal in-run `L` quick-exit alias parity with `Esc` (level-select return) and aligned phase hint copy to `Esc/L` across brief/flight/pause/takeoff/docking flows.
 - Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: continue safe, incremental gameplay QoL/readability improvements that reduce control friction and repeated setup.
