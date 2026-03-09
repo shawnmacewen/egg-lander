@@ -16,6 +16,14 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ## Entries
 
+### 2026-03-09 16:20 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: `pending` (`gdev-0130`; see git history)
+- Summary: Extended planet-flight landing assist telemetry with a live corrective-action cue (`Fix: ...`) so players get immediate recovery guidance for unsafe descent speed, lateral drift, or tilt before touchdown.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue safe, incremental readability/feel polish focused on landing/docking decision clarity.
+- Blockers: none.
+
 ### 2026-03-09 16:16 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
 - Commit: `pending` (`gdev-0129`; see git history)

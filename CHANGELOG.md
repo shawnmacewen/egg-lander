@@ -1,5 +1,21 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0130 planet-landing assist corrective-action cue
+
+### Assistant summary (exact)
+Implemented the next highest-impact landing-readability polish by extending in-flight landing assist telemetry with a live corrective-action hint (`Fix: ...`) that tells the player the immediate recovery priority (slow descent, lateral burn direction, or tilt correction) whenever touchdown safety limits are breached. Verified with `npm run build`.
+
+### Technical details
+- Updated `getLandingAssistCue(level)` in `src/main.ts` to compute breach flags for vertical speed, horizontal speed, and tilt angle against current safety limits (including Shielded Hull bonus).
+- Added prioritized recovery guidance output to landing telemetry:
+  - `Fix: slow descent` when vertical speed is unsafe.
+  - `Fix: burn left/right` when lateral speed is unsafe (direction derived from drift sign).
+  - `Fix: tilt left/right` when angle is unsafe.
+  - `Fix: ready` when all landing metrics are within limits.
+- Planet-flight hint and full HUD landing readout automatically inherit the richer assist cue text.
+- Updated task registry with `gdev-0130` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0129 planet-landing assist telemetry cue
 
 ### Assistant summary (exact)

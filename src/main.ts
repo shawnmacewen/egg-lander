@@ -2125,7 +2125,23 @@ class EggLanderMissionScene extends Phaser.Scene {
     const hState = horizontal <= horizontalLimit ? 'OK' : 'HOT'
     const aState = angleDeg <= angleLimitDeg ? 'OK' : 'TILT'
 
-    return `Landing V ${Math.round(vertical)}/${Math.round(verticalLimit)} ${vState} • H ${Math.round(horizontal)}/${Math.round(horizontalLimit)} ${hState} • A ${Math.round(angleDeg)}°/${Math.round(angleLimitDeg)}° ${aState} • Alt ${altitude}px`
+    const overV = vertical > verticalLimit
+    const overH = horizontal > horizontalLimit
+    const overA = angleDeg > angleLimitDeg
+
+    let correction = 'ready'
+    if (overA) {
+      correction = this.ship.rotation < 0 ? 'tilt right' : 'tilt left'
+    }
+    if (overH) {
+      const lateralDirection = this.velocity.x > 0 ? 'left' : 'right'
+      correction = `burn ${lateralDirection}`
+    }
+    if (overV) {
+      correction = 'slow descent'
+    }
+
+    return `Landing V ${Math.round(vertical)}/${Math.round(verticalLimit)} ${vState} • H ${Math.round(horizontal)}/${Math.round(horizontalLimit)} ${hState} • A ${Math.round(angleDeg)}°/${Math.round(angleLimitDeg)}° ${aState} • Alt ${altitude}px • Fix: ${correction}`
   }
 
   private getOnFootObjectiveCue(targetX: number, label: string) {
