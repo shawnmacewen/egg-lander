@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0105 controls-overlay toggle parity (`Tab` alias)
+
+### Assistant summary (exact)
+Implemented the next highest-impact control-flow polish: controls overlay toggle now supports `Tab` in addition to `/`, with on-screen cues updated to advertise `/ or Tab` so hotkey help is easier to access across keyboard layouts/states. Verified with `npm run build`.
+
+### Technical details
+- Added `Tab` key binding and wired it to the existing controls-overlay toggle path (same persistence behavior as `/`).
+- Updated phase guidance copy to ` / or Tab controls` for discoverability.
+- Updated controls overlay lines to show `/ or Tab  Hide this panel` in both level-select and in-run variants.
+- Updated task registry with `gdev-0105` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0104 on-foot control-hint parity
 
 ### Assistant summary (exact)

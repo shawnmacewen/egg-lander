@@ -202,6 +202,7 @@ class EggLanderMissionScene extends Phaser.Scene {
   private keyEnter!: Phaser.Input.Keyboard.Key
   private keyEsc!: Phaser.Input.Keyboard.Key
   private keySlash!: Phaser.Input.Keyboard.Key
+  private keyTab!: Phaser.Input.Keyboard.Key
 
   private hudText!: Phaser.GameObjects.Text
   private levelText!: Phaser.GameObjects.Text
@@ -383,6 +384,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.keyEnter = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER)
     this.keyEsc = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.ESC)
     this.keySlash = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.FORWARD_SLASH)
+    this.keyTab = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.TAB)
 
     if (!this.anims.exists('runner-idle')) {
       this.anims.create({ key: 'runner-idle', frames: this.anims.generateFrameNumbers('runner-v1', { start: 0, end: 3 }), frameRate: 7, repeat: -1 })
@@ -411,7 +413,7 @@ class EggLanderMissionScene extends Phaser.Scene {
       this.updateUi()
     }
 
-    if (Phaser.Input.Keyboard.JustDown(this.keySlash)) {
+    if (Phaser.Input.Keyboard.JustDown(this.keySlash) || Phaser.Input.Keyboard.JustDown(this.keyTab)) {
       this.controlsOverlayVisible = !this.controlsOverlayVisible
       this.saveData.controlsOverlayVisible = this.controlsOverlayVisible
       this.saveSave(this.saveData)
@@ -1959,7 +1961,7 @@ class EggLanderMissionScene extends Phaser.Scene {
 
     const phaseGuide = this.getPhaseGuide()
     this.objectiveText.setText(`Objective: ${objective}`)
-    this.phaseText.setText(`Phase: ${phaseGuide} • / controls`)
+    this.phaseText.setText(`Phase: ${phaseGuide} • / or Tab controls`)
     this.updateControlsOverlay()
   }
 
@@ -1977,7 +1979,7 @@ class EggLanderMissionScene extends Phaser.Scene {
           'A/D or Q/E  Loadout',
           '1-4  Jump to unlocked level',
           'H  HUD detail',
-          '/  Hide this panel',
+          '/ or Tab  Hide this panel',
           'R  New session'
         ]
       : [
@@ -1989,7 +1991,7 @@ class EggLanderMissionScene extends Phaser.Scene {
           'Esc/L  Back to level select',
           'P or Enter/Space  Pause/resume',
           'H  HUD detail',
-          '/  Hide this panel',
+          '/ or Tab  Hide this panel',
           'R  New session'
         ]
 

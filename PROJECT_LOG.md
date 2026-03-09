@@ -16,6 +16,14 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ## Entries
 
+### 2026-03-09 14:13 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: pending (`gdev-0105`; see git history)
+- Summary: Added controls-overlay toggle parity by supporting `Tab` alongside `/` and updated phase/overlay copy to advertise `/ or Tab` for faster help-panel access.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue safe, incremental gameplay QoL/readability improvements that reduce control friction and repeated setup.
+- Blockers: none.
+
 ### 2026-03-09 14:10 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
 - Commit: `f68def6` (`gdev-0104`)
