@@ -45,3 +45,4 @@
 - `gdev-0034` — Per-level S-grade docking completion persistence + level-select S-dock telemetry (completed)
 - `gdev-0035` — Level-select mastery tier/score telemetry rollup from existing performance metrics (completed)
 - `gdev-0036` — Level-select mastery focus recommendation (weakest metric callout) (completed)
+- `gdev-0037` — Mastery tier-gap telemetry in level-select HUD (`+N to next tier`) (completed)

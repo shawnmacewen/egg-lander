@@ -16,6 +16,14 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ## Entries
 
+### 2026-03-09 08:29 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: `17f2dd6` (`gdev-0037`)
+- Summary: Added mastery tier-gap telemetry in level-select so players can see points needed to hit the next mastery tier (`+N to Silver/Gold/Ace`) alongside existing mastery/focus readouts.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue incremental, low-risk level-select/readability polish while preserving save compatibility.
+- Blockers: none.
+
 ### 2026-03-09 08:25 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
 - Commit: `3be18b7` (`gdev-0036`)

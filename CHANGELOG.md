@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0037 mastery tier-gap telemetry
+
+### Assistant summary (exact)
+Implemented the next safe high-impact readability pass: level-select mastery telemetry now includes progress-to-next-tier (`+N to Silver/Gold/Ace`) so players can see exactly how far they are from tier promotion without changing save data. Verified with `npm run build`.
+
+### Technical details
+- Added derived mastery progression readout in `updateUi()` by mapping current mastery tier to the next tier threshold and computing a score gap.
+- Added fallback messaging:
+  - `Need first clear` when a mission is still unrated.
+  - `Ace cap` when the mission is already at top tier.
+- Extended level-select telemetry to show `Mastery <Tier> (<Score>, <tier-gap>)`.
+- Updated task registry with `gdev-0037` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0036 level mastery focus recommendation
 
 ### Assistant summary (exact)
