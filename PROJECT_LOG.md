@@ -16,6 +16,14 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ## Entries
 
+### 2026-03-09 08:39 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: `25159e8` (`gdev-0039`)
+- Summary: Added mastery caps telemetry in level-select (`Caps x/5`) so players can quickly see how many mastery metrics are fully maxed.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue incremental, low-risk level-select/readability polish while preserving save compatibility.
+- Blockers: none.
+
 ### 2026-03-09 08:35 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
 - Commit: `bd7f8f8` (`gdev-0038`)

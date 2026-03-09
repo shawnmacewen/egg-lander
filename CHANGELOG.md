@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0039 mastery caps telemetry
+
+### Assistant summary (exact)
+Implemented the next safe high-impact readability pass: level-select mastery telemetry now includes a `Caps x/5` readout showing how many mastery metrics are fully maxed (clear, first-try, clean, relic, S-dock), so players can immediately see completion depth at a glance without save-schema changes. Verified with `npm run build`.
+
+### Technical details
+- Added derived mastery cap counter in `updateUi()` by counting mastery metric rates at `100%`.
+- Added `Caps 0/5` fallback for unrated missions.
+- Extended level-select telemetry line to show `Caps x/5` beside existing mastery mix/focus readouts.
+- Updated task registry with `gdev-0039` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0038 mastery weighted-component breakdown telemetry
 
 ### Assistant summary (exact)
