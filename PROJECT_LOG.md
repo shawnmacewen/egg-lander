@@ -16,6 +16,14 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ## Entries
 
+### 2026-03-09 17:20 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: `pending` (`gdev-0142`; see git history)
+- Summary: Added shared assist tempo telemetry (`Tempo PRESS/FEATHER/STEADY/BRAKE/HARD BRAKE`) to landing and docking cues so hint/HUD guidance now conveys immediate control-intensity posture (hold pressure vs feather vs brake) from safety margin plus volatility.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue safe in-run readability polish that improves pilot decision quality without changing mission balance.
+- Blockers: none.
+
 ### 2026-03-09 17:15 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
 - Commit: `403410e` (`gdev-0141`)

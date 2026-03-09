@@ -1,5 +1,25 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0142 flight-assist tempo telemetry
+
+### Assistant summary (exact)
+Implemented the next highest-impact flight-readability polish by adding shared assist tempo telemetry (`Tempo PRESS/FEATHER/STEADY/BRAKE/HARD BRAKE`) to both landing and docking cues, so players get an immediate control-intensity callout for whether to keep pressure, feather inputs, or aggressively bleed motion. Verified with `npm run build`.
+
+### Technical details
+- Added `getAssistTempoReadout(currentWorstRatio, prevWorstRatio)` helper in `src/main.ts`.
+- Tempo cue maps approach severity/volatility into one action intensity:
+  - `Tempo PRESS` when safely inside margin with stable control.
+  - `Tempo FEATHER` when near-threshold but manageable.
+  - `Tempo STEADY` when volatility spikes and inputs should avoid overcorrection.
+  - `Tempo BRAKE` when over-threshold.
+  - `Tempo HARD BRAKE` when significantly over-threshold.
+- Injected tempo telemetry into both shared assist cues:
+  - `getDockingAssistCue(...)`
+  - `getLandingAssistCue(...)`
+- Existing risk/buffer/focus/trend/delta/stability/confidence/commit/fix telemetry remains intact; tempo is additive readability guidance only.
+- Updated task registry with `gdev-0142` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0141 flight-assist delta telemetry
 
 ### Assistant summary (exact)

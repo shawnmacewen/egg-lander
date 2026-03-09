@@ -150,3 +150,4 @@
 - `gdev-0139` — Flight-assist confidence telemetry (`Confidence HIGH/HIGH+/MED/BUILDING/LOW/RECOVERING`) for landing and docking approach conviction readability (completed)
 - `gdev-0140` — Flight-assist commit telemetry (`Commit GO/BUILD/HOLD/RECOVER/ABORT`) for landing and docking go/no-go decision clarity (completed)
 - `gdev-0141` — Flight-assist delta telemetry (`Delta -/+N%`) for landing and docking approach-change magnitude readability (completed)
+- `gdev-0142` — Flight-assist tempo telemetry (`Tempo PRESS/FEATHER/STEADY/BRAKE/HARD BRAKE`) for landing and docking control-intensity guidance (completed)
