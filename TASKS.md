@@ -48,3 +48,4 @@
 - `gdev-0037` — Mastery tier-gap telemetry in level-select HUD (`+N to next tier`) (completed)
 - `gdev-0038` — Level-select mastery weighted-component breakdown telemetry (`Mix C/F/N/R/S`) (completed)
 - `gdev-0039` — Level-select mastery caps telemetry (`Caps x/5` for maxed mastery metrics) (completed)
+- `gdev-0040` — Level-select retry-load telemetry (`Retries n` + retries-per-clear) (completed)

@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0040 retry-load telemetry
+
+### Assistant summary (exact)
+Implemented the next safe high-impact readability pass: level-select telemetry now includes retry-load insight (`Retries n` plus retries-per-clear) so players can quickly gauge mission consistency and grind pressure without save-schema changes. Verified with `npm run build`.
+
+### Technical details
+- Added derived retry telemetry in `updateUi()`:
+  - `levelRetries = max(0, attempts - clears)`
+  - retries-per-clear readout when clears exist (`n.n/clear`)
+  - fallback states for no attempts (`Retries --`) and no clears yet (`seeking first clear`)
+- Extended level-select telemetry line to include `Retries` directly after record/clear-rate metrics.
+- Updated task registry with `gdev-0040` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0039 mastery caps telemetry
 
 ### Assistant summary (exact)
