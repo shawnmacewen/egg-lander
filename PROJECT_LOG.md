@@ -16,6 +16,14 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ## Entries
 
+### 2026-03-09 10:03 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: pending (`gdev-0056`)
+- Summary: Added level-select mission fail-cost telemetry (`Fail Cost ...`) so each launch decision now also shows immediate downside on failure (streak hit, pressure escalation, push-window risk).
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue incremental, low-risk level-select/readability polish while preserving save compatibility.
+- Blockers: none.
+
 ### 2026-03-09 10:00 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
 - Commit: `4ea7b16` (`gdev-0055`)

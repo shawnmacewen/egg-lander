@@ -1,5 +1,20 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0056 mission fail-cost telemetry
+
+### Assistant summary (exact)
+Implemented the next high-impact level-select decision pass: added `Fail Cost ...` telemetry that makes the immediate downside of a failed run explicit (streak loss + pressure impact + push-window risk) so players can decide when to push versus stabilize with clearer risk awareness. Verified with `npm run build`.
+
+### Technical details
+- Added derived `missionFailCostReadout` in `updateUi()` with no save-schema changes.
+- Fail-cost guidance branches from existing progression state:
+  - no attempts → `Fail Cost None yet (seed run for telemetry)`
+  - attempts but no clears → `Fail Cost Adds retry pressure (first clear delayed)`
+  - post-clear states include streak impact (`streak -N` when active), pressure-risk severity, and confidence-window consequence.
+- Extended level-select telemetry line to include `Fail Cost ...` directly after mission win-condition guidance.
+- Updated task registry with `gdev-0056` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0055 mission win-condition telemetry
 
 ### Assistant summary (exact)
