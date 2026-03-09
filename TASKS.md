@@ -68,3 +68,4 @@
 - `gdev-0057` — Level-select risk/reward edge telemetry (`Edge Favorable/Even/Costly`) (completed)
 - `gdev-0058` — Level-select mission commitment telemetry (`Commit Push/Bank/Recover/Hold`) (completed)
 - `gdev-0059` — Level-select mission fallback telemetry (`Fallback ...` contingency cue after commitment) (completed)
+- `gdev-0060` — Level-select mission execution telemetry (`Execute ...` immediate rep plan from commitment state) (completed)

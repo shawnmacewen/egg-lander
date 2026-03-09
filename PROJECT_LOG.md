@@ -16,6 +16,14 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ## Entries
 
+### 2026-03-09 10:25 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: pending (`gdev-0060`; finalized in git history)
+- Summary: Added level-select mission execution telemetry (`Execute ...`) that turns commitment state into a concrete immediate rep sequence (seed/safe clear/bank→push/recover reps/hold) to reduce between-run indecision.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue incremental, low-risk level-select/readability polish while preserving save compatibility.
+- Blockers: none.
+
 ### 2026-03-09 10:18 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
 - Commit: `ddb987b` (`gdev-0059`)

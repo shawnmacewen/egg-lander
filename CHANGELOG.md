@@ -1,5 +1,23 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0060 mission execution telemetry
+
+### Assistant summary (exact)
+Implemented the next high-impact level-select decision pass: added `Execute ...` telemetry that converts commitment state into an immediate rep count/sequence (`seed`, `safe clear`, `bank then push`, `two banks`, `three recovery reps`, or `hold`) so players can act without overthinking between runs. Verified with `npm run build`.
+
+### Technical details
+- Added derived `missionExecutionReadout` in `updateUi()` with no save-schema changes.
+- Execution guidance branches from existing mission state + commitment signal:
+  - pre-attempt → `Execute Seed route (finish first for telemetry)`
+  - pre-first-clear → `Execute Safe clear route (score optional)`
+  - `Commit Push` → `Execute 1 bank rep, then 1 PB attempt`
+  - `Commit Bank` → `Execute 2 clean reps before any push`
+  - `Commit Recover` → `Execute 3 no-miss reps to de-escalate`
+  - `Commit Hold` → `Execute Hold line until pressure softens`
+- Extended level-select telemetry line to include `Execute ...` directly after fallback guidance.
+- Updated task registry with `gdev-0060` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0059 mission fallback telemetry
 
 ### Assistant summary (exact)
