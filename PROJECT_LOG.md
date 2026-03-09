@@ -179,7 +179,7 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ### 2026-03-09 06:28 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
-- Commit: pending (`gdev-0014`)
+- Commit: `1239d97` (`gdev-0014`)
 - Summary: Added on-foot combat fairness safeguards with short damage i-frames, hit-blink feedback, and HUD indicator to prevent frustrating rapid multi-hit failures.
 - Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: continue combat readability/juice passes while waiting for additional boss/weapon art.
