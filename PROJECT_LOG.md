@@ -18,7 +18,7 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ### 2026-03-09 14:18 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
-- Commit: pending (`gdev-0106`; see git history)
+- Commit: `1aaeca6` (`gdev-0106`)
 - Summary: Persisted level-select mission cursor across reloads/sessions via save-schema v15 (`selectedLevelIndex`) with unlock-safe clamp and migration defaults.
 - Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: continue safe, incremental gameplay QoL/readability improvements that reduce control friction and repeated setup.
