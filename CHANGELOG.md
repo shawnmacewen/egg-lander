@@ -1,5 +1,24 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0137 flight-assist trend telemetry
+
+### Assistant summary (exact)
+Implemented the next highest-impact flight-readability polish by adding shared assist trend telemetry (`Trend IMPROVING/WORSENING/HOLD`) to both landing and docking cues, so players can instantly tell whether their current control corrections are improving or degrading safety margin over time. Verified with `npm run build`.
+
+### Technical details
+- Added per-attempt assist tracking state in `src/main.ts`:
+  - `prevDockingAssistWorstRatio`
+  - `prevLandingAssistWorstRatio`
+- Reset assist trend baselines in `resetMissionEntities()` to avoid stale carry-over between attempts.
+- Added `getAssistTrendReadout(currentWorstRatio, prevWorstRatio)` helper using a small deadzone (`±0.03`) to avoid jitter:
+  - `Trend IMPROVING` when worst safety ratio drops meaningfully
+  - `Trend WORSENING` when worst safety ratio rises meaningfully
+  - `Trend HOLD` when change is minimal or no prior sample exists.
+- Docking assist cue now includes trend readout derived from the worst normalized ratio across center/speed/angle checks.
+- Landing assist cue now includes trend readout derived from the worst normalized ratio across descent/drift/angle checks.
+- Updated task registry with `gdev-0137` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0136 flight-assist focus telemetry
 
 ### Assistant summary (exact)

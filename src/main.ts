@@ -302,6 +302,8 @@ class EggLanderMissionScene extends Phaser.Scene {
   private lastBossShotAt = 0
   private lastDockGrade = '-'
   private missionStartAt = 0
+  private prevDockingAssistWorstRatio: number | null = null
+  private prevLandingAssistWorstRatio: number | null = null
 
   private readonly rotationSpeed = 2.75
 
@@ -1079,6 +1081,8 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.velocity.set(Phaser.Math.FloatBetween(-8, 8), Phaser.Math.FloatBetween(-4, 4))
 
     this.runner.setVisible(false)
+    this.prevDockingAssistWorstRatio = null
+    this.prevLandingAssistWorstRatio = null
   }
 
   private failMission(reason: string) {
@@ -2144,8 +2148,11 @@ class EggLanderMissionScene extends Phaser.Scene {
     ]
     const bufferReadout = this.getAssistBufferReadout(dockingRatios)
     const focusReadout = this.getAssistFocusReadout(dockingRatios, ['Center', 'Speed', 'Angle'])
+    const dockingWorstRatio = dockingRatios.reduce((max, ratio) => Math.max(max, ratio), 0)
+    const trendReadout = this.getAssistTrendReadout(dockingWorstRatio, this.prevDockingAssistWorstRatio)
+    this.prevDockingAssistWorstRatio = dockingWorstRatio
 
-    return `Dock ${riskState} • ${bufferReadout} • ${focusReadout} • D ${Math.round(dist)}/${level.orbitalDockRadius} ${distState} • S ${Math.round(speed)}/${level.orbitalSafeSpeed} ${speedState} • ETA ${etaReadout} • A ${alignState} • Fix: ${correction}`
+    return `Dock ${riskState} • ${bufferReadout} • ${focusReadout} • ${trendReadout} • D ${Math.round(dist)}/${level.orbitalDockRadius} ${distState} • S ${Math.round(speed)}/${level.orbitalSafeSpeed} ${speedState} • ETA ${etaReadout} • A ${alignState} • Fix: ${correction}`
   }
 
   private getLandingAssistCue(level: LevelConfig) {
@@ -2193,8 +2200,11 @@ class EggLanderMissionScene extends Phaser.Scene {
     ]
     const bufferReadout = this.getAssistBufferReadout(landingRatios)
     const focusReadout = this.getAssistFocusReadout(landingRatios, ['Descent', 'Drift', 'Angle'])
+    const landingWorstRatio = landingRatios.reduce((max, ratio) => Math.max(max, ratio), 0)
+    const trendReadout = this.getAssistTrendReadout(landingWorstRatio, this.prevLandingAssistWorstRatio)
+    this.prevLandingAssistWorstRatio = landingWorstRatio
 
-    return `Landing ${riskState} • ${bufferReadout} • ${focusReadout} • V ${Math.round(vertical)}/${Math.round(verticalLimit)} ${vState} • H ${Math.round(horizontal)}/${Math.round(horizontalLimit)} ${hState} • A ${Math.round(angleDeg)}°/${Math.round(angleLimitDeg)}° ${aState} • Alt ${altitude}px • ETA ${etaReadout} • Fix: ${correction}`
+    return `Landing ${riskState} • ${bufferReadout} • ${focusReadout} • ${trendReadout} • V ${Math.round(vertical)}/${Math.round(verticalLimit)} ${vState} • H ${Math.round(horizontal)}/${Math.round(horizontalLimit)} ${hState} • A ${Math.round(angleDeg)}°/${Math.round(angleLimitDeg)}° ${aState} • Alt ${altitude}px • ETA ${etaReadout} • Fix: ${correction}`
   }
 
   private getAssistRiskLabel(ratios: number[]) {
@@ -2223,6 +2233,15 @@ class EggLanderMissionScene extends Phaser.Scene {
 
     const focusLabel = labels[worstIndex] ?? 'Control'
     return `Focus ${focusLabel}`
+  }
+
+  private getAssistTrendReadout(currentWorstRatio: number, prevWorstRatio: number | null) {
+    if (prevWorstRatio === null) return 'Trend HOLD'
+
+    const delta = currentWorstRatio - prevWorstRatio
+    if (delta <= -0.03) return 'Trend IMPROVING'
+    if (delta >= 0.03) return 'Trend WORSENING'
+    return 'Trend HOLD'
   }
 
   private getOnFootObjectiveCue(targetX: number, label: string) {

@@ -145,3 +145,4 @@
 - `gdev-0134` — Flight-assist risk-band telemetry (`Risk SAFE/CAUTION/DANGER`) for landing and docking readability (completed)
 - `gdev-0135` — Flight-assist buffer telemetry (`Buffer +/-N%`) for landing and docking headroom readability (completed)
 - `gdev-0136` — Flight-assist focus telemetry (`Focus ...`) for landing and docking weakest-metric prioritization readability (completed)
+- `gdev-0137` — Flight-assist trend telemetry (`Trend IMPROVING/WORSENING/HOLD`) for landing and docking approach momentum readability (completed)
