@@ -414,6 +414,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     if (this.phase === 'orbital-docking') this.updateOrbitalDocking(dt)
 
     if (this.phase === 'level-complete') {
+      if (Phaser.Input.Keyboard.JustDown(this.keyT)) this.replayCurrentLevelFromComplete()
       if (Phaser.Input.Keyboard.JustDown(this.keyN)) this.advanceFromComplete()
       if (Phaser.Input.Keyboard.JustDown(this.keyL)) this.enterLevelSelect()
     }
@@ -427,6 +428,11 @@ class EggLanderMissionScene extends Phaser.Scene {
 
   private canQuickRetry() {
     return this.phase === 'planet-brief' || this.phase === 'planet-flying' || this.phase === 'on-foot' || this.phase === 'takeoff' || this.phase === 'orbital-docking'
+  }
+
+  private replayCurrentLevelFromComplete() {
+    this.missionFailuresOnLevel = 0
+    this.beginPlanetBrief()
   }
 
   private togglePause() {
@@ -969,8 +975,8 @@ class EggLanderMissionScene extends Phaser.Scene {
       relicBonus ? '+250 relic bonus' : undefined
     ].filter(Boolean)
 
-    this.statusText.setText(`Dock complete! +${gained} (${breakdownBits.join(' • ')})\nN next level • L level select`)
-    this.hintText.setText('Mission loop clear: land → run → steal → return → takeoff → dock')
+    this.statusText.setText(`Dock complete! +${gained} (${breakdownBits.join(' • ')})\nT replay level • N next level • L level select`)
+    this.hintText.setText('Mission loop clear: land → run → steal → return → takeoff → dock • T instant replay')
   }
 
   private advanceFromComplete() {

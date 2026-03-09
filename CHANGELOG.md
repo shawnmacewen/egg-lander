@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0085 post-clear instant replay hotkey
+
+### Assistant summary (exact)
+Implemented the next high-impact run-loop QoL pass: added a mission-complete instant replay hotkey (`T`) that immediately restarts the current level from the post-clear screen, so players can run back reps without detouring through level select. Verified with `npm run build`.
+
+### Technical details
+- Added `replayCurrentLevelFromComplete()` to restart the current level from `level-complete` state via the existing brief/start flow.
+- Wired `T` handling in `update()` during `level-complete` phase, alongside existing `N` (next level) and `L` (level select) controls.
+- Updated completion copy to surface the new action:
+  - status line now shows `T replay level • N next level • L level select`
+  - hint line now includes `T instant replay`
+- Updated task registry with `gdev-0085` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0083 in-run quick retry hotkey
 
 ### Assistant summary (exact)

@@ -93,3 +93,4 @@
 - `gdev-0082` — HUD detail toggle (`H`) with compact in-run telemetry mode and control-hint updates (completed)
 - `gdev-0083` — In-run quick retry hotkey (`T`) with safe mission reset flow and control-hint updates (completed)
 - `gdev-0084` — Compact level-select telemetry mode (`H`) to reduce pre-launch text overload while preserving full-detail toggle (completed)
+- `gdev-0085` — Post-clear instant replay hotkey (`T`) to restart current level from mission-complete screen (completed)
