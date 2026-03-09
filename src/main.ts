@@ -265,6 +265,7 @@ class EggLanderMissionScene extends Phaser.Scene {
   private isHudCompact = false
   private pauseStatusBackup = ''
   private pauseHintBackup = ''
+  private pendingCrashRetryTimer: Phaser.Time.TimerEvent | null = null
   private lastSpearAt = 0
   private lastBossShotAt = 0
   private lastDockGrade = '-'
@@ -391,6 +392,12 @@ class EggLanderMissionScene extends Phaser.Scene {
       return
     }
 
+    if (this.phase === 'crashed' && Phaser.Input.Keyboard.JustDown(this.keyT)) {
+      this.retryAfterCrash()
+      this.updateUi()
+      return
+    }
+
     if (Phaser.Input.Keyboard.JustDown(this.keyT) && this.canQuickRetry()) {
       this.failMission('Manual retry')
       this.updateUi()
@@ -437,6 +444,15 @@ class EggLanderMissionScene extends Phaser.Scene {
 
   private replayCurrentLevelFromComplete() {
     this.missionFailuresOnLevel = 0
+    this.beginPlanetBrief()
+  }
+
+  private retryAfterCrash() {
+    if (this.pendingCrashRetryTimer) {
+      this.pendingCrashRetryTimer.remove(false)
+      this.pendingCrashRetryTimer = null
+    }
+    this.ship.setFillStyle(0xffe48f)
     this.beginPlanetBrief()
   }
 
@@ -819,6 +835,11 @@ class EggLanderMissionScene extends Phaser.Scene {
   }
 
   private beginPlanetBrief() {
+    if (this.pendingCrashRetryTimer) {
+      this.pendingCrashRetryTimer.remove(false)
+      this.pendingCrashRetryTimer = null
+    }
+
     const level = LEVELS[this.levelIndex]
     if (level.requiredPowerup && !this.saveData.unlockedPowerups.includes(level.requiredPowerup)) {
       const requiredName = POWERUPS[level.requiredPowerup].name
@@ -890,10 +911,11 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.dockingVelocityLine.setVisible(false)
     this.ship.setFillStyle(0xff6b6b)
     this.statusText.setText(`Mission failed: ${reason}`)
-    this.hintText.setText('Retrying this level… (R new session)')
+    this.hintText.setText('Retrying this level… (T now • R new session)')
     this.saveSave(this.saveData)
 
-    this.time.delayedCall(900, () => {
+    this.pendingCrashRetryTimer = this.time.delayedCall(900, () => {
+      this.pendingCrashRetryTimer = null
       this.ship.setFillStyle(0xffe48f)
       this.beginPlanetBrief()
     })
@@ -1860,7 +1882,7 @@ class EggLanderMissionScene extends Phaser.Scene {
 
     const selectedName = this.saveData.selectedPowerup ? POWERUPS[this.saveData.selectedPowerup].name : 'None'
     this.statusText.setText(`Loadout set: ${selectedName}`)
-    this.hintText.setText('Level select: L/N level • A/D powerup • ↑ launch • T retry (in-run) • H HUD detail')
+    this.hintText.setText('Level select: L/N level • A/D powerup • ↑ launch • T retry (in-run/crash) • H HUD detail')
   }
 
   private tryUnlockPowerupsForLevel(levelNumber: number) {

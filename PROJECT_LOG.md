@@ -16,6 +16,14 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ## Entries
 
+### 2026-03-09 12:45 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: pending (`gdev-0087`; see git history)
+- Summary: Added crash-state instant retry on `T` so players can skip the fail-delay downtime, while retaining the existing automatic retry fallback for safe flow.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue safe, incremental gameplay QoL/readability improvements.
+- Blockers: none.
+
 ### 2026-03-09 12:39 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
 - Commit: `407e1d5` (`gdev-0086`)

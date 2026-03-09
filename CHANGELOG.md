@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0087 crash-state instant retry hotkey
+
+### Assistant summary (exact)
+Implemented the next high-impact run-loop QoL pass: crash flow now supports instant retry with `T`, letting players skip the automatic fail-delay and jump straight back into the current level while keeping the existing safe auto-retry fallback. Verified with `npm run build`.
+
+### Technical details
+- Added crash-phase `T` input handling in `update()` to trigger immediate restart while in `crashed` state.
+- Added `pendingCrashRetryTimer` tracking so early retry cleanly cancels the scheduled auto-retry and prevents duplicate restarts.
+- Added `retryAfterCrash()` helper to centralize timer cleanup + immediate relaunch behavior.
+- Updated crash hint copy to advertise `T now` alongside `R new session`.
+- Updated level-select control summary text to clarify `T` retry works for in-run and crash states.
+- Updated task registry with `gdev-0087` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0086 persistent HUD detail preference
 
 ### Assistant summary (exact)

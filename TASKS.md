@@ -95,3 +95,4 @@
 - `gdev-0084` — Compact level-select telemetry mode (`H`) to reduce pre-launch text overload while preserving full-detail toggle (completed)
 - `gdev-0085` — Post-clear instant replay hotkey (`T`) to restart current level from mission-complete screen (completed)
 - `gdev-0086` — Persist HUD detail preference (`H`) across sessions and reloads (completed)
+- `gdev-0087` — Crash-state instant retry hotkey (`T`) to skip fail-delay downtime (completed)
