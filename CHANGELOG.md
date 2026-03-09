@@ -1481,3 +1481,15 @@ Added a compact level-select telemetry mode tied to the existing `H` HUD toggle 
 - Switched `levelText` assignment to respect `this.isHudCompact`, so `H` now controls both top HUD density and level-select telemetry density.
 - Updated task registry in `TASKS.md` with `gdev-0084` marked completed.
 - Build verification: `npm run build` (pass).
+
+## 2026-03-09 — gdev-0095 universal in-run quick-abort hotkey
+
+### Assistant summary (exact)
+Added a universal `Esc` quick-abort flow so active missions can return to level select instantly from any in-run state (including pause, crash, and post-clear), reducing downtime when players want to re-route without waiting through phase-specific exits. Verified with `npm run build`.
+
+### Technical details
+- Added `Esc` key binding in `src/main.ts` and new `canQuickExitToLevelSelect()` gate covering active mission states (`planet-brief`, `planet-flying`, `on-foot`, `takeoff`, `orbital-docking`, `crashed`, `level-complete`).
+- Added early-update `Esc` handler that safely calls `enterLevelSelect()` and refreshes UI.
+- Updated in-game HUD/status hint copy to advertise `Esc` level-select exit paths across flight, docking, pause, crash, and completion contexts.
+- Updated task registry in `TASKS.md` with `gdev-0095` marked completed.
+- Build verification: `npm run build` (pass).
