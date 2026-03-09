@@ -1192,3 +1192,14 @@ Added a level-select `Loadout Hint` telemetry cue that recommends a perk setup f
 - Integrated `Loadout Hint ...` into the level-select HUD telemetry line immediately after `Focus` and before coaching copy.
 - Updated task registry in `TASKS.md` with `gdev-0071` marked completed.
 - Build verification: `npm run build` (pass).
+
+## 2026-03-09 — gdev-0074 mission command telemetry
+
+### Assistant summary (exact)
+Added a level-select `Command` telemetry cue that compresses the current run plan into one actionable line (what to do now + when to stop), reducing guidance overload right before launch. Verified with `npm run build`.
+
+### Technical details
+- Added `missionCommandReadout` derivation in `src/main.ts` from current progression state (`attempts/clears`) and mission commitment state (`Push/Bank/Recover/Hold`).
+- Integrated `Command ...` into the level-select telemetry line immediately after `Loadout Hint` and before coaching copy.
+- Updated task registry in `TASKS.md` with `gdev-0074` marked completed.
+- Build verification: `npm run build` (pass).

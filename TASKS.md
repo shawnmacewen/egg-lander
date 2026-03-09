@@ -82,3 +82,4 @@
 - `gdev-0071` — Level-select mission loadout telemetry (`Loadout Hint ...` perk recommendation keyed to recovery state + weakest metric) (completed)
 - `gdev-0072` — Level-select mission exit-rule telemetry (`Exit Rule ...` anti-overgrind session stop cue by commitment state) (completed)
 - `gdev-0073` — Level-select mission debrief telemetry (`Debrief ...` post-block note-taking cue by commitment state) (completed)
+- `gdev-0074` — Level-select mission command telemetry (`Command ...` single-line action plan combining commitment + stop condition) (completed)
