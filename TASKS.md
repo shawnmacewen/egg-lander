@@ -74,3 +74,4 @@
 - `gdev-0063` — Level-select mission reset-cue telemetry (`Reset Cue ...` post-stop relaunch protocol from commitment state) (completed)
 - `gdev-0064` — Level-select mission launch-check telemetry (`Launch Check ...` final go/no-go PB gate from commitment/window/pressure signals) (completed)
 - `gdev-0065` — Level-select mission warmup telemetry (`Warmup ...` prep-rep cue before launch) (completed)
+- `gdev-0066` — Level-select targeted drill telemetry (`Drill ...` weakest-metric rep prescription) (completed)

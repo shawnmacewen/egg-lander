@@ -1,5 +1,24 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0066 targeted drill telemetry
+
+### Assistant summary (exact)
+Implemented the next highest-impact level-select coaching pass: added `Drill ...` telemetry that converts the current weakest mastery metric into a concrete short rep prescription (consistency, first-attempt discipline, clean clears, relic pickups, or S-dock entries). Verified with `npm run build`.
+
+### Technical details
+- Added derived `missionDrillReadout` in `updateUi()` with no save-schema changes.
+- Drill guidance branches from existing progression + mastery-focus signals:
+  - pre-attempt → `Drill Seed 1 full-route baseline run`
+  - attempts/no clears → `Drill First clear reps: safe land -> egg -> safe dock`
+  - weakest metric `Clear` → `Drill Consistency set: 2 no-miss mission clears`
+  - weakest metric `First Try` → `Drill First-attempt set: 2 launches with no early reset`
+  - weakest metric `Clean` → `Drill Clean set: 2 clears with zero damage`
+  - weakest metric `Relic` → `Drill Relic set: 2 relic pickups before egg steal`
+  - otherwise (`S Dock`) → `Drill Dock set: 3 controlled S-grade dock entries`
+- Extended level-select telemetry line to include `Drill ...` immediately after warmup guidance.
+- Updated task registry with `gdev-0066` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0064 mission launch-check telemetry
 
 ### Assistant summary (exact)
