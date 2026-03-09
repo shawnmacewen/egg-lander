@@ -1,5 +1,24 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0050 mission risk-budget telemetry
+
+### Assistant summary (exact)
+Implemented the next safe high-impact readability pass: level-select telemetry now includes a dynamic `Risk Budget ...` cue that combines mission readiness, confidence, and retry pressure into a clear aggression budget (`Seed/Balanced/Safe/Aggro/Locked`) so players can decide whether to push PB lines or bank consistency before launch. Verified with `npm run build`.
+
+### Technical details
+- Added derived `missionRiskBudgetReadout` in `updateUi()` with no save-schema changes.
+- Risk-budget logic safely branches from existing telemetry:
+  - no attempts → `Risk Budget Seed (log one baseline clear)`
+  - otherwise scores current run posture from readiness hits + confidence band + pressure label.
+- Added budget outcome bands:
+  - `Risk Budget Aggro (take one PB line now)`
+  - `Risk Budget Balanced (one push after clean rep)`
+  - `Risk Budget Safe (stabilize pace first)`
+  - `Risk Budget Locked (bank consistency only)`
+- Extended level-select telemetry line to include `Risk Budget ...` directly after readiness.
+- Updated task registry with `gdev-0050` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0049 mission-readiness checklist telemetry
 
 ### Assistant summary (exact)

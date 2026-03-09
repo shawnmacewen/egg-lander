@@ -16,6 +16,14 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ## Entries
 
+### 2026-03-09 09:33 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: pending (`gdev-0050`; finalized in git history)
+- Summary: Added level-select mission risk-budget telemetry (`Risk Budget ...`) that fuses readiness + confidence + retry pressure into an explicit aggression budget before launch.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue incremental, low-risk level-select/readability polish while preserving save compatibility.
+- Blockers: none.
+
 ### 2026-03-09 09:28 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
 - Commit: `7ce71bb` (`gdev-0049`)
