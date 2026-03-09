@@ -401,3 +401,16 @@ Implemented the next gameplay-depth pass by moving boss encounter tuning into pe
 - Updated HUD boss telemetry to display dynamic HP denominator and cadence from level config.
 - Updated task registry in `TASKS.md` with `gdev-0023` marked completed.
 - Build verification: `npm run build` (pass).
+
+## 2026-03-09 — gdev-0024 save migration hardening + lifetime clears
+
+### Assistant summary (exact)
+Implemented a safe persistence pass: upgraded save schema handling with explicit migration/sanitization for older data and added lifetime mission-clear telemetry to the HUD/save data so long-term progression survives sessions more reliably. Verified with `npm run build`.
+
+### Technical details
+- Bumped save schema version from `2` to `3`.
+- Added `totalClears` to persisted `SaveData` and increment it on every successful level completion.
+- Added `migrateParsedSave()` to sanitize legacy/partial saves into a stable v3 shape.
+- Guarded invalid `selectedPowerup` states by clearing selection if the selected perk is not in unlocked perks.
+- Surfaced lifetime clear count directly in the HUD alongside score/attempts/streak.
+- Updated task registry with `gdev-0024` completion.

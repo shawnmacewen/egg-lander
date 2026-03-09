@@ -256,3 +256,11 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 - Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: continue incremental gameplay depth/readability passes while waiting for additional art drops.
 - Blockers: no new content art beyond runner sheet.
+
+### 2026-03-09 07:18 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: pending (`gdev-0024`; finalized in git history)
+- Summary: Hardened save migration path (v3 schema sanitization) and added persisted lifetime mission-clear telemetry (`totalClears`) with HUD readout.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue post-MVP polish with low-risk readability/feel passes while preserving stable progression saves.
+- Blockers: no new content art beyond runner sheet.

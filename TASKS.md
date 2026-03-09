@@ -32,3 +32,4 @@
 - `gdev-0021` — Consecutive mission-clear streak bonus + HUD streak telemetry (completed)
 - `gdev-0022` — Added level 4 "Storm Cradle" challenge with tighter land/dock thresholds and Shielded Hull gate (completed)
 - `gdev-0023` — Level-driven boss scaling pass (HP/cadence/telegraph/spread profile per level) (completed)
+- `gdev-0024` — Save schema migration hardening + lifetime clears telemetry (completed)

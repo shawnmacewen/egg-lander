@@ -41,6 +41,7 @@ type SaveData = {
   unlockedLevel: number
   highestLevelReached: number
   bestScore: number
+  totalClears: number
   unlockedPowerups: PowerupId[]
   selectedPowerup: PowerupId | null
 }
@@ -52,7 +53,7 @@ type PowerupMeta = {
   description: string
 }
 
-const SAVE_VERSION = 2
+const SAVE_VERSION = 3
 const SAVE_KEY = 'egg-lander-save'
 
 const LEVELS: LevelConfig[] = [
@@ -207,6 +208,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     unlockedLevel: 1,
     highestLevelReached: 1,
     bestScore: 0,
+    totalClears: 0,
     unlockedPowerups: [],
     selectedPowerup: null
   }
@@ -835,6 +837,7 @@ class EggLanderMissionScene extends Phaser.Scene {
 
     this.tryUnlockPowerupsForLevel(levelNumber)
     this.saveData.bestScore = Math.max(this.saveData.bestScore, this.sessionScore)
+    this.saveData.totalClears += 1
     this.saveSave(this.saveData)
 
     const breakdownBits = [
@@ -911,7 +914,7 @@ class EggLanderMissionScene extends Phaser.Scene {
         ? `grade ${this.lastDockGrade}`
         : '-'
     this.hudText.setText(
-      `Score ${this.sessionScore}   Attempts ${this.attempts}   Streak ${this.clearStreak}   Fuel ${Math.round(this.fuel)}/${this.maxFuel}   HP ${hpReadout}   Boss ${bossReadout}   BossShot ${bossShotReadout}   Spear ${spearReadout}   Dock ${dockReadout}   V ${Math.abs(this.velocity.y).toFixed(1)}   H ${Math.abs(this.velocity.x).toFixed(1)}   PWR ${powerup}`
+      `Score ${this.sessionScore}   Attempts ${this.attempts}   Clears ${this.saveData.totalClears}   Streak ${this.clearStreak}   Fuel ${Math.round(this.fuel)}/${this.maxFuel}   HP ${hpReadout}   Boss ${bossReadout}   BossShot ${bossShotReadout}   Spear ${spearReadout}   Dock ${dockReadout}   V ${Math.abs(this.velocity.y).toFixed(1)}   H ${Math.abs(this.velocity.x).toFixed(1)}   PWR ${powerup}`
     )
     const required = level.requiredPowerup ? POWERUPS[level.requiredPowerup].name : 'None'
     this.levelText.setText(
@@ -998,6 +1001,7 @@ class EggLanderMissionScene extends Phaser.Scene {
       unlockedLevel: 1,
       highestLevelReached: 1,
       bestScore: 0,
+      totalClears: 0,
       unlockedPowerups: [],
       selectedPowerup: null
     }
@@ -1007,20 +1011,31 @@ class EggLanderMissionScene extends Phaser.Scene {
       if (!raw) return fallback
 
       const parsed = JSON.parse(raw) as Partial<SaveData>
-      const unlockedPowerupsRaw = Array.isArray(parsed.unlockedPowerups) ? parsed.unlockedPowerups : []
-      const unlockedPowerups = unlockedPowerupsRaw.filter((id): id is PowerupId => id in POWERUPS)
-      const selectedPowerup = parsed.selectedPowerup && parsed.selectedPowerup in POWERUPS ? (parsed.selectedPowerup as PowerupId) : null
-
-      return {
-        version: SAVE_VERSION,
-        unlockedLevel: Phaser.Math.Clamp(Math.floor(parsed.unlockedLevel ?? 1), 1, LEVELS.length),
-        highestLevelReached: Phaser.Math.Clamp(Math.floor(parsed.highestLevelReached ?? 1), 1, LEVELS.length),
-        bestScore: Math.max(0, Math.floor(parsed.bestScore ?? 0)),
-        unlockedPowerups,
-        selectedPowerup
-      }
+      return this.migrateParsedSave(parsed)
     } catch {
       return fallback
+    }
+  }
+
+  private migrateParsedSave(parsed: Partial<SaveData>): SaveData {
+    const unlockedPowerupsRaw = Array.isArray(parsed.unlockedPowerups) ? parsed.unlockedPowerups : []
+    const unlockedPowerups = unlockedPowerupsRaw.filter((id): id is PowerupId => id in POWERUPS)
+
+    let selectedPowerup = parsed.selectedPowerup && parsed.selectedPowerup in POWERUPS
+      ? (parsed.selectedPowerup as PowerupId)
+      : null
+    if (selectedPowerup && !unlockedPowerups.includes(selectedPowerup)) {
+      selectedPowerup = null
+    }
+
+    return {
+      version: SAVE_VERSION,
+      unlockedLevel: Phaser.Math.Clamp(Math.floor(parsed.unlockedLevel ?? 1), 1, LEVELS.length),
+      highestLevelReached: Phaser.Math.Clamp(Math.floor(parsed.highestLevelReached ?? 1), 1, LEVELS.length),
+      bestScore: Math.max(0, Math.floor(parsed.bestScore ?? 0)),
+      totalClears: Math.max(0, Math.floor(parsed.totalClears ?? 0)),
+      unlockedPowerups,
+      selectedPowerup
     }
   }
 
