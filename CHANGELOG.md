@@ -1,5 +1,23 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0061 mission cadence telemetry
+
+### Assistant summary (exact)
+Implemented the next high-impact level-select decision pass: added `Cadence ...` telemetry that prescribes run tempo (`Slow/Steady/Burst/Controlled/Reset/Hold`) from the current commitment state so players can pace attempts and avoid tilt between pushes. Verified with `npm run build`.
+
+### Technical details
+- Added derived `missionCadenceReadout` in `updateUi()` with no save-schema changes.
+- Cadence guidance branches from existing progression + commitment signals:
+  - pre-attempt → `Cadence Slow (1 scouting rep, then review telemetry)`
+  - attempts/no clears → `Cadence Steady (repeat safe route until first clear)`
+  - `Commit Push` → `Cadence Burst (bank once, push once, then pause)`
+  - `Commit Bank` → `Cadence Controlled (two clean reps, short reset)`
+  - `Commit Recover` → `Cadence Reset (three fundamentals reps, no forcing)`
+  - `Commit Hold` → `Cadence Hold (single reps with full composure reset)`
+- Extended level-select telemetry line to include `Cadence ...` immediately after execution guidance.
+- Updated task registry with `gdev-0061` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0060 mission execution telemetry
 
 ### Assistant summary (exact)

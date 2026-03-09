@@ -16,6 +16,14 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ## Entries
 
+### 2026-03-09 10:29 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: `464b44e` (`gdev-0061`)
+- Summary: Added level-select mission cadence telemetry (`Cadence ...`) to prescribe safe run tempo (slow/steady/burst/controlled/reset/hold) from the existing commitment signal and reduce tilt between attempts.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue incremental, low-risk level-select/readability polish while preserving save compatibility.
+- Blockers: none.
+
 ### 2026-03-09 10:25 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
 - Commit: pending (`gdev-0060`; finalized in git history)
