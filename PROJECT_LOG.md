@@ -16,6 +16,14 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ## Entries
 
+### 2026-03-09 12:49 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: pending (`gdev-0088`; see git history)
+- Summary: Added crash-state `L` quick exit to level select, including safe auto-retry timer cancellation so players can switch levels/loadouts immediately after a fail.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue safe, incremental gameplay QoL/readability improvements.
+- Blockers: none.
+
 ### 2026-03-09 12:45 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
 - Commit: pending (`gdev-0087`; see git history)

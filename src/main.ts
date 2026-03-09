@@ -398,6 +398,12 @@ class EggLanderMissionScene extends Phaser.Scene {
       return
     }
 
+    if (this.phase === 'crashed' && Phaser.Input.Keyboard.JustDown(this.keyL)) {
+      this.exitCrashToLevelSelect()
+      this.updateUi()
+      return
+    }
+
     if (Phaser.Input.Keyboard.JustDown(this.keyT) && this.canQuickRetry()) {
       this.failMission('Manual retry')
       this.updateUi()
@@ -454,6 +460,15 @@ class EggLanderMissionScene extends Phaser.Scene {
     }
     this.ship.setFillStyle(0xffe48f)
     this.beginPlanetBrief()
+  }
+
+  private exitCrashToLevelSelect() {
+    if (this.pendingCrashRetryTimer) {
+      this.pendingCrashRetryTimer.remove(false)
+      this.pendingCrashRetryTimer = null
+    }
+    this.ship.setFillStyle(0xffe48f)
+    this.enterLevelSelect()
   }
 
   private togglePause() {
@@ -911,7 +926,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.dockingVelocityLine.setVisible(false)
     this.ship.setFillStyle(0xff6b6b)
     this.statusText.setText(`Mission failed: ${reason}`)
-    this.hintText.setText('Retrying this level… (T now • R new session)')
+    this.hintText.setText('Retrying this level… (T now • L level select • R new session)')
     this.saveSave(this.saveData)
 
     this.pendingCrashRetryTimer = this.time.delayedCall(900, () => {
@@ -1864,7 +1879,7 @@ class EggLanderMissionScene extends Phaser.Scene {
       case 'level-complete':
         return 'Complete ✓'
       case 'crashed':
-        return 'Failed ✕ (auto-retry)'
+        return 'Failed ✕ (auto-retry • L level select)'
       default:
         return this.phase
     }

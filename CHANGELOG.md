@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0088 crash-state quick exit to level select
+
+### Assistant summary (exact)
+Implemented the next high-impact crash-flow QoL pass: while in `crashed` state, players can now press `L` to immediately cancel auto-retry and return to level select, preserving fast mission routing when they want to switch levels/loadouts instead of retrying. Verified with `npm run build`.
+
+### Technical details
+- Added crash-state `L` input handling in `update()`.
+- Added `exitCrashToLevelSelect()` helper that cancels `pendingCrashRetryTimer`, restores ship tint, and safely enters level select.
+- Updated crash hint copy to advertise `L level select` alongside `T now` and `R new session`.
+- Updated crash phase guide text to indicate level-select escape availability.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0087 crash-state instant retry hotkey
 
 ### Assistant summary (exact)
