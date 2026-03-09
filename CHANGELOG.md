@@ -1,5 +1,23 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0055 mission win-condition telemetry
+
+### Assistant summary (exact)
+Implemented the next high-impact level-select guidance pass: added `Win ...` telemetry that translates the current mission call state into one immediate success criterion (first clear, safe clear, clean rep, focused metric rep, or explicit PB delta target) so players know exactly what counts as a successful next run. Verified with `npm run build`.
+
+### Technical details
+- Added derived `missionWinConditionReadout` in `updateUi()` with no save-schema changes.
+- Win-condition logic branches from existing call + progression signals:
+  - no attempts → `Win Seed one clean finish to unlock targets`
+  - attempts but no clears → `Win Land first clear (score is secondary)`
+  - `Call Push` → explicit score-delta target versus `Best Run`
+  - `Call Prime` → clean-clear + small time-trim target
+  - `Call Recover` → clean safe-clear recovery directive
+  - `Call Probe/Stabilize` → weakest-metric rep or pressure-safe clear directive
+- Extended level-select telemetry line to include `Win ...` directly after mission call guidance.
+- Updated task registry with `gdev-0055` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0054 mission call telemetry
 
 ### Assistant summary (exact)

@@ -63,3 +63,4 @@
 - `gdev-0052` — Mission recovery threshold correctness fix (step-down now targets immediate lower pressure band) (completed)
 - `gdev-0053` — Level-select mission push-window telemetry (`Window ...` open/near/cautious/closed go-no-go cue) (completed)
 - `gdev-0054` — Level-select mission call telemetry (`Call ...` seed/breakthrough/push/prime/recover/stabilize cue) (completed)
+- `gdev-0055` — Level-select mission win-condition telemetry (`Win ...` immediate success criterion aligned to call state) (completed)
