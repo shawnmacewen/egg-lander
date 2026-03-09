@@ -1,5 +1,23 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0068 mission reassess telemetry
+
+### Assistant summary (exact)
+Implemented the next high-impact level-select pacing pass: added `Reassess ...` telemetry that tells players what adjustment to make after each run block (seed/first-clear/push/bank/recover/hold), so the new set-size guidance always resolves into a concrete next action instead of indecision. Verified with `npm run build`.
+
+### Technical details
+- Added derived `missionReassessReadout` in `updateUi()` with no save-schema changes.
+- Reassess guidance branches from existing progression + commitment signals:
+  - pre-attempt → `Reassess After first finish: set baseline route notes`
+  - attempts/no clears → `Reassess After each set: keep only safer first-clear lines`
+  - `Commit Push` → `Reassess If PB misses, drop to one clean bank rep`
+  - `Commit Bank` → `Reassess If clean quality slips twice, switch to hold`
+  - `Commit Recover` → `Reassess Once pressure drops a band, reopen bank reps`
+  - `Commit Hold` → `Reassess After hold rep: either bank cleanly or end block`
+- Extended level-select telemetry line to include `Reassess ...` immediately after `Set Size ...` guidance.
+- Updated task registry with `gdev-0068` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0067 mission set-size telemetry
 
 ### Assistant summary (exact)

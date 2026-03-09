@@ -76,3 +76,4 @@
 - `gdev-0065` — Level-select mission warmup telemetry (`Warmup ...` prep-rep cue before launch) (completed)
 - `gdev-0066` — Level-select targeted drill telemetry (`Drill ...` weakest-metric rep prescription) (completed)
 - `gdev-0067` — Level-select mission set-size telemetry (`Set Size ...` run-block recommendation by commitment state) (completed)
+- `gdev-0068` — Level-select mission reassess telemetry (`Reassess ...` post-set adjustment cue by commitment state) (completed)
