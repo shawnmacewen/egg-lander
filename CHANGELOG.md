@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0108 controls-overlay phase parity pass
+
+### Assistant summary (exact)
+Implemented the next highest-impact control-readability polish: the controls overlay is now phase-aware for crash, pause, and level-complete states, so the panel always shows context-correct quick-action keys (retry/resume/next-level) instead of generic in-run controls. Verified with `npm run build`.
+
+### Technical details
+- Updated `updateControlsOverlay()` to render dedicated control cards for:
+  - `level-complete` (`T` replay, `↑/N/Enter/Space` next level, `Esc/L` level select)
+  - `crashed` (`T/Enter/Space` retry now, `Esc/L` level select)
+  - paused state (`P/Enter/Space` resume + retry/exit parity)
+- Preserved existing level-select and active-run overlay behavior.
+- Updated task registry with `gdev-0108` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0107 post-clear next-level alias parity (`↑`)
 
 ### Assistant summary (exact)

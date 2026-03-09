@@ -1992,18 +1992,47 @@ class EggLanderMissionScene extends Phaser.Scene {
           '/ or Tab  Hide this panel',
           'R  New session'
         ]
-      : [
-          'CONTROLS',
-          '↑  Thrust / confirm',
-          '←/→  Rotate / run',
-          'Space  Spear throw',
-          'T  Quick retry',
-          'Esc/L  Back to level select',
-          'P or Enter/Space  Pause/resume',
-          'H  HUD detail',
-          '/ or Tab  Hide this panel',
-          'R  New session'
-        ]
+      : this.phase === 'level-complete'
+        ? [
+            'CONTROLS',
+            'T  Replay level',
+            '↑ / N / Enter / Space  Next level',
+            'Esc/L  Back to level select',
+            'H  HUD detail',
+            '/ or Tab  Hide this panel',
+            'R  New session'
+          ]
+        : this.phase === 'crashed'
+          ? [
+              'CONTROLS',
+              'T / Enter / Space  Retry now',
+              'Esc/L  Back to level select',
+              'R  New session',
+              'H  HUD detail',
+              '/ or Tab  Hide this panel'
+            ]
+          : this.isPaused
+            ? [
+                'CONTROLS',
+                'P or Enter/Space  Resume',
+                'T  Quick retry',
+                'Esc/L  Back to level select',
+                'H  HUD detail',
+                '/ or Tab  Hide this panel',
+                'R  New session'
+              ]
+            : [
+                'CONTROLS',
+                '↑  Thrust / confirm',
+                '←/→  Rotate / run',
+                'Space  Spear throw',
+                'T  Quick retry',
+                'Esc/L  Back to level select',
+                'P or Enter/Space  Pause/resume',
+                'H  HUD detail',
+                '/ or Tab  Hide this panel',
+                'R  New session'
+              ]
 
     this.controlsOverlayText.setText(controls.join('\n')).setVisible(true)
   }

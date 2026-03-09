@@ -16,6 +16,14 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ## Entries
 
+### 2026-03-09 14:29 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: pending (`gdev-0108`; see git history)
+- Summary: Made controls overlay phase-aware so crash, pause, and level-complete screens now show context-correct quick-action keys (retry/resume/next-level) instead of generic in-run controls.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue safe, incremental gameplay QoL/readability improvements that reduce control friction and repeated setup.
+- Blockers: none.
+
 ### 2026-03-09 14:23 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
 - Commit: pending (`gdev-0107`; see git history)

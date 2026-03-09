@@ -116,3 +116,4 @@
 - `gdev-0105` — Controls overlay toggle parity: add `Tab` alias alongside `/` and update on-screen control cues (completed)
 - `gdev-0106` — Persist level-select mission cursor across sessions/reloads with unlock-safe clamping (completed)
 - `gdev-0107` — Post-clear next-level alias parity (`↑` alongside `N/Enter/Space`) + completion hint copy update (completed)
+- `gdev-0108` — Controls-overlay phase parity pass (crash/pause/clear context-aware quick-action key cards) (completed)
