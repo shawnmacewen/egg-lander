@@ -18,7 +18,7 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ### 2026-03-09 15:38 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
-- Commit: `pending` (`gdev-0122`; see git history)
+- Commit: `ce7acd3` (`gdev-0122`)
 - Summary: Added controls-overlay discoverability parity by including `/ or Tab controls` across mission-brief, in-run active-phase, pause, crash, clear, and boss-hit hint strings.
 - Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: continue safe, incremental input-flow/readability polish that removes remaining hint/overlay mismatches without changing mission balance.
