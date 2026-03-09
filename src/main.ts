@@ -51,6 +51,7 @@ type SaveData = {
   cleanLevelClears: number[]
   firstTryLevelClears: number[]
   relicLevelCompletions: number[]
+  sDockLevelClears: number[]
   unlockedPowerups: PowerupId[]
   selectedPowerup: PowerupId | null
 }
@@ -62,7 +63,7 @@ type PowerupMeta = {
   description: string
 }
 
-const SAVE_VERSION = 11
+const SAVE_VERSION = 12
 const SAVE_KEY = 'egg-lander-save'
 
 const LEVELS: LevelConfig[] = [
@@ -229,6 +230,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     cleanLevelClears: Array(LEVELS.length).fill(0),
     firstTryLevelClears: Array(LEVELS.length).fill(0),
     relicLevelCompletions: Array(LEVELS.length).fill(0),
+    sDockLevelClears: Array(LEVELS.length).fill(0),
     unlockedPowerups: [],
     selectedPowerup: null
   }
@@ -892,6 +894,9 @@ class EggLanderMissionScene extends Phaser.Scene {
     if (this.bonusObjectiveCollected) {
       this.saveData.relicLevelCompletions[this.levelIndex] = (this.saveData.relicLevelCompletions[this.levelIndex] ?? 0) + 1
     }
+    if (dockingGrade === 'S') {
+      this.saveData.sDockLevelClears[this.levelIndex] = (this.saveData.sDockLevelClears[this.levelIndex] ?? 0) + 1
+    }
     this.saveSave(this.saveData)
 
     const breakdownBits = [
@@ -989,10 +994,12 @@ class EggLanderMissionScene extends Phaser.Scene {
     const levelCleanClears = this.saveData.cleanLevelClears[this.levelIndex] ?? 0
     const levelFirstTryClears = this.saveData.firstTryLevelClears[this.levelIndex] ?? 0
     const levelRelicCompletions = this.saveData.relicLevelCompletions[this.levelIndex] ?? 0
+    const levelSDockClears = this.saveData.sDockLevelClears[this.levelIndex] ?? 0
     const levelClearRate = levelAttempts > 0 ? `${Math.round((levelClears / levelAttempts) * 100)}%` : '--'
     const levelCleanRate = levelClears > 0 ? `${Math.round((levelCleanClears / levelClears) * 100)}%` : '--'
     const levelFirstTryRate = levelClears > 0 ? `${Math.round((levelFirstTryClears / levelClears) * 100)}%` : '--'
     const levelRelicRate = levelClears > 0 ? `${Math.round((levelRelicCompletions / levelClears) * 100)}%` : '--'
+    const levelSDockRate = levelClears > 0 ? `${Math.round((levelSDockClears / levelClears) * 100)}%` : '--'
     const totalAttempts = this.saveData.levelAttempts.reduce((sum, value) => sum + (value ?? 0), 0)
     const totalLevelClears = this.saveData.levelClears.reduce((sum, value) => sum + (value ?? 0), 0)
     const lifetimeClearRate = totalAttempts > 0 ? `${Math.round((totalLevelClears / totalAttempts) * 100)}%` : '--'
@@ -1006,7 +1013,7 @@ class EggLanderMissionScene extends Phaser.Scene {
         })()
       : '--'
     this.levelText.setText(
-      `Level ${level.id}/${LEVELS.length}: ${level.name}   Requires ${required}   Unlocked ${this.saveData.unlockedLevel}/${LEVELS.length}   Best ${this.saveData.bestScore}   Best Streak ${this.saveData.bestStreak}   Best Run ${levelBestScore}   Best Time ${this.formatMs(levelBestTimeMs)}   Best Dock ${levelBestDockGrade}   Record ${levelClears}/${levelAttempts} (${levelClearRate})   First Try ${levelFirstTryClears}/${levelClears} (${levelFirstTryRate})   Clean ${levelCleanClears}/${levelClears} (${levelCleanRate})   Relic ${levelRelicCompletions}/${levelClears} (${levelRelicRate})   Lifetime ${totalLevelClears}/${totalAttempts} (${lifetimeClearRate})   Fastest ${fastestLevelTag}   Perk: ${powerupDescription}`
+      `Level ${level.id}/${LEVELS.length}: ${level.name}   Requires ${required}   Unlocked ${this.saveData.unlockedLevel}/${LEVELS.length}   Best ${this.saveData.bestScore}   Best Streak ${this.saveData.bestStreak}   Best Run ${levelBestScore}   Best Time ${this.formatMs(levelBestTimeMs)}   Best Dock ${levelBestDockGrade}   Record ${levelClears}/${levelAttempts} (${levelClearRate})   First Try ${levelFirstTryClears}/${levelClears} (${levelFirstTryRate})   Clean ${levelCleanClears}/${levelClears} (${levelCleanRate})   Relic ${levelRelicCompletions}/${levelClears} (${levelRelicRate})   S Dock ${levelSDockClears}/${levelClears} (${levelSDockRate})   Lifetime ${totalLevelClears}/${totalAttempts} (${lifetimeClearRate})   Fastest ${fastestLevelTag}   Perk: ${powerupDescription}`
     )
 
     let objective = 'Land on planet, grab egg on foot, return, launch, then precision dock in orbit.'
@@ -1108,6 +1115,7 @@ class EggLanderMissionScene extends Phaser.Scene {
       cleanLevelClears: Array(LEVELS.length).fill(0),
       firstTryLevelClears: Array(LEVELS.length).fill(0),
       relicLevelCompletions: Array(LEVELS.length).fill(0),
+      sDockLevelClears: Array(LEVELS.length).fill(0),
       unlockedPowerups: [],
       selectedPowerup: null
     }
@@ -1196,6 +1204,14 @@ class EggLanderMissionScene extends Phaser.Scene {
       return typeof clears === 'number' && Number.isFinite(clears) ? Math.max(0, Math.floor(clears)) : 0
     })
 
+    const sDockLevelClearsRaw = Array.isArray((parsed as { sDockLevelClears?: unknown[] }).sDockLevelClears)
+      ? ((parsed as { sDockLevelClears?: unknown[] }).sDockLevelClears ?? [])
+      : []
+    const sDockLevelClears = Array.from({ length: LEVELS.length }, (_, i) => {
+      const clears = sDockLevelClearsRaw[i]
+      return typeof clears === 'number' && Number.isFinite(clears) ? Math.max(0, Math.floor(clears)) : 0
+    })
+
     return {
       version: SAVE_VERSION,
       unlockedLevel: Phaser.Math.Clamp(Math.floor(parsed.unlockedLevel ?? 1), 1, LEVELS.length),
@@ -1211,6 +1227,7 @@ class EggLanderMissionScene extends Phaser.Scene {
       cleanLevelClears,
       firstTryLevelClears,
       relicLevelCompletions,
+      sDockLevelClears,
       unlockedPowerups,
       selectedPowerup
     }

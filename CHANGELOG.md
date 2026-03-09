@@ -1,5 +1,18 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0034 S-grade dock persistence + telemetry pass
+
+### Assistant summary (exact)
+Implemented the next safe mastery-feedback pass: per-level S-grade docking clears now persist (save schema v12), and level-select telemetry now shows each mission’s S-dock completion rate for clearer precision-mastery tracking. Verified with `npm run build`.
+
+### Technical details
+- Bumped save schema version to `v12`.
+- Extended `SaveData` with `sDockLevelClears` and added backward-safe migration/default handling.
+- On mission completion, now increments per-level `sDockLevelClears` when docking grade is `S`.
+- Added level-select telemetry readout: `S Dock x/y (z%)` per level.
+- Updated task registry for `gdev-0034` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0033 relic-objective persistence + telemetry pass
 
 ### Assistant summary (exact)
