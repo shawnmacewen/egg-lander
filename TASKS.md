@@ -112,3 +112,4 @@
 - `gdev-0101` — Pause-state resume aliases (`Enter`/`Space`) + hint/overlay parity (completed)
 - `gdev-0102` — Universal `L` quick-exit alias for in-run level-select return + hint parity (completed)
 - `gdev-0103` — Level-select control hint parity for universal quick-exit alias (`Esc/L`) (completed)
+- `gdev-0104` — On-foot control-hint parity (`T` retry + `Esc/L` exit + `P` pause) including boss-hit reminder copy (completed)

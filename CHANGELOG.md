@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0104 on-foot control-hint parity
+
+### Assistant summary (exact)
+Implemented the next highest-impact control-readability polish: on-foot hint text now includes the same quick-action safety keys used elsewhere (`T` retry, `Esc/L` level select, `P` pause), including the boss-hit reminder copy, so players keep consistent recovery controls during the highest-pressure phase. Verified with `npm run build`.
+
+### Technical details
+- Updated on-foot boss and non-boss hint strings to advertise `T retry • Esc/L level select • P pause`.
+- Updated boss-damage reminder hint to include the same quick-action keys for parity under pressure.
+- Kept gameplay behavior unchanged (copy/readability only).
+- Updated task registry with `gdev-0104` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0103 level-select Esc/L quick-exit hint parity
 
 ### Assistant summary (exact)
