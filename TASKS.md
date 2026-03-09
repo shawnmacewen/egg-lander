@@ -133,3 +133,4 @@
 - `gdev-0122` — Hint discoverability parity for controls overlay (`/`/`Tab`) across mission-brief, active phases, pause, crash, and clear flows (completed)
 - `gdev-0123` — Wide-screen framing pass: larger ship silhouette + wider spawn spread + re-centered orbital station anchors (completed)
 - `gdev-0124` — Per-level landing-zone staging pass (offset pad placement + spawn/objective anchoring for wider map pacing) (completed)
+- `gdev-0125` — On-foot objective distance cue telemetry (`Egg/Lander: Npx ←/→`) for traversal clarity on widened layouts (completed)

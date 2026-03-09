@@ -16,6 +16,14 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ## Entries
 
+### 2026-03-09 15:55 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: `9024b0b` (`gdev-0125`)
+- Summary: Added live on-foot objective distance/direction telemetry so HUD objective copy now shows `Egg: Npx ←/→` before pickup and `Lander: Npx ←/→` during return, improving traversal clarity on widened/staged pad layouts.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue safe, incremental readability/feel polish (camera and traversal cues) without changing mission balance.
+- Blockers: none.
+
 ### 2026-03-09 15:51 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
 - Commit: `0c52a2e` (`gdev-0124`)

@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0125 on-foot objective distance cue telemetry
+
+### Assistant summary (exact)
+Implemented the next highest-impact traversal-readability polish for the widened mission layouts: on-foot objective text now includes live horizontal distance/direction cues to the current target (`Egg` before pickup, `Lander` after pickup), reducing hesitation and wrong-way movement during run segments. Verified with `npm run build`.
+
+### Technical details
+- Added `getOnFootObjectiveCue()` helper in `src/main.ts` to compute directional objective telemetry from runner-to-target X delta.
+- Updated on-foot objective copy to append live cue text:
+  - `Egg: Npx ←/→` while extracting.
+  - `Lander: Npx ←/→` while returning with egg.
+- Included near-target collapse behavior (`Label: here`) for small deltas to reduce noise.
+- Updated task registry with `gdev-0125` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0124 per-level landing-zone staging pass
 
 ### Assistant summary (exact)

@@ -2018,15 +2018,21 @@ class EggLanderMissionScene extends Phaser.Scene {
 
     let objective = 'Land on planet, grab egg on foot, return, launch, then precision dock in orbit.'
     if (this.phase === 'on-foot' && !this.hasEgg) {
+      const eggCue = this.getOnFootObjectiveCue(this.egg.x, 'Egg')
       if (this.bonusObjectiveActive && !this.bonusObjectiveCollected) {
         objective = this.bossActive
-          ? 'Optional: secure cyan relic (+250), defeat boss, then steal egg.'
-          : 'Optional: secure cyan relic (+250), then run right to steal egg.'
+          ? `Optional: secure cyan relic (+250), defeat boss, then steal egg. ${eggCue}`
+          : `Optional: secure cyan relic (+250), then run right to steal egg. ${eggCue}`
       } else {
-        objective = this.bossActive ? 'Defeat boss with Space/Enter spears, then steal egg.' : 'Run right to steal egg.'
+        objective = this.bossActive
+          ? `Defeat boss with Space/Enter spears, then steal egg. ${eggCue}`
+          : `Run right to steal egg. ${eggCue}`
       }
     }
-    if (this.phase === 'on-foot' && this.hasEgg) objective = 'Run back left to board lander with egg.'
+    if (this.phase === 'on-foot' && this.hasEgg) {
+      const landerCue = this.getOnFootObjectiveCue(this.planetPad.x, 'Lander')
+      objective = `Run back left to board lander with egg. ${landerCue}`
+    }
     if (this.phase === 'orbital-docking') objective = 'Near-zero-G docking: low speed + upright alignment in ring.'
 
     const phaseGuide = this.getPhaseGuide()
@@ -2096,6 +2102,13 @@ class EggLanderMissionScene extends Phaser.Scene {
               ]
 
     this.controlsOverlayText.setText(controls.join('\n')).setVisible(true)
+  }
+
+  private getOnFootObjectiveCue(targetX: number, label: string) {
+    const delta = Math.round(targetX - this.runner.x)
+    if (Math.abs(delta) <= 8) return `${label}: here`
+    const direction = delta > 0 ? '→' : '←'
+    return `${label}: ${Math.abs(delta)}px ${direction}`
   }
 
   private formatMs(ms: number): string {
