@@ -1,5 +1,23 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0064 mission launch-check telemetry
+
+### Assistant summary (exact)
+Implemented the next high-impact level-select decision pass: added `Launch Check ...` telemetry that collapses commitment/window/pressure into a final go/no-go launch gate (`Green/Amber/Yellow/Red`) so players know whether to take a PB shot now or run a safer rep first. Verified with `npm run build`.
+
+### Technical details
+- Added derived `missionLaunchCheckReadout` in `updateUi()` with no save-schema changes.
+- Launch-check guidance branches from existing telemetry signals:
+  - pre-attempt → `Launch Check Green (seed baseline run now)`
+  - attempts/no clears → `Launch Check Amber (prioritize first clear route only)`
+  - recovery/extreme pressure → `Launch Check Red (no PB attempts; recover consistency)`
+  - push posture with open window + locked/ready confidence → `Launch Check Green (take one PB shot this launch)`
+  - push/bank without full greenlight → `Launch Check Amber (bank one clean rep before PB)`
+  - hold posture → `Launch Check Yellow (single hold rep, then reassess)`
+- Extended level-select telemetry line to include `Launch Check ...` immediately after reset-cue guidance.
+- Updated task registry with `gdev-0064` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0063 mission reset-cue telemetry
 
 ### Assistant summary (exact)

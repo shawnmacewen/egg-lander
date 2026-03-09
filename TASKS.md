@@ -72,3 +72,4 @@
 - `gdev-0061` — Level-select mission cadence telemetry (`Cadence ...` run-tempo cue from commitment state) (completed)
 - `gdev-0062` — Level-select mission stop-rule telemetry (`Stop Rule ...` anti-tilt cutoff cue from commitment state) (completed)
 - `gdev-0063` — Level-select mission reset-cue telemetry (`Reset Cue ...` post-stop relaunch protocol from commitment state) (completed)
+- `gdev-0064` — Level-select mission launch-check telemetry (`Launch Check ...` final go/no-go PB gate from commitment/window/pressure signals) (completed)
