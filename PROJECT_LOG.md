@@ -18,7 +18,7 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ### 2026-03-09 10:13 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
-- Commit: `8d45e3f` (`gdev-0058`)
+- Commit: `01e5037` (`gdev-0058`)
 - Summary: Added level-select mission commitment telemetry (`Commit Push/Bank/Recover/Hold`) to collapse existing edge/window/call signals into one explicit next-run commitment cue.
 - Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: continue incremental, low-risk level-select/readability polish while preserving save compatibility.
