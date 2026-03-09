@@ -1,5 +1,20 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0057 risk/reward edge telemetry
+
+### Assistant summary (exact)
+Implemented the next high-impact level-select decision pass: added `Edge ...` telemetry that summarizes immediate risk/reward balance (`Favorable/Even/Costly`) using mission call intent, retry pressure, and current streak exposure so players can quickly decide whether to push now or stabilize first. Verified with `npm run build`.
+
+### Technical details
+- Added derived `missionEdgeReadout` in `updateUi()` with no save-schema changes.
+- Edge guidance branches safely from existing mission state:
+  - no attempts → `Edge -- (log one run to calibrate risk/reward)`
+  - attempts but no clears → `Edge Breakthrough (first clear reward outweighs risk)`
+  - post-clear states compute a simple reward-minus-risk score from call posture (`Push/Prime/Probe/Stabilize`), pressure band, and active streak exposure.
+- Added `Edge ...` directly after fail-cost telemetry in the level-select readout chain.
+- Updated task registry with `gdev-0057` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0056 mission fail-cost telemetry
 
 ### Assistant summary (exact)

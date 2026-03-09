@@ -65,3 +65,4 @@
 - `gdev-0054` — Level-select mission call telemetry (`Call ...` seed/breakthrough/push/prime/recover/stabilize cue) (completed)
 - `gdev-0055` — Level-select mission win-condition telemetry (`Win ...` immediate success criterion aligned to call state) (completed)
 - `gdev-0056` — Level-select mission fail-cost telemetry (`Fail Cost ...` downside cue before launch) (completed)
+- `gdev-0057` — Level-select risk/reward edge telemetry (`Edge Favorable/Even/Costly`) (completed)
