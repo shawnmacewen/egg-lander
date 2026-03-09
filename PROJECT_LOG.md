@@ -16,6 +16,14 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ## Entries
 
+### 2026-03-09 12:08 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: pending (`gdev-0080`; see git history)
+- Summary: Added level-select `Discipline` telemetry that enforces anti-overgrind rep boundaries (PB attempt caps, bank/hold limits, recovery lock) from commitment/window state.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue safe level-select guidance polish with low-risk readability improvements.
+- Blockers: none.
+
 ### 2026-03-09 12:00 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
 - Commit: `0007f79` (`gdev-0078`)

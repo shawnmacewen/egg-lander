@@ -1,5 +1,24 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0080 mission discipline telemetry
+
+### Assistant summary (exact)
+Implemented the next high-impact level-select guidance pass: added `Discipline ...` telemetry that enforces anti-overgrind boundaries (rep caps, PB attempt limits, and mandatory reassess/stop transitions) by commitment/window state, so players preserve execution quality instead of spiraling into tilt reps. Verified with `npm run build`.
+
+### Technical details
+- Added derived `missionDisciplineReadout` in `updateUi()` with no save-schema changes.
+- Discipline guidance branches from existing progression + commitment/window signals:
+  - pre-attempt → `Discipline Run one baseline rep only; no extra loops before review`
+  - attempts/no clears → `Discipline Cap first-clear grind at 2 reps, then reset route plan`
+  - `Commit Recover` → `Discipline Stay in recovery until pressure drops one full band`
+  - `Commit Push` + open window → `Discipline Exactly one PB attempt, then mandatory bank/stop`
+  - `Commit Push` without open window → `Discipline No PB attempts until window reopens`
+  - `Commit Bank` → `Discipline Bank exactly two clean reps, then reassess`
+  - `Commit Hold` → `Discipline Hold to one composed rep before any extension`
+- Extended level-select telemetry line to include `Discipline ...` immediately after `Stability ...` guidance.
+- Updated task registry with `gdev-0080` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0078 mission priority telemetry
 
 ### Assistant summary (exact)
