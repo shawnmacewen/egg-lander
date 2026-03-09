@@ -203,7 +203,7 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ### 2026-03-09 06:45 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
-- Commit: `436a7ae` (`gdev-0017`)
+- Commit: `668aa4e` (`gdev-0017`)
 - Summary: Added orbital docking guidance vectors and dock telemetry HUD readout to improve precision approach readability.
 - Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: continue incremental mission readability polish while waiting for additional boss/weapon art.
