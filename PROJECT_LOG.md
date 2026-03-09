@@ -18,7 +18,7 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ### 2026-03-09 14:10 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
-- Commit: pending (`gdev-0104`; see git history)
+- Commit: `f68def6` (`gdev-0104`)
 - Summary: Added on-foot control-hint parity so boss/non-boss phase hints (plus boss-hit reminder copy) now include `T` retry, `Esc/L` level-select exit, and `P` pause guidance.
 - Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: continue safe, incremental gameplay QoL/readability improvements that reduce control friction and repeated setup.
