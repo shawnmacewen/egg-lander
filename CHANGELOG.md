@@ -1,5 +1,22 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0123 wide-screen framing and ship readability pass
+
+### Assistant summary (exact)
+Implemented the next highest-impact wide-screen polish pass by increasing ship visual readability, widening launch spawn variance for the 1280x720 stage, and re-centering orbital station anchors to keep docking approach framing natural on the expanded playfield. Verified with `npm run build`.
+
+### Technical details
+- Added ship framing constants in `src/main.ts`:
+  - `SHIP_RENDER_SCALE`
+  - `SHIP_THRUSTER_OFFSET`
+  - `SHIP_WORLD_EDGE_BUFFER`
+- Increased ship/thruster silhouette size and aligned thruster placement math to the new offset.
+- Repositioned orbital station/docking anchors using screen-relative coordinates (`~83%` width, `~20%` height) for more stable composition on wide viewports.
+- Increased mission start ship spawn spread from `±120` to `±170` and nudged initial spawn height for improved framing.
+- Updated world-edge collision buffer to match larger ship silhouette.
+- Updated task registry with `gdev-0123` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0122 controls-overlay hint discoverability parity
 
 ### Assistant summary (exact)

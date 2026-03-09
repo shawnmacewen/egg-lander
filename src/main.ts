@@ -68,6 +68,9 @@ type PowerupMeta = {
 
 const SAVE_VERSION = 15
 const SAVE_KEY = 'egg-lander-save'
+const SHIP_RENDER_SCALE = 1.2
+const SHIP_THRUSTER_OFFSET = 22
+const SHIP_WORLD_EDGE_BUFFER = 16
 
 const LEVELS: LevelConfig[] = [
   {
@@ -342,16 +345,18 @@ class EggLanderMissionScene extends Phaser.Scene {
       this.add.ellipse(width / 2 - 180, height / 2 + 120, 560, 220, 0x16213c).setAlpha(0.55),
       this.add.ellipse(width / 2 + 260, height / 2 - 150, 380, 180, 0x111933).setAlpha(0.45)
     ])
-    this.stationRing = this.add.ellipse(width - 180, 120, 122, 122, 0x6ea8ff).setStrokeStyle(4, 0xcfe7ff)
-    this.stationCore = this.add.rectangle(width - 180, 120, 18, 98, 0xb9c7de)
-    this.dockingGuideOuter = this.add.ellipse(width - 180, 120, 78, 78, 0x75ffd2).setAlpha(0.22).setStrokeStyle(2, 0x75ffd2)
-    this.dockingTarget = this.add.ellipse(width - 180, 120, 44, 44, 0x9ff6d2).setAlpha(0.7)
+    const stationX = Math.round(width * 0.83)
+    const stationY = Math.round(height * 0.2)
+    this.stationRing = this.add.ellipse(stationX, stationY, 122, 122, 0x6ea8ff).setStrokeStyle(4, 0xcfe7ff)
+    this.stationCore = this.add.rectangle(stationX, stationY, 18, 98, 0xb9c7de)
+    this.dockingGuideOuter = this.add.ellipse(stationX, stationY, 78, 78, 0x75ffd2).setAlpha(0.22).setStrokeStyle(2, 0x75ffd2)
+    this.dockingTarget = this.add.ellipse(stationX, stationY, 44, 44, 0x9ff6d2).setAlpha(0.7)
     this.dockingApproachLine = this.add.line(0, 0, 0, 0, 0, 0, 0x75ffd2).setOrigin(0, 0).setAlpha(0.5).setLineWidth(2, 2)
     this.dockingVelocityLine = this.add.line(0, 0, 0, 0, 0, 0, 0xffd17a).setOrigin(0, 0).setAlpha(0.6).setLineWidth(2, 2)
     this.orbitalLayer.add([this.stationRing, this.stationCore, this.dockingGuideOuter, this.dockingTarget, this.dockingApproachLine, this.dockingVelocityLine])
 
-    this.ship = this.add.triangle(width / 2, 96, 0, 28, 20, -20, -20, -20, 0xffe48f).setStrokeStyle(4, 0x0f0f0f)
-    this.thruster = this.add.triangle(this.ship.x, this.ship.y + 24, 0, 0, 8, 18, -8, 18, 0xff7a3d).setVisible(false)
+    this.ship = this.add.triangle(width / 2, 110, 0, 32, 22, -22, -22, -22, 0xffe48f).setStrokeStyle(4, 0x0f0f0f).setScale(SHIP_RENDER_SCALE)
+    this.thruster = this.add.triangle(this.ship.x, this.ship.y + SHIP_THRUSTER_OFFSET, 0, 0, 10, 20, -10, 20, 0xff7a3d).setScale(SHIP_RENDER_SCALE).setVisible(false)
 
     this.statusText = this.add.text(width / 2, height / 2 - 30, '', {
       fontFamily: 'monospace',
@@ -808,7 +813,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.ship.y += this.velocity.y * dt
 
     if (this.phase === 'planet-flying' || this.phase === 'takeoff' || this.phase === 'orbital-docking') {
-      if (this.ship.x < 12 || this.ship.x > this.scale.width - 12) {
+      if (this.ship.x < SHIP_WORLD_EDGE_BUFFER || this.ship.x > this.scale.width - SHIP_WORLD_EDGE_BUFFER) {
         this.failMission('Hit world boundary')
         return
       }
@@ -816,7 +821,7 @@ class EggLanderMissionScene extends Phaser.Scene {
 
     this.thruster
       .setVisible(thrusting)
-      .setPosition(this.ship.x + Math.cos(this.ship.rotation + Math.PI / 2) * 18, this.ship.y + Math.sin(this.ship.rotation + Math.PI / 2) * 18)
+      .setPosition(this.ship.x + Math.cos(this.ship.rotation + Math.PI / 2) * SHIP_THRUSTER_OFFSET, this.ship.y + Math.sin(this.ship.rotation + Math.PI / 2) * SHIP_THRUSTER_OFFSET)
       .setRotation(this.ship.rotation)
       .setScale(1, 0.9 + Math.random() * 0.5)
   }
@@ -1057,7 +1062,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.egg.x = this.scale.width / 2 + level.runDistance
     this.bonusRelic.x = this.scale.width / 2 + Math.round(level.runDistance * 0.58)
 
-    this.ship.setPosition(this.scale.width / 2 + Phaser.Math.Between(-120, 120), 90)
+    this.ship.setPosition(this.scale.width / 2 + Phaser.Math.Between(-170, 170), 104)
     this.ship.setRotation(Phaser.Math.FloatBetween(-0.08, 0.08))
     this.velocity.set(Phaser.Math.FloatBetween(-8, 8), Phaser.Math.FloatBetween(-4, 4))
 
@@ -1190,7 +1195,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.missionStartAt = 0
     this.planetLayer.setVisible(true)
     this.orbitalLayer.setVisible(false)
-    this.ship.setPosition(this.scale.width / 2, 90)
+    this.ship.setPosition(this.scale.width / 2, 104)
     this.ship.rotation = 0
     this.velocity.set(0, 0)
     this.thruster.setVisible(false)

@@ -1053,3 +1053,11 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 - Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: tune camera framing + ship scale for the wider 1280x720 view and adjust level pad spacing for better traversal pacing.
 - Blockers: none.
+
+### 2026-03-09 15:45 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: pending (`gdev-0123`)
+- Summary: Tuned wide-screen framing by scaling up ship/thruster visuals, widening mission-start ship spawn spread, and moving orbital station anchors to screen-relative positions for cleaner docking composition on 1280x720.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue safe, incremental readability/QoL improvements (camera feel and pacing) without changing mission balance.
+- Blockers: none.
