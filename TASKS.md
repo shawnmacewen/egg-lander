@@ -35,3 +35,4 @@
 - `gdev-0024` — Save schema migration hardening + lifetime clears telemetry (completed)
 - `gdev-0025` — Per-level best dock grade persistence + level-select telemetry (completed)
 - `gdev-0026` — Per-level best run score persistence + level-select telemetry (completed)
+- `gdev-0027` — Per-level best mission-time persistence + run timer HUD telemetry (completed)

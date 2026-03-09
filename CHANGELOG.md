@@ -441,3 +441,15 @@ Added per-level best run score persistence (save schema v5), surfaced Best Run t
 - Level select HUD now shows `Best Run` for the currently selected level alongside `Best Dock`.
 - Mission completion breakdown now includes `new PB level score` callout when beaten.
 - Updated `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+
+## 2026-03-09 — gdev-0027 best-time telemetry pass
+
+### Assistant summary (exact)
+Implemented per-level mission time persistence with save-schema migration, added live run timer telemetry to the HUD, surfaced per-level Best Time in level select, and added mission-complete PB time callouts. Verified with `npm run build`.
+
+### Technical details
+- Bumped save schema to `v6` and added `bestLevelTimesMs` per-level persistence with safe migration defaults.
+- Added mission timer tracking from launch (`planet-flying` start) through dock completion.
+- Added HUD `Time` readout for active runs and `Best Time` readout in level telemetry.
+- Added completion breakdown time messaging (including new PB time deltas).
+- Updated task registry for `gdev-0027` completion.
