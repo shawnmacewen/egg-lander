@@ -1,5 +1,22 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0154 flight-assist pressure spread telemetry
+
+### Assistant summary (exact)
+Implemented the next highest-impact flight-readability polish by adding shared assist pressure spread telemetry (`Spread N%`) to both landing and docking cues, so pilots can quickly read the magnitude of limiter-pressure separation (how concentrated vs distributed pressure is) alongside existing shape labels. Verified with `npm run build`.
+
+### Technical details
+- Added `getAssistSpreadReadout(ratios)` helper in `src/main.ts`.
+- Spread cue reports the normalized max-minus-min pressure gap across tracked assist dimensions:
+  - `Spread 0%` when limiter pressure is effectively even.
+  - Higher `Spread N%` as one limiter pulls further away from the rest.
+- Injected spread telemetry into both shared assist cues:
+  - `getDockingAssistCue(...)`
+  - `getLandingAssistCue(...)`
+- Existing risk/window/line/control/vector/buffer/focus/watch/stack/shape/load/drift/bias/trend/delta/stability/pulse/confidence/commit/tempo/fix telemetry remains intact; spread is additive readability guidance only.
+- Updated task registry with `gdev-0154` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0153 flight-assist aggregate drift telemetry
 
 ### Assistant summary (exact)
