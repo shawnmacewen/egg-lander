@@ -67,3 +67,4 @@
 - `gdev-0056` — Level-select mission fail-cost telemetry (`Fail Cost ...` downside cue before launch) (completed)
 - `gdev-0057` — Level-select risk/reward edge telemetry (`Edge Favorable/Even/Costly`) (completed)
 - `gdev-0058` — Level-select mission commitment telemetry (`Commit Push/Bank/Recover/Hold`) (completed)
+- `gdev-0059` — Level-select mission fallback telemetry (`Fallback ...` contingency cue after commitment) (completed)

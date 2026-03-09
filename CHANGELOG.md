@@ -1,5 +1,23 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0059 mission fallback telemetry
+
+### Assistant summary (exact)
+Implemented the next high-impact level-select decision pass: added `Fallback ...` telemetry to show the immediate contingency plan if the committed run posture fails (seed/first-clear safety, push→bank, bank→hold, recover→fundamentals), reducing post-fail indecision and helping players reset quickly. Verified with `npm run build`.
+
+### Technical details
+- Added derived `missionFallbackReadout` in `updateUi()` with no save-schema changes.
+- Fallback logic branches from existing mission state + commitment signal:
+  - pre-attempt → baseline seed guidance
+  - pre-first-clear → route-first-clear safety guidance
+  - `Commit Push` → immediate clean bank contingency
+  - `Commit Bank` → hold line/protect streak contingency
+  - `Commit Recover` → fundamentals/de-escalation contingency
+  - `Commit Hold` → maintain hold until pressure softens
+- Extended level-select telemetry line to include `Fallback ...` directly after commitment guidance.
+- Updated task registry with `gdev-0059` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0058 mission commitment telemetry
 
 ### Assistant summary (exact)

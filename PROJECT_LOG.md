@@ -16,6 +16,14 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ## Entries
 
+### 2026-03-09 10:18 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: `ddb987b` (`gdev-0059`)
+- Summary: Added level-select mission fallback telemetry (`Fallback ...`) so each commitment state now includes an explicit contingency action if the next run fails.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue incremental, low-risk level-select/readability polish while preserving save compatibility.
+- Blockers: none.
+
 ### 2026-03-09 10:13 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
 - Commit: `01e5037` (`gdev-0058`)
