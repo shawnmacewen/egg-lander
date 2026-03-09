@@ -118,3 +118,4 @@
 - `gdev-0107` — Post-clear next-level alias parity (`↑` alongside `N/Enter/Space`) + completion hint copy update (completed)
 - `gdev-0108` — Controls-overlay phase parity pass (crash/pause/clear context-aware quick-action key cards) (completed)
 - `gdev-0109` — Level-select direct loadout hotkeys (`Z/X/C/V`) with unlock gating + control-hint parity (completed)
+- `gdev-0110` — Level-select numeric jump parity: support numpad `1-4` alongside top-row digits with overlay hint update (completed)

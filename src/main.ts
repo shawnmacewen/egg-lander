@@ -204,6 +204,10 @@ class EggLanderMissionScene extends Phaser.Scene {
   private key2!: Phaser.Input.Keyboard.Key
   private key3!: Phaser.Input.Keyboard.Key
   private key4!: Phaser.Input.Keyboard.Key
+  private keyNumpad1!: Phaser.Input.Keyboard.Key
+  private keyNumpad2!: Phaser.Input.Keyboard.Key
+  private keyNumpad3!: Phaser.Input.Keyboard.Key
+  private keyNumpad4!: Phaser.Input.Keyboard.Key
   private keyEnter!: Phaser.Input.Keyboard.Key
   private keyEsc!: Phaser.Input.Keyboard.Key
   private keySlash!: Phaser.Input.Keyboard.Key
@@ -391,6 +395,10 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.key2 = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.TWO)
     this.key3 = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.THREE)
     this.key4 = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.FOUR)
+    this.keyNumpad1 = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_ONE)
+    this.keyNumpad2 = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_TWO)
+    this.keyNumpad3 = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_THREE)
+    this.keyNumpad4 = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_FOUR)
     this.keyEnter = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER)
     this.keyEsc = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.ESC)
     this.keySlash = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.FORWARD_SLASH)
@@ -446,10 +454,10 @@ class EggLanderMissionScene extends Phaser.Scene {
         this.persistSelectedLevelIndex()
         this.updateUi()
       }
-      if (Phaser.Input.Keyboard.JustDown(this.key1)) this.selectLevelByHotkey(0)
-      if (Phaser.Input.Keyboard.JustDown(this.key2)) this.selectLevelByHotkey(1)
-      if (Phaser.Input.Keyboard.JustDown(this.key3)) this.selectLevelByHotkey(2)
-      if (Phaser.Input.Keyboard.JustDown(this.key4)) this.selectLevelByHotkey(3)
+      if (Phaser.Input.Keyboard.JustDown(this.key1) || Phaser.Input.Keyboard.JustDown(this.keyNumpad1)) this.selectLevelByHotkey(0)
+      if (Phaser.Input.Keyboard.JustDown(this.key2) || Phaser.Input.Keyboard.JustDown(this.keyNumpad2)) this.selectLevelByHotkey(1)
+      if (Phaser.Input.Keyboard.JustDown(this.key3) || Phaser.Input.Keyboard.JustDown(this.keyNumpad3)) this.selectLevelByHotkey(2)
+      if (Phaser.Input.Keyboard.JustDown(this.key4) || Phaser.Input.Keyboard.JustDown(this.keyNumpad4)) this.selectLevelByHotkey(3)
       if (Phaser.Input.Keyboard.JustDown(this.cursors.up)
         || Phaser.Input.Keyboard.JustDown(this.keyEnter)
         || Phaser.Input.Keyboard.JustDown(this.keySpace)) {
@@ -2008,7 +2016,7 @@ class EggLanderMissionScene extends Phaser.Scene {
           '←/→ or W/S or L/N  Level',
           'A/D or Q/E  Loadout cycle',
           'Z/X/C/V  Direct loadout',
-          '1-4  Jump to unlocked level',
+          '1-4 / Num 1-4  Jump to unlocked level',
           'H  HUD detail',
           '/ or Tab  Hide this panel',
           'R  New session'

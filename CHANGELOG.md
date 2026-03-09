@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0110 numpad level-jump parity in level select
+
+### Assistant summary (exact)
+Implemented the next highest-impact control-flow parity improvement: level-select direct mission jump now supports numpad `1-4` in addition to top-row digits, and overlay guidance now advertises both so numeric-keypad users can jump levels without remapping habits. Verified with `npm run build`.
+
+### Technical details
+- Added numpad key bindings (`NUMPAD_ONE`..`NUMPAD_FOUR`) and wired them into existing level-select direct jump handling.
+- Kept unlock gating behavior unchanged via existing `selectLevelByHotkey()` flow.
+- Updated level-select controls overlay copy from `1-4` to `1-4 / Num 1-4` for discoverability.
+- Updated task registry with `gdev-0110` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0109 direct loadout hotkeys in level select
 
 ### Assistant summary (exact)
