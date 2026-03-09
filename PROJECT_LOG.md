@@ -16,6 +16,14 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ## Entries
 
+### 2026-03-09 11:33 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: `4793e5c` (`gdev-0073`)
+- Summary: Added level-select mission debrief telemetry (`Debrief ...`) so each commitment state now provides a concrete post-block note prompt players can carry into the next warmup/session.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue safe level-select guidance polish with low-risk readability improvements.
+- Blockers: none.
+
 ### 2026-03-09 11:25 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
 - Commit: `46f6711` (`gdev-0072`)

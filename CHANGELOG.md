@@ -1,5 +1,23 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0073 mission debrief telemetry
+
+### Assistant summary (exact)
+Implemented the next high-impact level-select pacing pass: added `Debrief ...` telemetry that tells players exactly what to log after each run block by commitment state (seed/first-clear/push/bank/recover/hold), so improvement notes stay focused and the next session starts with a clear adjustment cue. Verified with `npm run build`.
+
+### Technical details
+- Added derived `missionDebriefReadout` in `updateUi()` with no save-schema changes.
+- Debrief guidance branches from existing progression + commitment signals:
+  - pre-attempt → `Debrief Record one baseline note: safest landing/dock line`
+  - attempts/no clears → `Debrief Note first-clear blocker and safest recovery route`
+  - `Commit Push` → `Debrief Log PB delta: where pace/score gain was won or lost`
+  - `Commit Bank` → `Debrief Log which rep stayed cleanest for next warmup copy`
+  - `Commit Recover` → `Debrief Log pressure trigger and the rep that stabilized it`
+  - `Commit Hold` → `Debrief Log one hold cue to repeat before next session`
+- Extended level-select telemetry line to include `Debrief ...` immediately after `Exit Rule ...` guidance.
+- Updated task registry with `gdev-0073` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0072 mission exit-rule telemetry
 
 ### Assistant summary (exact)
