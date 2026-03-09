@@ -49,3 +49,4 @@
 - `gdev-0038` — Level-select mastery weighted-component breakdown telemetry (`Mix C/F/N/R/S`) (completed)
 - `gdev-0039` — Level-select mastery caps telemetry (`Caps x/5` for maxed mastery metrics) (completed)
 - `gdev-0040` — Level-select retry-load telemetry (`Retries n` + retries-per-clear) (completed)
+- `gdev-0041` — Level-select mission-pressure telemetry derived from retries-per-clear (`Pressure Low/Medium/High/Extreme`) (completed)

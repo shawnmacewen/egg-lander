@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0041 mission-pressure telemetry
+
+### Assistant summary (exact)
+Implemented the next safe high-impact readability pass: level-select telemetry now includes mission-pressure classification (`Pressure Low/Medium/High/Extreme`) derived from retries-per-clear, giving players an at-a-glance difficulty/consistency signal without save-schema changes. Verified with `npm run build`.
+
+### Technical details
+- Added derived mission-pressure readout in `updateUi()`:
+  - `Pressure --` when no attempts exist.
+  - `Pressure Extreme (no clears yet)` when attempts exist but no clears.
+  - `Pressure Low/Medium/High/Extreme` bands from retries-per-clear for cleared missions.
+- Extended level-select telemetry line to show `Pressure ...` directly beside `Retries` and existing mastery/readability metrics.
+- Updated task registry with `gdev-0041` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0040 retry-load telemetry
 
 ### Assistant summary (exact)
