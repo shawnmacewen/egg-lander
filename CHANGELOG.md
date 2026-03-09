@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0102 universal L quick-exit alias parity
+
+### Assistant summary (exact)
+Implemented the next high-impact control-flow polish: `L` now works as a universal quick-exit alias alongside `Esc` to return to level select from active mission states, and all related in-run hints now advertise `Esc/L` consistently. Verified with `npm run build`.
+
+### Technical details
+- Updated global quick-exit handler to accept `L` in addition to `Esc` wherever `canQuickExitToLevelSelect()` is true.
+- Preserved existing crash-specific `L` flow (timer cleanup + safe level-select return) by keeping crash handler precedence.
+- Updated phase hints for planet brief/flight, pause, takeoff, and orbital docking to display `Esc/L level select` for control parity.
+- Updated task registry with `gdev-0102` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0101 pause resume Enter/Space aliases
 
 ### Assistant summary (exact)

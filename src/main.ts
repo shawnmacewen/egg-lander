@@ -463,7 +463,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     }
 
 
-    if (Phaser.Input.Keyboard.JustDown(this.keyEsc) && this.canQuickExitToLevelSelect()) {
+    if ((Phaser.Input.Keyboard.JustDown(this.keyEsc) || Phaser.Input.Keyboard.JustDown(this.keyL)) && this.canQuickExitToLevelSelect()) {
       this.enterLevelSelect()
       this.updateUi()
       return
@@ -497,7 +497,7 @@ class EggLanderMissionScene extends Phaser.Scene {
       this.phase = 'planet-flying'
       this.missionStartAt = this.time.now
       this.statusText.setText('Planet landing in progress')
-      this.hintText.setText('← → rotate • ↑ thrust • T retry • Esc level select • P pause • H HUD mode • R new session')
+      this.hintText.setText('← → rotate • ↑ thrust • T retry • Esc/L level select • P pause • H HUD mode • R new session')
     }
 
     if (this.phase === 'planet-flying') this.updatePlanetFlight(dt)
@@ -569,7 +569,7 @@ class EggLanderMissionScene extends Phaser.Scene {
       this.pauseStatusBackup = this.statusText.text
       this.pauseHintBackup = this.hintText.text
       this.statusText.setText('Paused')
-      this.hintText.setText('Press P / Enter / Space to resume • T retry • Esc level select • H HUD mode • R new session')
+      this.hintText.setText('Press P / Enter / Space to resume • T retry • Esc/L level select • H HUD mode • R new session')
       this.anims.pauseAll()
       return
     }
@@ -676,7 +676,7 @@ class EggLanderMissionScene extends Phaser.Scene {
       this.runner.setVisible(false)
       this.phase = 'takeoff'
       this.statusText.setText('Boarded with egg: launch to orbit')
-      this.hintText.setText('↑ thrust • ←/→ rotate • T retry • Esc level select • P pause • H HUD mode • R new session')
+      this.hintText.setText('↑ thrust • ←/→ rotate • T retry • Esc/L level select • P pause • H HUD mode • R new session')
       this.ship.setFillStyle(0xffd889)
       this.velocity.set(0, -8)
       this.ship.rotation = 0
@@ -860,7 +860,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.dockingVelocityLine.setVisible(true)
 
     this.statusText.setText('Orbital docking: near-zero-G precision')
-    this.hintText.setText('Dock softly and upright inside ring • ↑ thrust • ←/→ rotate • T retry • Esc level select • P pause • H HUD mode')
+    this.hintText.setText('Dock softly and upright inside ring • ↑ thrust • ←/→ rotate • T retry • Esc/L level select • P pause • H HUD mode')
   }
 
   private updateBossCombat(dt: number) {
@@ -961,7 +961,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.orbitalLayer.setVisible(false)
     this.resetMissionEntities()
     this.statusText.setText(`${level.name}\n1) Land 2) Steal egg 3) Return 4) Take off`)
-    this.hintText.setText('Press ↑ / Enter / Space to start landing run • T retry • Esc level select • R new session')
+    this.hintText.setText('Press ↑ / Enter / Space to start landing run • T retry • Esc/L level select • R new session')
   }
 
   private resetMissionEntities() {
