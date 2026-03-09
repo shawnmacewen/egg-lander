@@ -18,7 +18,7 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ### 2026-03-09 09:25 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
-- Commit: pending (`gdev-0048`)
+- Commit: `b0bf319` (`gdev-0048`)
 - Summary: Added level-select score-target telemetry (`Score Target ...`) derived from saved per-level run PB plus confidence/pressure signals to suggest either aggressive PB push scores or safer stabilization targets.
 - Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: continue incremental, low-risk level-select/readability polish while preserving save compatibility.
