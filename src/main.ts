@@ -186,6 +186,7 @@ class EggLanderMissionScene extends Phaser.Scene {
   private keyA!: Phaser.Input.Keyboard.Key
   private keyD!: Phaser.Input.Keyboard.Key
   private keySpace!: Phaser.Input.Keyboard.Key
+  private keyP!: Phaser.Input.Keyboard.Key
 
   private hudText!: Phaser.GameObjects.Text
   private levelText!: Phaser.GameObjects.Text
@@ -256,6 +257,9 @@ class EggLanderMissionScene extends Phaser.Scene {
   private readonly spears: Array<{ obj: Phaser.GameObjects.Rectangle; vx: number; life: number }> = []
   private readonly bossShots: Array<{ obj: Phaser.GameObjects.Ellipse; vx: number; vy: number; life: number }> = []
   private bossTelegraph!: Phaser.GameObjects.Ellipse
+  private isPaused = false
+  private pauseStatusBackup = ''
+  private pauseHintBackup = ''
   private lastSpearAt = 0
   private lastBossShotAt = 0
   private lastDockGrade = '-'
@@ -334,6 +338,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.keyA = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.A)
     this.keyD = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.D)
     this.keySpace = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
+    this.keyP = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.P)
 
     if (!this.anims.exists('runner-idle')) {
       this.anims.create({ key: 'runner-idle', frames: this.anims.generateFrameNumbers('runner-v1', { start: 0, end: 3 }), frameRate: 7, repeat: -1 })
@@ -371,11 +376,20 @@ class EggLanderMissionScene extends Phaser.Scene {
       return
     }
 
+    if (Phaser.Input.Keyboard.JustDown(this.keyP) && this.canTogglePause()) {
+      this.togglePause()
+    }
+
+    if (this.isPaused) {
+      this.updateUi()
+      return
+    }
+
     if (this.phase === 'planet-brief' && Phaser.Input.Keyboard.JustDown(this.cursors.up)) {
       this.phase = 'planet-flying'
       this.missionStartAt = this.time.now
       this.statusText.setText('Planet landing in progress')
-      this.hintText.setText('← → rotate • ↑ thrust • R new session')
+      this.hintText.setText('← → rotate • ↑ thrust • P pause • R new session')
     }
 
     if (this.phase === 'planet-flying') this.updatePlanetFlight(dt)
@@ -389,6 +403,27 @@ class EggLanderMissionScene extends Phaser.Scene {
     }
 
     this.updateUi()
+  }
+
+  private canTogglePause() {
+    return this.phase === 'planet-brief' || this.phase === 'planet-flying' || this.phase === 'on-foot' || this.phase === 'takeoff' || this.phase === 'orbital-docking'
+  }
+
+  private togglePause() {
+    this.isPaused = !this.isPaused
+
+    if (this.isPaused) {
+      this.pauseStatusBackup = this.statusText.text
+      this.pauseHintBackup = this.hintText.text
+      this.statusText.setText('Paused')
+      this.hintText.setText('Press P to resume • R new session')
+      this.anims.pauseAll()
+      return
+    }
+
+    this.statusText.setText(this.pauseStatusBackup)
+    this.hintText.setText(this.pauseHintBackup)
+    this.anims.resumeAll()
   }
 
   private updatePlanetFlight(dt: number) {
@@ -488,7 +523,7 @@ class EggLanderMissionScene extends Phaser.Scene {
       this.runner.setVisible(false)
       this.phase = 'takeoff'
       this.statusText.setText('Boarded with egg: launch to orbit')
-      this.hintText.setText('↑ thrust • ←/→ rotate • R new session')
+      this.hintText.setText('↑ thrust • ←/→ rotate • P pause • R new session')
       this.ship.setFillStyle(0xffd889)
       this.velocity.set(0, -8)
       this.ship.rotation = 0
@@ -672,7 +707,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.dockingVelocityLine.setVisible(true)
 
     this.statusText.setText('Orbital docking: near-zero-G precision')
-    this.hintText.setText('Dock softly and upright inside ring • ↑ thrust • ←/→ rotate')
+    this.hintText.setText('Dock softly and upright inside ring • ↑ thrust • ←/→ rotate • P pause')
   }
 
   private updateBossCombat(dt: number) {

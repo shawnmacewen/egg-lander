@@ -1,5 +1,22 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0081 in-run pause/resume control
+
+### Assistant summary (exact)
+Implemented a high-impact gameplay quality-of-life pass: added a global in-run pause toggle (`P`) that cleanly freezes active mission phases and shows an explicit resume cue, so players can safely interrupt runs without losing control context. Verified with `npm run build`.
+
+### Technical details
+- Added a dedicated `P` key binding and pause state fields in `EggLanderMissionScene`.
+- Added `canTogglePause()` phase gate so pause is available only during active mission flow (`planet-brief`, `planet-flying`, `on-foot`, `takeoff`, `orbital-docking`).
+- Added `togglePause()` to:
+  - persist current status/hint strings,
+  - swap HUD copy to `Paused` + resume instruction,
+  - pause/resume scene animations via `this.anims.pauseAll()` / `this.anims.resumeAll()`.
+- Updated `update()` loop to short-circuit simulation while paused (`updateUi()` still runs for telemetry continuity).
+- Updated key gameplay hint strings to advertise `P pause` during flight/takeoff/docking.
+- Updated task registry with `gdev-0081` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0080 mission discipline telemetry
 
 ### Assistant summary (exact)

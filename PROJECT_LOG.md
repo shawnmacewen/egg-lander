@@ -16,6 +16,14 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ## Entries
 
+### 2026-03-09 12:13 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: pending (`gdev-0081`; see git history)
+- Summary: Added in-run `P` pause/resume control across active mission phases with gameplay freeze, HUD pause/resume cue, and animation pause/resume handling.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue safe, incremental gameplay QoL/readability polish with no save-schema risk.
+- Blockers: none.
+
 ### 2026-03-09 12:08 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
 - Commit: pending (`gdev-0080`; see git history)
