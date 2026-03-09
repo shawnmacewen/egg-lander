@@ -2114,6 +2114,11 @@ class EggLanderMissionScene extends Phaser.Scene {
     const distState = dist <= level.orbitalDockRadius ? 'IN' : 'OUT'
     const speedState = speed <= level.orbitalSafeSpeed ? 'OK' : 'HOT'
     const alignState = aligned ? 'OK' : 'TILT'
+    const riskState = this.getAssistRiskLabel([
+      dist / Math.max(level.orbitalDockRadius, 1),
+      speed / Math.max(level.orbitalSafeSpeed, 1),
+      aligned ? 0 : 1
+    ])
 
     let correction = 'hold vector'
     if (!aligned) {
@@ -2132,7 +2137,7 @@ class EggLanderMissionScene extends Phaser.Scene {
       ? `${etaSeconds.toFixed(1)}s`
       : '--'
 
-    return `Dock D ${Math.round(dist)}/${level.orbitalDockRadius} ${distState} • S ${Math.round(speed)}/${level.orbitalSafeSpeed} ${speedState} • ETA ${etaReadout} • A ${alignState} • Fix: ${correction}`
+    return `Dock ${riskState} • D ${Math.round(dist)}/${level.orbitalDockRadius} ${distState} • S ${Math.round(speed)}/${level.orbitalSafeSpeed} ${speedState} • ETA ${etaReadout} • A ${alignState} • Fix: ${correction}`
   }
 
   private getLandingAssistCue(level: LevelConfig) {
@@ -2148,6 +2153,11 @@ class EggLanderMissionScene extends Phaser.Scene {
     const vState = vertical <= verticalLimit ? 'OK' : 'HOT'
     const hState = horizontal <= horizontalLimit ? 'OK' : 'HOT'
     const aState = angleDeg <= angleLimitDeg ? 'OK' : 'TILT'
+    const riskState = this.getAssistRiskLabel([
+      vertical / Math.max(verticalLimit, 1),
+      horizontal / Math.max(horizontalLimit, 1),
+      angleDeg / Math.max(angleLimitDeg, 1)
+    ])
 
     const overV = vertical > verticalLimit
     const overH = horizontal > horizontalLimit
@@ -2168,7 +2178,14 @@ class EggLanderMissionScene extends Phaser.Scene {
       correction = 'slow descent'
     }
 
-    return `Landing V ${Math.round(vertical)}/${Math.round(verticalLimit)} ${vState} • H ${Math.round(horizontal)}/${Math.round(horizontalLimit)} ${hState} • A ${Math.round(angleDeg)}°/${Math.round(angleLimitDeg)}° ${aState} • Alt ${altitude}px • ETA ${etaReadout} • Fix: ${correction}`
+    return `Landing ${riskState} • V ${Math.round(vertical)}/${Math.round(verticalLimit)} ${vState} • H ${Math.round(horizontal)}/${Math.round(horizontalLimit)} ${hState} • A ${Math.round(angleDeg)}°/${Math.round(angleLimitDeg)}° ${aState} • Alt ${altitude}px • ETA ${etaReadout} • Fix: ${correction}`
+  }
+
+  private getAssistRiskLabel(ratios: number[]) {
+    const worstRatio = ratios.reduce((max, ratio) => Math.max(max, ratio), 0)
+    if (worstRatio <= 0.75) return 'Risk SAFE'
+    if (worstRatio <= 1) return 'Risk CAUTION'
+    return 'Risk DANGER'
   }
 
   private getOnFootObjectiveCue(targetX: number, label: string) {

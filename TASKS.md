@@ -142,3 +142,4 @@
 - `gdev-0131` — Orbital-docking assist corrective-action cue (`Fix: ...` live recovery hint for ring alignment/closing speed/tilt) (completed)
 - `gdev-0132` — Orbital docking closure ETA telemetry in assist cue (`ETA Ns` time-to-contact readability) (completed)
 - `gdev-0133` — Planet landing closure ETA telemetry in assist cue (`ETA Ns` touchdown timing readability) (completed)
+- `gdev-0134` — Flight-assist risk-band telemetry (`Risk SAFE/CAUTION/DANGER`) for landing and docking readability (completed)

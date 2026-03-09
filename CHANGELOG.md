@@ -1,5 +1,18 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0134 flight-assist risk-band telemetry
+
+### Assistant summary (exact)
+Implemented the next highest-impact flight-readability polish by adding a shared assist risk band (`Risk SAFE/CAUTION/DANGER`) to both landing and docking cues, so players can parse approach safety at a glance before reading detailed metric rows. Verified with `npm run build`.
+
+### Technical details
+- Added `getAssistRiskLabel(ratios)` helper in `src/main.ts`.
+- Docking assist now prefixes the cue with a risk band derived from normalized distance, speed, and alignment status.
+- Landing assist now prefixes the cue with a risk band derived from normalized vertical speed, horizontal speed, and tilt angle vs active limits.
+- Existing detailed telemetry (`D/S/A`, `V/H/A`, `ETA`, `Fix`) remains unchanged and now sits behind the new at-a-glance risk label.
+- Updated task registry with `gdev-0134` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0133 planet-landing closure ETA telemetry
 
 ### Assistant summary (exact)
