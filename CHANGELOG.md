@@ -1214,3 +1214,13 @@ Added a level-select `Checkpoint` telemetry cue that asks one block-closing vali
 - Integrated `Checkpoint ...` into the level-select telemetry line immediately after `Command`.
 - Updated task registry in `TASKS.md` with `gdev-0075` marked completed.
 - Build verification: `npm run build` (pass).
+## 2026-03-09 — gdev-0076 mission go-signal telemetry
+
+### Assistant summary (exact)
+Added a level-select `Go Signal` telemetry cue that clearly marks whether the next launch block is green-lighted for baseline/first-clear, clean banking, or a single PB shot (and when to stay yellow). Verified with `npm run build`.
+
+### Technical details
+- Added `missionGoSignalReadout` derivation in `src/main.ts`, keyed to baseline/first-clear state plus commitment and push-window signals.
+- Integrated `Go Signal ...` into the level-select telemetry line immediately after `Checkpoint`.
+- Updated task registry in `TASKS.md` with `gdev-0076` marked completed.
+- Build verification: `npm run build` (pass).

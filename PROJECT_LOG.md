@@ -670,3 +670,10 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 - Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: continue safe level-select guidance polish with low-risk readability improvements.
 - Blockers: none.
+### 2026-03-09 11:50 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: pending (`gdev-0076`)
+- Summary: Added level-select `Go Signal` telemetry that turns commitment/window state into an explicit green/yellow launch authorization cue.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue safe level-select guidance polish with low-risk readability improvements.
+- Blockers: none.
