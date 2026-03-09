@@ -20,3 +20,4 @@
 - `gdev-0009` — Fix global `egg-refresh` symlink path resolution (completed)
 
 - `gdev-0010` — Integrate first runner sprite sheet + on-foot animations (completed)
+- `gdev-0012` — Stability-thrusters-gated optional relic side objective with score bonus (completed)

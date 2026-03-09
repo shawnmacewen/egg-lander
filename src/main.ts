@@ -125,6 +125,7 @@ class EggLanderMissionScene extends Phaser.Scene {
   private planetPad!: Phaser.GameObjects.Rectangle
   private terrain!: Phaser.GameObjects.Rectangle
   private egg!: Phaser.GameObjects.Ellipse
+  private bonusRelic!: Phaser.GameObjects.Star
   private runner!: Phaser.GameObjects.Sprite
   private stationRing!: Phaser.GameObjects.Ellipse
   private stationCore!: Phaser.GameObjects.Rectangle
@@ -155,6 +156,8 @@ class EggLanderMissionScene extends Phaser.Scene {
   private runnerSpeed = 210
   private hasEgg = false
   private eggStolen = false
+  private bonusObjectiveActive = false
+  private bonusObjectiveCollected = false
   private bossActive = false
   private bossHp = 0
   private playerHp = 3
@@ -193,10 +196,11 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.terrain = this.add.rectangle(width / 2, height - 8, width, 16, 0x130f2f)
     this.planetPad = this.add.rectangle(width / 2, height - 25, 170, 16, 0xc9f25a).setStrokeStyle(3, 0x151515)
     this.egg = this.add.ellipse(width - 140, height - 44, 24, 30, 0xfff2ba).setStrokeStyle(2, 0x242424)
+    this.bonusRelic = this.add.star(width / 2 + 120, height - 48, 5, 6, 12, 0x8dfdff).setStrokeStyle(2, 0x1f2d35).setVisible(false)
     this.runner = this.add.sprite(width / 2, height - 48, 'runner-v1', 0).setVisible(false).setScale(0.42)
     this.bossBody = this.add.ellipse(width - 240, height - 52, 66, 66, 0x0c0c0c).setStrokeStyle(4, 0x1f1f1f).setVisible(false)
     this.bossEye = this.add.ellipse(width - 240, height - 52, 18, 18, 0xffffff).setVisible(false)
-    this.planetLayer.add([skyBand, sunDisc, farMount, nearMount, eyeTotem, eyePupil, this.terrain, this.planetPad, this.egg, this.bossBody, this.bossEye, this.runner])
+    this.planetLayer.add([skyBand, sunDisc, farMount, nearMount, eyeTotem, eyePupil, this.terrain, this.planetPad, this.egg, this.bonusRelic, this.bossBody, this.bossEye, this.runner])
 
     this.orbitalLayer.add([
       this.add.rectangle(width / 2, height / 2, width, height, 0x070b17),
@@ -354,6 +358,12 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.updateSpears(dt)
     this.updateBossCombat(dt)
 
+    if (this.bonusObjectiveActive && !this.bonusObjectiveCollected && Math.abs(this.runner.x - this.bonusRelic.x) < 18) {
+      this.bonusObjectiveCollected = true
+      this.bonusRelic.setVisible(false)
+      this.statusText.setText('Side objective complete: relic secured (+250 on dock)!')
+    }
+
     if (!this.eggStolen && Math.abs(this.runner.x - this.egg.x) < 16) {
       if (this.bossActive) {
         this.statusText.setText('Boss blocks the egg — throw spears (Space)!')
@@ -463,6 +473,10 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.runner.setFlipX(false)
     this.runner.play('runner-idle', true)
 
+    this.bonusObjectiveActive = this.saveData.selectedPowerup === 'stability-thrusters'
+    this.bonusObjectiveCollected = false
+    this.bonusRelic.setVisible(this.bonusObjectiveActive)
+
     // Boss appears from level 2 onward.
     this.bossActive = LEVELS[this.levelIndex].id >= 2
     this.bossHp = this.bossActive ? 3 : 0
@@ -471,10 +485,10 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.bossEye.setVisible(this.bossActive)
     if (this.bossActive) {
       this.statusText.setText('Landed. Defeat boss with spears, then steal egg')
-      this.hintText.setText('On foot: ←/→ run • Space throw spear')
+      this.hintText.setText(this.bonusObjectiveActive ? 'On foot: ←/→ run • Space spear • grab cyan relic for bonus' : 'On foot: ←/→ run • Space throw spear')
     } else {
       this.statusText.setText('Landed. Exit, steal egg, return')
-      this.hintText.setText('On foot: ←/→ run • steal egg then return to lander')
+      this.hintText.setText(this.bonusObjectiveActive ? 'On foot: ←/→ run • grab cyan relic for bonus • steal egg then return' : 'On foot: ←/→ run • steal egg then return to lander')
     }
   }
 
@@ -614,7 +628,10 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.fuel = 100
     this.hasEgg = false
     this.eggStolen = false
+    this.bonusObjectiveActive = false
+    this.bonusObjectiveCollected = false
     this.egg.setVisible(true)
+    this.bonusRelic.setVisible(false)
     this.bossActive = false
     this.bossHp = 0
     this.playerHp = 3
@@ -632,6 +649,7 @@ class EggLanderMissionScene extends Phaser.Scene {
 
     this.planetPad.setSize(level.padWidth, 16)
     this.egg.x = this.scale.width / 2 + level.runDistance
+    this.bonusRelic.x = this.scale.width / 2 + Math.round(level.runDistance * 0.58)
 
     this.ship.setPosition(this.scale.width / 2 + Phaser.Math.Between(-120, 120), 90)
     this.ship.setRotation(Phaser.Math.FloatBetween(-0.08, 0.08))
@@ -660,7 +678,8 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.attempts += 1
     this.velocity.set(0, 0)
 
-    const gained = level.completionScore + Math.round(this.fuel * 0.5)
+    const bonus = this.bonusObjectiveCollected ? 250 : 0
+    const gained = level.completionScore + Math.round(this.fuel * 0.5) + bonus
     this.sessionScore += gained
 
     const levelNumber = this.levelIndex + 1
@@ -672,7 +691,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.saveData.bestScore = Math.max(this.saveData.bestScore, this.sessionScore)
     this.saveSave(this.saveData)
 
-    this.statusText.setText(`Dock complete! +${gained}\nN next level • L level select`)
+    this.statusText.setText(`Dock complete! +${gained}${bonus ? ' (includes +250 relic bonus)' : ''}\nN next level • L level select`)
     this.hintText.setText('Mission loop clear: land → run → steal → return → takeoff → dock')
   }
 
@@ -722,7 +741,13 @@ class EggLanderMissionScene extends Phaser.Scene {
 
     let objective = 'Land on planet, grab egg on foot, return, launch, then precision dock in orbit.'
     if (this.phase === 'on-foot' && !this.hasEgg) {
-      objective = this.bossActive ? 'Defeat boss with Space spears, then steal egg.' : 'Run right to steal egg.'
+      if (this.bonusObjectiveActive && !this.bonusObjectiveCollected) {
+        objective = this.bossActive
+          ? 'Optional: secure cyan relic (+250), defeat boss, then steal egg.'
+          : 'Optional: secure cyan relic (+250), then run right to steal egg.'
+      } else {
+        objective = this.bossActive ? 'Defeat boss with Space spears, then steal egg.' : 'Run right to steal egg.'
+      }
     }
     if (this.phase === 'on-foot' && this.hasEgg) objective = 'Run back left to board lander with egg.'
     if (this.phase === 'orbital-docking') objective = 'Near-zero-G docking: low speed + upright alignment in ring.'

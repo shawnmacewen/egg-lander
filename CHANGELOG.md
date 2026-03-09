@@ -233,3 +233,15 @@ Validated with git: canonical remote `https://github.com/shawnmacewen/egg-lander
   - `shawnmacewen/egg-lander` reachable
   - `OddEye-Agent/egg-lander` not found
 - Updated `README.md` with canonical remote section.
+
+## 2026-03-09 — gdev-0012 optional relic side objective
+
+### Assistant summary (exact)
+Implemented the next highest-impact gameplay slice: added a Stability Thrusters-gated optional on-foot relic objective that awards a +250 docking bonus, integrated objective/hint/UI messaging for the side route, and verified the game still builds cleanly.
+
+### Technical details
+- Added a cyan relic pickup during on-foot phase when `Stability Thrusters` loadout is selected.
+- Added side-objective state tracking (`bonusObjectiveActive`, `bonusObjectiveCollected`) and a +250 score bonus applied on mission completion.
+- Updated objective text/hints/status copy to surface optional objective flow without interrupting the core mission loop.
+- Updated task registry with `gdev-0012` completion.
+- Build verification: `npm run build` (pass).

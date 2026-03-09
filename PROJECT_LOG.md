@@ -160,3 +160,11 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 - Files: `README.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: continue gameplay iteration work.
 - Blockers: none.
+
+### 2026-03-09 06:16 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: pending (`gdev-0012`)
+- Summary: Added a Stability Thrusters-gated optional relic side objective in the on-foot phase with a +250 completion bonus and updated mission UI messaging.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: integrate boss/weapon sprite assets once provided, and continue tightening mission readability.
+- Blockers: no new assets yet beyond runner sheet.
