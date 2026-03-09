@@ -1,5 +1,18 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0121 mission-brief/crash hint HUD-toggle parity
+
+### Assistant summary (exact)
+Implemented the next highest-impact control-copy parity pass: mission-brief and crash-state hint text now consistently advertises the existing `H` HUD toggle alongside retry/exit/session controls, so pre-launch and recovery guidance matches available inputs. Verified with `npm run build`.
+
+### Technical details
+- Updated mission-brief launch hint copy in `src/main.ts` to include `H HUD mode`.
+- Updated fail-transition hint copy (`Retrying this level…`) to include `H HUD mode`.
+- Updated crash-flow hint copy to include `H HUD mode` during auto-retry countdown.
+- Gameplay/input behavior unchanged; copy/readability parity only.
+- Updated task registry with `gdev-0121` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0120 active controls-overlay pause label correctness
 
 ### Assistant summary (exact)

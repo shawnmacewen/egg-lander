@@ -129,3 +129,4 @@
 - `gdev-0118` — Takeoff hint control parity: remove on-foot spear prompt from ship-launch guidance (completed)
 - `gdev-0119` — Post-clear mission-loop hint parity (`Esc/L` quick exit + `H` HUD mode in clear-screen hint copy) (completed)
 - `gdev-0120` — Active controls-overlay pause label correctness (`P` pauses; `Enter/Space` resume only while paused) (completed)
+- `gdev-0121` — Mission-brief/crash hint HUD-toggle parity (`H`) across pre-launch and crash flows (completed)

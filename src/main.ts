@@ -1014,7 +1014,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.orbitalLayer.setVisible(false)
     this.resetMissionEntities()
     this.statusText.setText(`${level.name}\n1) Land 2) Steal egg 3) Return 4) Take off`)
-    this.hintText.setText('Press ↑ / Enter / Space to start landing run • T retry • Esc/L level select • R new session')
+    this.hintText.setText('Press ↑ / Enter / Space to start landing run • T retry • Esc/L level select • H HUD mode • R new session')
   }
 
   private resetMissionEntities() {
@@ -1072,7 +1072,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.lastFailReason = reason
     this.crashRetryDueAt = this.time.now + 900
     this.statusText.setText(`Mission failed: ${reason}`)
-    this.hintText.setText('Retrying this level… (T/Enter/Space now • Esc/L level select • R new session)')
+    this.hintText.setText('Retrying this level… (T/Enter/Space now • Esc/L level select • H HUD mode • R new session)')
     this.saveSave(this.saveData)
 
     this.pendingCrashRetryTimer = this.time.delayedCall(900, () => {
@@ -1993,7 +1993,7 @@ class EggLanderMissionScene extends Phaser.Scene {
       const retryCountdown = retryMs > 0 ? `${Math.ceil(retryMs / 10) * 10}ms` : 'now'
       const failReason = this.lastFailReason || 'run failed'
       this.statusText.setText(`Mission failed: ${failReason} • auto-retry ${retryCountdown}`)
-      this.hintText.setText('Crash flow: T/Enter/Space instant retry • Esc/L level select • R new session')
+      this.hintText.setText('Crash flow: T/Enter/Space instant retry • Esc/L level select • H HUD mode • R new session')
     }
 
     let objective = 'Land on planet, grab egg on foot, return, launch, then precision dock in orbit.'

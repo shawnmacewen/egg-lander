@@ -16,6 +16,14 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ## Entries
 
+### 2026-03-09 15:35 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: `pending` (`gdev-0121`; see git history)
+- Summary: Added control-copy parity for HUD-toggle discoverability by including `H HUD mode` in mission-brief launch and crash-flow hints (`Retrying...` + `Crash flow...`).
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue safe, incremental input-flow/readability polish that removes remaining hint/overlay mismatches without changing mission balance.
+- Blockers: none.
+
 ### 2026-03-09 15:30 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
 - Commit: `pending` (`gdev-0120`; see git history)
