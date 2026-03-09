@@ -18,7 +18,7 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ### 2026-03-09 11:08 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
-- Commit: pending (`gdev-0069`)
+- Commit: `4fca189` (`gdev-0069`)
 - Summary: Added level-select mission session-goal telemetry (`Session Goal ...`) so each commitment state now defines a concrete block-end objective (baseline/first-clear/PB rep/bank/recover/hold) and discourages overextension.
 - Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: continue safe level-select guidance polish with low-risk readability improvements.
