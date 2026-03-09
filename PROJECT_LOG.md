@@ -16,6 +16,14 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ## Entries
 
+### 2026-03-09 16:08 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: `5394727` (`gdev-0128`)
+- Summary: Added off-screen edge-side objective telemetry so on-foot cues now specify camera edge orientation (`off-screen LEFT/RIGHT +Npx`) in addition to depth, improving instant route correction on widened layouts.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue safe, incremental readability/feel polish (camera and traversal cues) without changing mission balance.
+- Blockers: none.
+
 ### 2026-03-09 16:04 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
 - Commit: `e010b68` (`gdev-0127`)

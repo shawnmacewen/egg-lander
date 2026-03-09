@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0128 on-foot objective edge-side telemetry
+
+### Assistant summary (exact)
+Implemented the next highest-impact traversal-readability polish by adding explicit off-screen edge-side orientation to on-foot objective cues (`off-screen LEFT/RIGHT +Npx`), so players can instantly tell which camera edge the egg/lander target is beyond while sprinting on widened layouts. Verified with `npm run build`.
+
+### Technical details
+- Updated `getOnFootObjectiveCue()` in `src/main.ts` to label off-screen targets with edge side (`LEFT`/`RIGHT`) in addition to existing beyond-edge distance.
+- New cue format when target is off-camera: `off-screen LEFT +Npx` or `off-screen RIGHT +Npx`.
+- Preserved existing directional runner-relative arrow cue (`Npx ←/→`) and near-target collapse behavior (`Label: here`).
+- Updated task registry with `gdev-0128` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0127 on-foot objective edge-distance telemetry
 
 ### Assistant summary (exact)
