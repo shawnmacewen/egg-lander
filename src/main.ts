@@ -2152,6 +2152,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     const trendReadout = this.getAssistTrendReadout(dockingWorstRatio, this.prevDockingAssistWorstRatio)
     const deltaReadout = this.getAssistDeltaReadout(dockingWorstRatio, this.prevDockingAssistWorstRatio)
     const stabilityReadout = this.getAssistStabilityReadout(dockingWorstRatio, this.prevDockingAssistWorstRatio)
+    const pulseReadout = this.getAssistPulseReadout(dockingWorstRatio, this.prevDockingAssistWorstRatio)
     const confidenceReadout = this.getAssistConfidenceReadout(dockingWorstRatio, this.prevDockingAssistWorstRatio)
     const commitReadout = this.getAssistCommitReadout(dockingWorstRatio, this.prevDockingAssistWorstRatio)
     const tempoReadout = this.getAssistTempoReadout(dockingWorstRatio, this.prevDockingAssistWorstRatio)
@@ -2159,7 +2160,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     const lineReadout = this.getAssistLineReadout(dockingWorstRatio, this.prevDockingAssistWorstRatio)
     this.prevDockingAssistWorstRatio = dockingWorstRatio
 
-    return `Dock ${riskState} • ${windowReadout} • ${lineReadout} • ${bufferReadout} • ${focusReadout} • ${trendReadout} • ${deltaReadout} • ${stabilityReadout} • ${confidenceReadout} • ${commitReadout} • ${tempoReadout} • D ${Math.round(dist)}/${level.orbitalDockRadius} ${distState} • S ${Math.round(speed)}/${level.orbitalSafeSpeed} ${speedState} • ETA ${etaReadout} • A ${alignState} • Fix: ${correction}`
+    return `Dock ${riskState} • ${windowReadout} • ${lineReadout} • ${bufferReadout} • ${focusReadout} • ${trendReadout} • ${deltaReadout} • ${stabilityReadout} • ${pulseReadout} • ${confidenceReadout} • ${commitReadout} • ${tempoReadout} • D ${Math.round(dist)}/${level.orbitalDockRadius} ${distState} • S ${Math.round(speed)}/${level.orbitalSafeSpeed} ${speedState} • ETA ${etaReadout} • A ${alignState} • Fix: ${correction}`
   }
 
   private getLandingAssistCue(level: LevelConfig) {
@@ -2211,6 +2212,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     const trendReadout = this.getAssistTrendReadout(landingWorstRatio, this.prevLandingAssistWorstRatio)
     const deltaReadout = this.getAssistDeltaReadout(landingWorstRatio, this.prevLandingAssistWorstRatio)
     const stabilityReadout = this.getAssistStabilityReadout(landingWorstRatio, this.prevLandingAssistWorstRatio)
+    const pulseReadout = this.getAssistPulseReadout(landingWorstRatio, this.prevLandingAssistWorstRatio)
     const confidenceReadout = this.getAssistConfidenceReadout(landingWorstRatio, this.prevLandingAssistWorstRatio)
     const commitReadout = this.getAssistCommitReadout(landingWorstRatio, this.prevLandingAssistWorstRatio)
     const tempoReadout = this.getAssistTempoReadout(landingWorstRatio, this.prevLandingAssistWorstRatio)
@@ -2218,7 +2220,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     const lineReadout = this.getAssistLineReadout(landingWorstRatio, this.prevLandingAssistWorstRatio)
     this.prevLandingAssistWorstRatio = landingWorstRatio
 
-    return `Landing ${riskState} • ${windowReadout} • ${lineReadout} • ${bufferReadout} • ${focusReadout} • ${trendReadout} • ${deltaReadout} • ${stabilityReadout} • ${confidenceReadout} • ${commitReadout} • ${tempoReadout} • V ${Math.round(vertical)}/${Math.round(verticalLimit)} ${vState} • H ${Math.round(horizontal)}/${Math.round(horizontalLimit)} ${hState} • A ${Math.round(angleDeg)}°/${Math.round(angleLimitDeg)}° ${aState} • Alt ${altitude}px • ETA ${etaReadout} • Fix: ${correction}`
+    return `Landing ${riskState} • ${windowReadout} • ${lineReadout} • ${bufferReadout} • ${focusReadout} • ${trendReadout} • ${deltaReadout} • ${stabilityReadout} • ${pulseReadout} • ${confidenceReadout} • ${commitReadout} • ${tempoReadout} • V ${Math.round(vertical)}/${Math.round(verticalLimit)} ${vState} • H ${Math.round(horizontal)}/${Math.round(horizontalLimit)} ${hState} • A ${Math.round(angleDeg)}°/${Math.round(angleLimitDeg)}° ${aState} • Alt ${altitude}px • ETA ${etaReadout} • Fix: ${correction}`
   }
 
   private getAssistRiskLabel(ratios: number[]) {
@@ -2274,6 +2276,16 @@ class EggLanderMissionScene extends Phaser.Scene {
     if (volatility >= 0.1) return 'Stability SWING'
     if (volatility >= 0.05) return 'Stability SHAKY'
     return 'Stability STEADY'
+  }
+
+  private getAssistPulseReadout(currentWorstRatio: number, prevWorstRatio: number | null) {
+    const volatility = prevWorstRatio === null ? 0 : Math.abs(currentWorstRatio - prevWorstRatio)
+
+    if (currentWorstRatio > 1.1) return 'Pulse SPIKE'
+    if (currentWorstRatio > 1) return 'Pulse HOT'
+    if (volatility >= 0.1) return 'Pulse SWING'
+    if (currentWorstRatio <= 0.75) return 'Pulse CALM'
+    return 'Pulse ACTIVE'
   }
 
   private getAssistConfidenceReadout(currentWorstRatio: number, prevWorstRatio: number | null) {

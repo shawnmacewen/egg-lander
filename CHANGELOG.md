@@ -1,5 +1,25 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0145 flight-assist pulse telemetry
+
+### Assistant summary (exact)
+Implemented the next highest-impact flight-readability polish by adding shared assist pulse telemetry (`Pulse CALM/ACTIVE/SWING/HOT/SPIKE`) to both landing and docking cues, so players can instantly gauge control-intensity pressure (calm, active, volatile, or over-limit) while approaching thresholds. Verified with `npm run build`.
+
+### Technical details
+- Added `getAssistPulseReadout(currentWorstRatio, prevWorstRatio)` helper in `src/main.ts`.
+- Pulse cue maps safety ratio + short-term volatility into intensity labels:
+  - `Pulse CALM` when clearly inside thresholds.
+  - `Pulse ACTIVE` when near threshold but stable.
+  - `Pulse SWING` when volatility is high despite being within limits.
+  - `Pulse HOT` when over-threshold.
+  - `Pulse SPIKE` when significantly over-threshold.
+- Injected pulse telemetry into both shared assist cues:
+  - `getDockingAssistCue(...)`
+  - `getLandingAssistCue(...)`
+- Existing risk/window/line/buffer/focus/trend/delta/stability/confidence/commit/tempo/fix telemetry remains intact; pulse is additive readability guidance only.
+- Updated task registry with `gdev-0145` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0144 flight-assist line-integrity telemetry
 
 ### Assistant summary (exact)
