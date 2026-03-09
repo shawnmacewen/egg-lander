@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0036 level mastery focus recommendation
+
+### Assistant summary (exact)
+Implemented the next safe high-impact readability pass: level-select telemetry now highlights the weakest mastery metric for the selected mission (clear rate, first-try, clean, relic, or S-dock) so players get an immediate “what to improve next” cue without changing save schema. Verified with `npm run build`.
+
+### Technical details
+- Added derived mastery-focus analysis in `updateUi()` by evaluating the five existing mastery metric rates and selecting the lowest-value area.
+- Added fallback messaging:
+  - `Complete first clear to seed mastery telemetry` when a mission has no clears yet.
+  - `All metrics capped — push speed PBs` when all tracked mastery rates are maxed.
+- Extended level-select telemetry with `Next <focus>` readout directly after mastery tier/score.
+- Updated task registry with `gdev-0036` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0035 level mastery tier + score telemetry
 
 ### Assistant summary (exact)
