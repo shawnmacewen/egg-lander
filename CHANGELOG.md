@@ -1,5 +1,23 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0069 mission session-goal telemetry
+
+### Assistant summary (exact)
+Implemented the next high-impact level-select pacing pass: added `Session Goal ...` telemetry that defines the block-end objective for the current commitment state (seed/first-clear/push/bank/recover/hold), so each play block has a clear finish condition and players stop overextending. Verified with `npm run build`.
+
+### Technical details
+- Added derived `missionSessionGoalReadout` in `updateUi()` with no save-schema changes.
+- Session-goal guidance branches from existing progression + commitment signals:
+  - pre-attempt → `Session Goal Log one clean baseline finish on this level`
+  - attempts/no clears → `Session Goal Secure first clear, then stop push attempts`
+  - `Commit Push` → `Session Goal Land one PB-quality rep, then bank exit`
+  - `Commit Bank` → `Session Goal Stack two clean reps and preserve streak`
+  - `Commit Recover` → `Session Goal Lower pressure band before ending set`
+  - `Commit Hold` → `Session Goal Hold consistency and finish composed`
+- Extended level-select telemetry line to include `Session Goal ...` immediately after `Reassess ...` guidance.
+- Updated task registry with `gdev-0069` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0068 mission reassess telemetry
 
 ### Assistant summary (exact)
