@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0092 level-select loadout alt hotkeys
+
+### Assistant summary (exact)
+Implemented the next high-impact run-loop QoL pass: level select now accepts `Q/E` as alternate loadout-cycle hotkeys (alongside `A/D`), making perk selection faster across keyboard layouts/hand positions while preserving existing controls. Verified with `npm run build`.
+
+### Technical details
+- Added dedicated `Q` and `E` key bindings in `EggLanderMissionScene` input setup.
+- Updated level-select loadout handling to cycle backward on `A` or `Q`, and forward on `D` or `E`.
+- Updated level-select status/hint copy to advertise `A/D or Q/E` loadout controls.
+- Updated task registry with `gdev-0092` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0091 level-select quick launch hotkeys
 
 ### Assistant summary (exact)
