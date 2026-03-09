@@ -18,7 +18,7 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ### 2026-03-09 12:37 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
-- Commit: pending (`gdev-0085`)
+- Commit: `548e691` (`gdev-0085`)
 - Summary: Added mission-complete `T` instant replay control so players can immediately rerun the current level from the clear screen without detouring through level select.
 - Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: continue safe, incremental gameplay QoL/readability improvements with no save-schema risk.
