@@ -296,3 +296,11 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 - Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: continue safe progression/readability passes (low-risk UI and persistence polish) while waiting on new art drops.
 - Blockers: no new content art beyond runner sheet.
+
+### 2026-03-09 07:49 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: pending (`gdev-0029`; finalized in git history)
+- Summary: Added lifetime best-streak persistence (save schema v8), surfaced Best Streak telemetry in level select, and added new-best-streak mission-complete callout.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue safe post-MVP progression polish (low-risk persistence/readability wins) while waiting on new art drops.
+- Blockers: no new content art beyond runner sheet.

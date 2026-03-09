@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0029 lifetime best-streak persistence
+
+### Assistant summary (exact)
+Implemented the next safe progression-feedback pass: mission clear streaks now persist a lifetime **best streak** record (save schema v8), level select now surfaces that best-streak telemetry, and mission-complete breakdown now calls out when a new best streak is set. Verified with `npm run build`.
+
+### Technical details
+- Bumped save schema version to `v8`.
+- Extended `SaveData` with `bestStreak` and added backward-safe migration/default handling.
+- On level completion, now updates and persists lifetime `bestStreak` when current streak exceeds prior record.
+- Added mission-complete breakdown callout when a new best streak is achieved.
+- Added `Best Streak` telemetry to level-select readout.
+- Updated task registry for `gdev-0029` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-02 — gdev-0001 scaffold
 
 ### Assistant summary (exact)

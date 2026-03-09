@@ -37,3 +37,4 @@
 - `gdev-0026` — Per-level best run score persistence + level-select telemetry (completed)
 - `gdev-0027` — Per-level best mission-time persistence + run timer HUD telemetry (completed)
 - `gdev-0028` — Per-level attempts/clears persistence + level-select clear-rate telemetry (completed)
+- `gdev-0029` — Persist lifetime best mission-clear streak + level-select/readout telemetry (completed)
