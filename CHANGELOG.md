@@ -1260,3 +1260,14 @@ Added a level-select `Go Signal` telemetry cue that clearly marks whether the ne
 - Integrated `Go Signal ...` into the level-select telemetry line immediately after `Checkpoint`.
 - Updated task registry in `TASKS.md` with `gdev-0076` marked completed.
 - Build verification: `npm run build` (pass).
+
+## 2026-03-09 — gdev-0079 mission stability telemetry
+
+### Assistant summary (exact)
+Added a level-select `Stability` telemetry cue that tells players when to spend or protect execution consistency based on mission commitment/window state, so PB attempts stay disciplined and recovery blocks stay controlled. Verified with `npm run build`.
+
+### Technical details
+- Added `missionStabilityReadout` derivation in `src/main.ts`, branching across baseline/first-clear/push/bank/recover/hold states and push-window availability.
+- Integrated `Stability ...` into the level-select telemetry line immediately after `Priority`.
+- Updated task registry in `TASKS.md` with `gdev-0079` marked completed.
+- Build verification: `npm run build` (pass).
