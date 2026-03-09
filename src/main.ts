@@ -483,7 +483,11 @@ class EggLanderMissionScene extends Phaser.Scene {
       return
     }
 
-    if (this.phase === 'planet-brief' && Phaser.Input.Keyboard.JustDown(this.cursors.up)) {
+    if (this.phase === 'planet-brief' && (
+      Phaser.Input.Keyboard.JustDown(this.cursors.up)
+      || Phaser.Input.Keyboard.JustDown(this.keyEnter)
+      || Phaser.Input.Keyboard.JustDown(this.keySpace)
+    )) {
       this.phase = 'planet-flying'
       this.missionStartAt = this.time.now
       this.statusText.setText('Planet landing in progress')
@@ -1123,7 +1127,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.ship.rotation = 0
     this.velocity.set(0, 0)
     this.thruster.setVisible(false)
-    this.statusText.setText(`Level Select\nL / N or W / S choose • A / D / Q / E powerup • ↑ launch mission`)
+    this.statusText.setText(`Level Select\nL / N or W / S choose • A / D / Q / E powerup • ↑ / Enter / Space launch mission`)
     this.hintText.setText('R starts a fresh session (keeps saved progression) • H toggles HUD detail')
     this.resetMissionEntities()
     this.updateUi()

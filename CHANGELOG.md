@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0099 planet-brief launch key aliases
+
+### Assistant summary (exact)
+Implemented the next high-impact input-flow QoL pass: mission brief launch now accepts `Enter` and `Space` in addition to `↑`, so players can start descent from the same keys already used elsewhere in the loop. Verified with `npm run build`.
+
+### Technical details
+- Updated `planet-brief` input gate to start `planet-flying` on `↑`, `Enter`, or `Space`.
+- Updated level-select status copy to advertise `↑ / Enter / Space` mission launch for consistency.
+- Updated task registry with `gdev-0099` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0098 persistent controls-overlay preference
 
 ### Assistant summary (exact)

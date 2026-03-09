@@ -107,3 +107,4 @@
 - `gdev-0096` — Crash/clear quick-action alias keys (`Enter`/`Space`) for instant retry + next-level flow (completed)
 - `gdev-0097` — Toggleable in-game controls overlay (`/`) for quick hotkey reference across level-select and mission phases (completed)
 - `gdev-0098` — Persist controls-overlay preference (`/`) across sessions and reloads (completed)
+- `gdev-0099` — Planet-brief launch accepts `Enter`/`Space` aliases alongside `↑` (completed)
