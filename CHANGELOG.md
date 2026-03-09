@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0127 on-foot objective edge-distance telemetry
+
+### Assistant summary (exact)
+Implemented the next highest-impact traversal-readability polish by extending on-foot objective off-screen cues with edge-distance depth (`off-screen +Npx`), so players can estimate how far beyond the current camera bounds the egg/lander target is instead of only knowing it is off-camera. Verified with `npm run build`.
+
+### Technical details
+- Updated `getOnFootObjectiveCue()` in `src/main.ts` to compute camera-safe off-screen bounds and measure target distance beyond the nearest viewport edge.
+- Replaced binary off-screen tag with quantitative cue: `off-screen +Npx`.
+- Preserved existing near-target collapse (`Label: here`) and main directional distance readout (`Npx ←/→`).
+- Updated task registry with `gdev-0127` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0126 on-foot objective off-screen tagging cue
 
 ### Assistant summary (exact)

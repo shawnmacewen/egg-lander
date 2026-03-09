@@ -135,3 +135,4 @@
 - `gdev-0124` — Per-level landing-zone staging pass (offset pad placement + spawn/objective anchoring for wider map pacing) (completed)
 - `gdev-0125` — On-foot objective distance cue telemetry (`Egg/Lander: Npx ←/→`) for traversal clarity on widened layouts (completed)
 - `gdev-0126` — On-foot objective off-screen tagging (`off-screen`) when egg/lander target is outside camera view (completed)
+- `gdev-0127` — On-foot objective edge-distance telemetry (`off-screen +Npx`) for off-camera target depth awareness (completed)

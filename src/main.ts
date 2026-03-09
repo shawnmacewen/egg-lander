@@ -2112,8 +2112,17 @@ class EggLanderMissionScene extends Phaser.Scene {
     const camera = this.cameras.main
     const view = camera.worldView
     const offscreenPadding = 36
-    const isOffscreen = targetX < view.left + offscreenPadding || targetX > view.right - offscreenPadding
-    const offscreenTag = isOffscreen ? ' off-screen' : ''
+    const leftBound = view.left + offscreenPadding
+    const rightBound = view.right - offscreenPadding
+    const isOffscreen = targetX < leftBound || targetX > rightBound
+
+    let offscreenTag = ''
+    if (isOffscreen) {
+      const beyondEdgePx = targetX < leftBound
+        ? Math.round(leftBound - targetX)
+        : Math.round(targetX - rightBound)
+      offscreenTag = ` off-screen +${beyondEdgePx}px`
+    }
 
     return `${label}: ${Math.abs(delta)}px ${direction}${offscreenTag}`
   }
