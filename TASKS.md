@@ -85,3 +85,4 @@
 - `gdev-0074` — Level-select mission command telemetry (`Command ...` single-line action plan combining commitment + stop condition) (completed)
 - `gdev-0075` — Level-select mission checkpoint telemetry (`Checkpoint ...` block-close validation question aligned to commitment state) (completed)
 - `gdev-0076` — Level-select mission go-signal telemetry (`Go Signal ...` launch authorization cue aligned to commitment/window state) (completed)
+- `gdev-0077` — Level-select mission no-go telemetry (`No-Go ...` explicit abort guardrail by commitment state) (completed)

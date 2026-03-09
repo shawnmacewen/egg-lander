@@ -1,5 +1,23 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0077 mission no-go telemetry
+
+### Assistant summary (exact)
+Implemented the next high-impact level-select decision pass: added `No-Go ...` telemetry that states the explicit abort condition for the current run posture (first-clear/push/bank/recover/hold), so players know exactly when to cancel a bad rep instead of forcing tilt runs. Verified with `npm run build`.
+
+### Technical details
+- Added derived `missionNoGoReadout` in `updateUi()` with no save-schema changes.
+- No-go guidance branches from existing progression + commitment signals:
+  - pre-attempt → `No-Go None (seed baseline run first)`
+  - attempts/no clears → `No-Go Abort launch if route drifts from safest first-clear line`
+  - `Commit Push` → `No-Go Abort PB if first segment misses target pace/score line`
+  - `Commit Bank` → `No-Go Abort block after first quality drop (protect clean bank)`
+  - `Commit Recover` → `No-Go Abort aggression until pressure band visibly drops`
+  - `Commit Hold` → `No-Go Abort relaunch if composure cue is still unstable`
+- Extended level-select telemetry line to include `No-Go ...` immediately after `Go Signal ...` guidance.
+- Updated task registry with `gdev-0077` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0073 mission debrief telemetry
 
 ### Assistant summary (exact)
