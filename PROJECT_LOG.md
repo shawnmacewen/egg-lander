@@ -662,3 +662,11 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 - Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: continue safe level-select guidance polish with low-risk readability improvements.
 - Blockers: none.
+
+### 2026-03-09 11:46 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: pending (`gdev-0075`)
+- Summary: Added level-select `Checkpoint` telemetry that asks a single commitment-aware validation question before extending a run block.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue safe level-select guidance polish with low-risk readability improvements.
+- Blockers: none.

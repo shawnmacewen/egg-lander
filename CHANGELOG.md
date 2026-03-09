@@ -1203,3 +1203,14 @@ Added a level-select `Command` telemetry cue that compresses the current run pla
 - Integrated `Command ...` into the level-select telemetry line immediately after `Loadout Hint` and before coaching copy.
 - Updated task registry in `TASKS.md` with `gdev-0074` marked completed.
 - Build verification: `npm run build` (pass).
+
+## 2026-03-09 — gdev-0075 mission checkpoint telemetry
+
+### Assistant summary (exact)
+Added a level-select `Checkpoint` telemetry cue that asks one block-closing validation question keyed to current commitment state, helping players verify whether to stop or continue before launching another run. Verified with `npm run build`.
+
+### Technical details
+- Added `missionCheckpointReadout` derivation in `src/main.ts`, branching across baseline/first-clear/push/bank/recover/hold states.
+- Integrated `Checkpoint ...` into the level-select telemetry line immediately after `Command`.
+- Updated task registry in `TASKS.md` with `gdev-0075` marked completed.
+- Build verification: `npm run build` (pass).
