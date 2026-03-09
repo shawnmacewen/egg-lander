@@ -248,3 +248,11 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 - Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: continue incremental gameplay depth/readability passes while waiting for additional art drops.
 - Blockers: no new content art beyond runner sheet.
+
+### 2026-03-09 07:15 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: pending (`gdev-0023`; finalized in git history)
+- Summary: Added level-driven boss scaling so boss HP/cadence/telegraph/spread pattern now escalate per level instead of relying on hardcoded checks.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue incremental gameplay depth/readability passes while waiting for additional art drops.
+- Blockers: no new content art beyond runner sheet.

@@ -29,6 +29,10 @@ type LevelConfig = {
   orbitalDockRadius: number
   orbitalSafeSpeed: number
   completionScore: number
+  bossHp: number
+  bossFireCadenceMs: number
+  bossTelegraphMs: number
+  bossSpreadShot: boolean
   requiredPowerup?: PowerupId
 }
 
@@ -67,7 +71,11 @@ const LEVELS: LevelConfig[] = [
     orbitalThrust: 225,
     orbitalDockRadius: 48,
     orbitalSafeSpeed: 80,
-    completionScore: 900
+    completionScore: 900,
+    bossHp: 0,
+    bossFireCadenceMs: 1100,
+    bossTelegraphMs: 280,
+    bossSpreadShot: false
   },
   {
     id: 2,
@@ -84,7 +92,11 @@ const LEVELS: LevelConfig[] = [
     orbitalThrust: 235,
     orbitalDockRadius: 42,
     orbitalSafeSpeed: 70,
-    completionScore: 1300
+    completionScore: 1300,
+    bossHp: 3,
+    bossFireCadenceMs: 940,
+    bossTelegraphMs: 260,
+    bossSpreadShot: false
   },
   {
     id: 3,
@@ -102,6 +114,10 @@ const LEVELS: LevelConfig[] = [
     orbitalDockRadius: 36,
     orbitalSafeSpeed: 62,
     completionScore: 1800,
+    bossHp: 4,
+    bossFireCadenceMs: 710,
+    bossTelegraphMs: 245,
+    bossSpreadShot: true,
     requiredPowerup: 'stability-thrusters'
   },
   {
@@ -120,6 +136,10 @@ const LEVELS: LevelConfig[] = [
     orbitalDockRadius: 32,
     orbitalSafeSpeed: 56,
     completionScore: 2300,
+    bossHp: 5,
+    bossFireCadenceMs: 640,
+    bossTelegraphMs: 220,
+    bossSpreadShot: true,
     requiredPowerup: 'shielded-hull'
   }
 ]
@@ -546,9 +566,10 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.bonusObjectiveCollected = false
     this.bonusRelic.setVisible(this.bonusObjectiveActive)
 
-    // Boss appears from level 2 onward.
-    this.bossActive = LEVELS[this.levelIndex].id >= 2
-    this.bossHp = this.bossActive ? 3 : 0
+    // Boss appears on levels configured with boss HP.
+    const level = LEVELS[this.levelIndex]
+    this.bossActive = level.bossHp > 0
+    this.bossHp = this.bossActive ? level.bossHp : 0
     this.playerHp = this.saveData.selectedPowerup === 'shielded-hull' ? 4 : 3
     this.playerInvulnerableUntil = 0
     this.runner.clearTint()
@@ -633,15 +654,16 @@ class EggLanderMissionScene extends Phaser.Scene {
 
     const level = LEVELS[this.levelIndex]
     const now = this.time.now
-    const fireCadence = level.id >= 3 ? 700 : 950
+    const fireCadence = level.bossFireCadenceMs
+    const telegraphWindow = level.bossTelegraphMs
     const shotCooldownRemaining = Math.max(0, fireCadence - (now - this.lastBossShotAt))
 
-    if (shotCooldownRemaining < 260) {
+    if (shotCooldownRemaining < telegraphWindow) {
       this.bossTelegraph.setVisible(true)
       this.bossTelegraph.setPosition(this.runner.x, this.runner.y - 2)
       const pulse = 1 + Math.sin(now / 28) * 0.15
       this.bossTelegraph.setScale(pulse)
-      this.bossTelegraph.setAlpha(0.14 + (1 - shotCooldownRemaining / 260) * 0.35)
+      this.bossTelegraph.setAlpha(0.14 + (1 - shotCooldownRemaining / telegraphWindow) * 0.35)
     } else {
       this.bossTelegraph.setVisible(false)
     }
@@ -658,8 +680,8 @@ class EggLanderMissionScene extends Phaser.Scene {
       this.planetLayer.add(shot)
       this.bossShots.push({ obj: shot, vx: dirX * 190, vy: dirY * 110, life: 2.2 })
 
-      // Level 3+ gets a second angled shot for pattern pressure.
-      if (level.id >= 3) {
+      // Higher levels can opt into a second angled shot for pattern pressure.
+      if (level.bossSpreadShot) {
         const shot2 = this.add.ellipse(this.bossBody.x, this.bossBody.y, 9, 9, 0xff9a6a).setStrokeStyle(2, 0x3a1111)
         this.planetLayer.add(shot2)
         this.bossShots.push({ obj: shot2, vx: dirX * 165, vy: -dirY * 85, life: 2.0 })
@@ -870,8 +892,9 @@ class EggLanderMissionScene extends Phaser.Scene {
     const hpReadout = this.phase === 'on-foot' && this.bossActive
       ? `${this.playerHp}${this.time.now < this.playerInvulnerableUntil ? ' (i)' : ''}`
       : '-'
-    const bossReadout = this.phase === 'on-foot' && this.bossActive ? `${Math.max(0, this.bossHp)}/3` : '-'
-    const bossCadence = level.id >= 3 ? 700 : 950
+    const bossMaxHp = level.bossHp
+    const bossReadout = this.phase === 'on-foot' && this.bossActive ? `${Math.max(0, this.bossHp)}/${bossMaxHp}` : '-'
+    const bossCadence = level.bossFireCadenceMs
     const bossShotCooldownMs = Math.max(0, bossCadence - (this.time.now - this.lastBossShotAt))
     const bossShotReadout = this.phase === 'on-foot' && this.bossActive
       ? (bossShotCooldownMs <= 0 ? 'firing' : `${Math.ceil(bossShotCooldownMs / 10) * 10}ms`)

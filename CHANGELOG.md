@@ -383,3 +383,21 @@ Added a new late-game mission, **Level 4: Storm Cradle**, with tighter landing/d
   - increased completion score reward
 - Added gate requirement for level 4: `requiredPowerup: 'shielded-hull'`.
 - Updated task registry in `TASKS.md` with `gdev-0022` marked completed.
+
+## 2026-03-09 — gdev-0023 level-driven boss scaling pass
+
+### Assistant summary (exact)
+Implemented the next gameplay-depth pass by moving boss encounter tuning into per-level config: boss HP, fire cadence, telegraph window, and spread-shot behavior now scale by mission, improving difficulty ramp readability and making Level 4 on-foot combat meaningfully tougher than earlier fights. Verified with a clean production build.
+
+### Technical details
+- Extended `LevelConfig` with boss profile fields:
+  - `bossHp`
+  - `bossFireCadenceMs`
+  - `bossTelegraphMs`
+  - `bossSpreadShot`
+- Added level-specific boss profiles for all four levels (level 1: no boss, levels 2-4 escalating pressure).
+- Updated on-foot phase initialization to enable boss encounters based on config (`bossHp > 0`) instead of hardcoded level id checks.
+- Updated boss combat loop to consume level-configured cadence/telegraph windows and optional spread-shot pattern.
+- Updated HUD boss telemetry to display dynamic HP denominator and cadence from level config.
+- Updated task registry in `TASKS.md` with `gdev-0023` marked completed.
+- Build verification: `npm run build` (pass).
