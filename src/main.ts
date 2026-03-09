@@ -2161,9 +2161,10 @@ class EggLanderMissionScene extends Phaser.Scene {
     const tempoReadout = this.getAssistTempoReadout(dockingWorstRatio, this.prevDockingAssistWorstRatio)
     const windowReadout = this.getAssistWindowReadout(dockingWorstRatio, this.prevDockingAssistWorstRatio)
     const lineReadout = this.getAssistLineReadout(dockingWorstRatio, this.prevDockingAssistWorstRatio)
+    const controlReadout = this.getAssistControlReadout(dockingWorstRatio, this.prevDockingAssistWorstRatio)
     this.prevDockingAssistWorstRatio = dockingWorstRatio
 
-    return `Dock ${riskState} • ${windowReadout} • ${lineReadout} • ${bufferReadout} • ${focusReadout} • ${biasReadout} • ${trendReadout} • ${deltaReadout} • ${stabilityReadout} • ${pulseReadout} • ${confidenceReadout} • ${commitReadout} • ${tempoReadout} • D ${Math.round(dist)}/${level.orbitalDockRadius} ${distState} • S ${Math.round(speed)}/${level.orbitalSafeSpeed} ${speedState} • ETA ${etaReadout} • A ${alignState} • Fix: ${correction}`
+    return `Dock ${riskState} • ${windowReadout} • ${lineReadout} • ${controlReadout} • ${bufferReadout} • ${focusReadout} • ${biasReadout} • ${trendReadout} • ${deltaReadout} • ${stabilityReadout} • ${pulseReadout} • ${confidenceReadout} • ${commitReadout} • ${tempoReadout} • D ${Math.round(dist)}/${level.orbitalDockRadius} ${distState} • S ${Math.round(speed)}/${level.orbitalSafeSpeed} ${speedState} • ETA ${etaReadout} • A ${alignState} • Fix: ${correction}`
   }
 
   private getLandingAssistCue(level: LevelConfig) {
@@ -2225,9 +2226,10 @@ class EggLanderMissionScene extends Phaser.Scene {
     const tempoReadout = this.getAssistTempoReadout(landingWorstRatio, this.prevLandingAssistWorstRatio)
     const windowReadout = this.getAssistWindowReadout(landingWorstRatio, this.prevLandingAssistWorstRatio)
     const lineReadout = this.getAssistLineReadout(landingWorstRatio, this.prevLandingAssistWorstRatio)
+    const controlReadout = this.getAssistControlReadout(landingWorstRatio, this.prevLandingAssistWorstRatio)
     this.prevLandingAssistWorstRatio = landingWorstRatio
 
-    return `Landing ${riskState} • ${windowReadout} • ${lineReadout} • ${bufferReadout} • ${focusReadout} • ${biasReadout} • ${trendReadout} • ${deltaReadout} • ${stabilityReadout} • ${pulseReadout} • ${confidenceReadout} • ${commitReadout} • ${tempoReadout} • V ${Math.round(vertical)}/${Math.round(verticalLimit)} ${vState} • H ${Math.round(horizontal)}/${Math.round(horizontalLimit)} ${hState} • A ${Math.round(angleDeg)}°/${Math.round(angleLimitDeg)}° ${aState} • Alt ${altitude}px • ETA ${etaReadout} • Fix: ${correction}`
+    return `Landing ${riskState} • ${windowReadout} • ${lineReadout} • ${controlReadout} • ${bufferReadout} • ${focusReadout} • ${biasReadout} • ${trendReadout} • ${deltaReadout} • ${stabilityReadout} • ${pulseReadout} • ${confidenceReadout} • ${commitReadout} • ${tempoReadout} • V ${Math.round(vertical)}/${Math.round(verticalLimit)} ${vState} • H ${Math.round(horizontal)}/${Math.round(horizontalLimit)} ${hState} • A ${Math.round(angleDeg)}°/${Math.round(angleLimitDeg)}° ${aState} • Alt ${altitude}px • ETA ${etaReadout} • Fix: ${correction}`
   }
 
   private getAssistRiskLabel(ratios: number[]) {
@@ -2350,6 +2352,23 @@ class EggLanderMissionScene extends Phaser.Scene {
     if (currentWorstRatio <= 0.75) return 'Line LOCKED'
     if (currentWorstRatio <= 1) return improving ? 'Line SETTLING' : 'Line FRAYING'
     return improving ? 'Line REBUILD' : 'Line BROKEN'
+  }
+
+  private getAssistControlReadout(currentWorstRatio: number, prevWorstRatio: number | null) {
+    if (prevWorstRatio === null) {
+      if (currentWorstRatio <= 0.75) return 'Control SMOOTH'
+      if (currentWorstRatio <= 1) return 'Control CHECK'
+      return 'Control RESET'
+    }
+
+    const delta = currentWorstRatio - prevWorstRatio
+    if (currentWorstRatio > 1) {
+      return delta <= -0.03 ? 'Control CATCHING' : 'Control RESET'
+    }
+    if (currentWorstRatio > 0.75) {
+      return delta <= -0.03 ? 'Control TIDYING' : 'Control CHECK'
+    }
+    return delta >= 0.05 ? 'Control FEATHER' : 'Control SMOOTH'
   }
 
   private getOnFootObjectiveCue(targetX: number, label: string) {

@@ -155,3 +155,4 @@
 - `gdev-0144` — Flight-assist line-integrity telemetry (`Line LOCKED/SETTLING/FRAYING/REBUILD/BROKEN`) for landing and docking control-state readability (completed)
 - `gdev-0145` — Flight-assist pulse telemetry (`Pulse CALM/ACTIVE/SWING/HOT/SPIKE`) for landing and docking control-intensity readability (completed)
 - `gdev-0146` — Flight-assist directional bias telemetry (`Bias LEFT/CENTER/RIGHT`) for landing and docking corrective-side readability (completed)
+- `gdev-0147` — Flight-assist control-state telemetry (`Control SMOOTH/FEATHER/CHECK/TIDYING/CATCHING/RESET`) for landing and docking handling-readability cues (completed)

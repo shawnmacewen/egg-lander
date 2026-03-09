@@ -1,5 +1,26 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0147 flight-assist control-state telemetry
+
+### Assistant summary (exact)
+Implemented the next highest-impact flight-readability polish by adding shared assist control-state telemetry (`Control SMOOTH/FEATHER/CHECK/TIDYING/CATCHING/RESET`) to both landing and docking cues, so players can instantly tell whether to hold smooth inputs, feather corrections, tighten discipline, or fully reset. Verified with `npm run build`.
+
+### Technical details
+- Added `getAssistControlReadout(currentWorstRatio, prevWorstRatio)` helper in `src/main.ts`.
+- Control-state cue maps current safety ratio + short-term change into actionable handling labels:
+  - `Control SMOOTH` when approach is safely stable.
+  - `Control FEATHER` when safe but beginning to drift and should avoid over-input.
+  - `Control CHECK` when near-threshold and needs disciplined corrections.
+  - `Control TIDYING` when near-threshold but measurably improving.
+  - `Control CATCHING` when over-threshold but recovering.
+  - `Control RESET` when over-threshold and not yet recovering.
+- Injected control-state telemetry into both shared assist cues:
+  - `getDockingAssistCue(...)`
+  - `getLandingAssistCue(...)`
+- Existing risk/window/line/buffer/focus/bias/trend/delta/stability/pulse/confidence/commit/tempo/fix telemetry remains intact; control-state is additive readability guidance only.
+- Updated task registry with `gdev-0147` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0146 flight-assist directional bias telemetry
 
 ### Assistant summary (exact)
