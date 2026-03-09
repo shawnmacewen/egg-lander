@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0103 level-select Esc/L quick-exit hint parity
+
+### Assistant summary (exact)
+Implemented the next highest-impact control-flow consistency polish: level-select control guidance now advertises `Esc/L` (not just `Esc`) for in-run quick-abort parity with the universal quick-exit handler. Verified with `npm run build`.
+
+### Technical details
+- Updated level-select status hint copy to `Esc/L abort run (in-run)`.
+- Kept behavior unchanged (copy/readability parity only).
+- Updated task registry with `gdev-0103` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0102 universal L quick-exit alias parity
 
 ### Assistant summary (exact)

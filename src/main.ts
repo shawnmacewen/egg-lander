@@ -2038,7 +2038,7 @@ class EggLanderMissionScene extends Phaser.Scene {
 
     const selectedName = this.saveData.selectedPowerup ? POWERUPS[this.saveData.selectedPowerup].name : 'None'
     this.statusText.setText(`Loadout set: ${selectedName}`)
-    this.hintText.setText('Level select: 1-4 jump • ←/→ or L/N or W/S level • A/D or Q/E powerup • ↑/Enter/Space launch • T retry (in-run/crash) • Esc abort run (in-run) • H HUD detail')
+    this.hintText.setText('Level select: 1-4 jump • ←/→ or L/N or W/S level • A/D or Q/E powerup • ↑/Enter/Space launch • T retry (in-run/crash) • Esc/L abort run (in-run) • H HUD detail')
   }
 
   private tryUnlockPowerupsForLevel(levelNumber: number) {

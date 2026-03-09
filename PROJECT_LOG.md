@@ -16,6 +16,14 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ## Entries
 
+### 2026-03-09 14:03 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: pending (`gdev-0103`; see git history)
+- Summary: Added level-select control-hint parity so universal quick-exit is advertised consistently as `Esc/L` in the level-select guidance line.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue safe, incremental gameplay QoL/readability improvements that reduce control friction and repeated setup.
+- Blockers: none.
+
 ### 2026-03-09 14:00 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
 - Commit: `51eff44` (`gdev-0102`)
