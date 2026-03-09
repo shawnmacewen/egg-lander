@@ -18,7 +18,7 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ### 2026-03-09 13:30 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
-- Commit: `bcfde66` (`gdev-0096`)
+- Commit: `12ea7a5` (`gdev-0096`)
 - Summary: Added crash/post-clear quick-action aliases so `Enter`/`Space` now trigger instant retry in crash flow and next-level advance on clear, reducing input friction without gameplay-balance changes.
 - Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: continue safe quality-of-life/input-flow improvements that cut retry friction without changing mission balance.
