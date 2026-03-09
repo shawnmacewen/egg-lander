@@ -18,7 +18,7 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ### 2026-03-09 18:00 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
-- Commit: `pending` (`gdev-0150`; see git history)
+- Commit: `f97ec9e` (`gdev-0150`)
 - Summary: Added shared flight-assist pressure-stack telemetry (`Stack SOLO/DUAL/TRIPLE`) to landing and docking cues so pilots can quickly read whether one, two, or three limiter dimensions are concurrently near-threshold.
 - Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: continue safe in-run readability polish that improves pilot decision quality without changing mission balance.
