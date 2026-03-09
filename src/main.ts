@@ -132,6 +132,8 @@ class EggLanderMissionScene extends Phaser.Scene {
   private stationCore!: Phaser.GameObjects.Rectangle
   private dockingTarget!: Phaser.GameObjects.Ellipse
   private dockingGuideOuter!: Phaser.GameObjects.Ellipse
+  private dockingApproachLine!: Phaser.GameObjects.Line
+  private dockingVelocityLine!: Phaser.GameObjects.Line
   private bossBody!: Phaser.GameObjects.Ellipse
   private bossEye!: Phaser.GameObjects.Ellipse
 
@@ -215,7 +217,9 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.stationCore = this.add.rectangle(width - 180, 120, 18, 98, 0xb9c7de)
     this.dockingGuideOuter = this.add.ellipse(width - 180, 120, 78, 78, 0x75ffd2).setAlpha(0.22).setStrokeStyle(2, 0x75ffd2)
     this.dockingTarget = this.add.ellipse(width - 180, 120, 44, 44, 0x9ff6d2).setAlpha(0.7)
-    this.orbitalLayer.add([this.stationRing, this.stationCore, this.dockingGuideOuter, this.dockingTarget])
+    this.dockingApproachLine = this.add.line(0, 0, 0, 0, 0, 0, 0x75ffd2).setOrigin(0, 0).setAlpha(0.5).setLineWidth(2, 2)
+    this.dockingVelocityLine = this.add.line(0, 0, 0, 0, 0, 0, 0xffd17a).setOrigin(0, 0).setAlpha(0.6).setLineWidth(2, 2)
+    this.orbitalLayer.add([this.stationRing, this.stationCore, this.dockingGuideOuter, this.dockingTarget, this.dockingApproachLine, this.dockingVelocityLine])
 
     this.ship = this.add.triangle(width / 2, 96, 0, 28, 20, -20, -20, -20, 0xffe48f).setStrokeStyle(4, 0x0f0f0f)
     this.thruster = this.add.triangle(this.ship.x, this.ship.y + 24, 0, 0, 8, 18, -8, 18, 0xff7a3d).setVisible(false)
@@ -452,6 +456,12 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.dockingTarget.setScale(pulse)
     this.dockingGuideOuter.setScale(1 + Math.sin(this.time.now / 260) * 0.06)
 
+    this.dockingApproachLine.setTo(this.ship.x, this.ship.y, this.dockingTarget.x, this.dockingTarget.y)
+    this.dockingApproachLine.setStrokeStyle(2, aligned ? 0x8dffc0 : 0x75ffd2, 0.58)
+    const velocityScale = 0.42
+    this.dockingVelocityLine.setTo(this.ship.x, this.ship.y, this.ship.x + this.velocity.x * velocityScale, this.ship.y + this.velocity.y * velocityScale)
+    this.dockingVelocityLine.setStrokeStyle(2, speed <= level.orbitalSafeSpeed ? 0x8dffc0 : 0xffd17a, 0.62)
+
     this.hintText.setText(
       `Docking: dist ${Math.round(dist)} / ${level.orbitalDockRadius}, speed ${Math.round(speed)} / ${level.orbitalSafeSpeed}, ${aligned ? 'aligned' : 'tilted'}`
     )
@@ -499,6 +509,8 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.bossBody.setVisible(this.bossActive)
     this.bossEye.setVisible(this.bossActive)
     this.bossTelegraph.setVisible(false)
+    this.dockingApproachLine.setVisible(false)
+    this.dockingVelocityLine.setVisible(false)
     if (this.bossActive) {
       this.statusText.setText('Landed. Defeat boss with spears, then steal egg')
       this.hintText.setText(this.bonusObjectiveActive ? 'On foot: ←/→ run • Space spear • grab cyan relic for bonus' : 'On foot: ←/→ run • Space throw spear')
@@ -563,6 +575,8 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.ship.setPosition(120, this.scale.height - 80)
     this.ship.rotation = 0
     this.velocity.set(30, -18)
+    this.dockingApproachLine.setVisible(true)
+    this.dockingVelocityLine.setVisible(true)
 
     this.statusText.setText('Orbital docking: near-zero-G precision')
     this.hintText.setText('Dock softly and upright inside ring • ↑ thrust • ←/→ rotate')
@@ -675,6 +689,8 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.bossBody.setVisible(false)
     this.bossEye.setVisible(false)
     this.bossTelegraph.setVisible(false)
+    this.dockingApproachLine.setVisible(false)
+    this.dockingVelocityLine.setVisible(false)
 
     for (let i = this.spears.length - 1; i >= 0; i -= 1) {
       this.spears[i].obj.destroy()
@@ -700,6 +716,8 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.phase = 'crashed'
     this.attempts += 1
     this.velocity.set(0, 0)
+    this.dockingApproachLine.setVisible(false)
+    this.dockingVelocityLine.setVisible(false)
     this.ship.setFillStyle(0xff6b6b)
     this.statusText.setText(`Mission failed: ${reason}`)
     this.hintText.setText('Retrying this level… (R new session)')
@@ -715,6 +733,8 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.phase = 'level-complete'
     this.attempts += 1
     this.velocity.set(0, 0)
+    this.dockingApproachLine.setVisible(false)
+    this.dockingVelocityLine.setVisible(false)
 
     const bonus = this.bonusObjectiveCollected ? 250 : 0
     const gained = level.completionScore + Math.round(this.fuel * 0.5) + bonus
@@ -782,8 +802,13 @@ class EggLanderMissionScene extends Phaser.Scene {
     const spearReadout = this.phase === 'on-foot'
       ? (spearCooldownMs <= 0 ? 'ready' : `${Math.ceil(spearCooldownMs / 10) * 10}ms`)
       : '-'
+    const dockingDist = Phaser.Math.Distance.Between(this.ship.x, this.ship.y, this.dockingTarget.x, this.dockingTarget.y)
+    const dockingSpeed = this.velocity.length()
+    const dockReadout = this.phase === 'orbital-docking'
+      ? `${Math.round(dockingDist)}/${level.orbitalDockRadius} @ ${Math.round(dockingSpeed)}/${level.orbitalSafeSpeed}`
+      : '-'
     this.hudText.setText(
-      `Score ${this.sessionScore}   Attempts ${this.attempts}   Fuel ${Math.round(this.fuel)}%   HP ${hpReadout}   Boss ${bossReadout}   BossShot ${bossShotReadout}   Spear ${spearReadout}   V ${Math.abs(this.velocity.y).toFixed(1)}   H ${Math.abs(this.velocity.x).toFixed(1)}   PWR ${powerup}`
+      `Score ${this.sessionScore}   Attempts ${this.attempts}   Fuel ${Math.round(this.fuel)}%   HP ${hpReadout}   Boss ${bossReadout}   BossShot ${bossShotReadout}   Spear ${spearReadout}   Dock ${dockReadout}   V ${Math.abs(this.velocity.y).toFixed(1)}   H ${Math.abs(this.velocity.x).toFixed(1)}   PWR ${powerup}`
     )
     const required = level.requiredPowerup ? POWERUPS[level.requiredPowerup].name : 'None'
     this.levelText.setText(

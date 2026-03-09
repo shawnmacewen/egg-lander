@@ -297,3 +297,18 @@ Implemented the next combat readability/juice pass: added a pre-fire boss telegr
 - Added contextual HUD readout for boss-shot cadence (`BossShot`) showing milliseconds until fire / firing state.
 - Updated task registry with `gdev-0016` completion.
 - Build verification: `npm run build` (pass).
+
+## 2026-03-09 — gdev-0017 orbital docking vector guidance + HUD telemetry
+
+### Assistant summary (exact)
+Implemented the next highest-impact docking readability pass: added live orbital approach/velocity vector guides and contextual docking telemetry in HUD so players can better judge closing angle and speed before contact. Verified with a clean production build.
+
+### Technical details
+- Added two live orbital guidance lines during docking:
+  - approach line from ship to docking ring center
+  - velocity vector line showing immediate motion direction/magnitude
+- Added state-aware color feedback (green when aligned/safe speed, amber otherwise).
+- Added HUD `Dock` readout (`distance/radius @ speed/safeSpeed`) during orbital phase.
+- Ensured docking guide lines hide cleanly on phase resets, failures, and level completion.
+- Updated task registry with `gdev-0017` completion.
+- Build verification: `npm run build` (pass).
