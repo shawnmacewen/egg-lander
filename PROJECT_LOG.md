@@ -16,6 +16,14 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ## Entries
 
+### 2026-03-09 17:55 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: `pending` (`gdev-0149`)
+- Summary: Added shared flight-assist secondary-pressure telemetry (`Watch ...`) to landing and docking cues so hints now surface when a second metric is close behind the active limiter, reducing tunnel-vision during approach corrections.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue safe in-run readability polish that improves pilot decision quality without changing mission balance.
+- Blockers: none.
+
 ### 2026-03-09 17:50 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
 - Commit: `11b2ed5` (`gdev-0148`)

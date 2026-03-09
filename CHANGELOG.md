@@ -1,5 +1,22 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0149 flight-assist secondary-pressure telemetry
+
+### Assistant summary (exact)
+Implemented the next highest-impact flight-readability polish by adding shared assist secondary-pressure telemetry (`Watch ...`) to both landing and docking cues, so pilots can see when a second metric is close behind the current limiter and avoid tunnel-vision corrections. Verified with `npm run build`.
+
+### Technical details
+- Added `getAssistWatchReadout(ratios, labels)` helper in `src/main.ts`.
+- Watch cue identifies the second-highest safety ratio and reports:
+  - `Watch <Metric>` when the backup limiter is close enough to matter (near-tie pressure).
+  - `Watch CLEAR` when no secondary metric is close (single-metric focus is safe).
+- Injected watch telemetry into both shared assist cues:
+  - `getDockingAssistCue(...)` now includes `Watch ...` alongside focus/bias/trend/delta/etc.
+  - `getLandingAssistCue(...)` now includes `Watch ...` alongside focus/bias/trend/delta/etc.
+- Existing risk/window/line/control/vector/buffer/focus/bias/trend/delta/stability/pulse/confidence/commit/tempo/fix telemetry remains intact; watch is additive readability guidance only.
+- Updated task registry with `gdev-0149` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0148 flight-assist vector telemetry
 
 ### Assistant summary (exact)
