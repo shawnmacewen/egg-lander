@@ -1,5 +1,24 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0141 flight-assist delta telemetry
+
+### Assistant summary (exact)
+Implemented the next highest-impact flight-readability polish by adding shared assist delta telemetry (`Delta -/+N%`) to both landing and docking cues, so players can see not just trend direction but change magnitude between frames while correcting approaches. Verified with `npm run build`.
+
+### Technical details
+- Added `getAssistDeltaReadout(currentWorstRatio, prevWorstRatio)` helper in `src/main.ts`.
+- Delta readout behavior:
+  - `Delta -N%` when worst safety ratio improves beyond trend deadzone.
+  - `Delta +N%` when worst safety ratio worsens beyond deadzone.
+  - `Delta ±N%` for small within-deadzone movement.
+  - `Delta --` when no previous sample exists.
+- Injected delta telemetry into both shared assist cues:
+  - `getDockingAssistCue(...)`
+  - `getLandingAssistCue(...)`
+- Existing risk/buffer/focus/trend/stability/confidence/commit/fix telemetry remains intact; delta is additive readability guidance only.
+- Updated task registry with `gdev-0141` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0140 flight-assist commit telemetry
 
 ### Assistant summary (exact)

@@ -2150,12 +2150,13 @@ class EggLanderMissionScene extends Phaser.Scene {
     const focusReadout = this.getAssistFocusReadout(dockingRatios, ['Center', 'Speed', 'Angle'])
     const dockingWorstRatio = dockingRatios.reduce((max, ratio) => Math.max(max, ratio), 0)
     const trendReadout = this.getAssistTrendReadout(dockingWorstRatio, this.prevDockingAssistWorstRatio)
+    const deltaReadout = this.getAssistDeltaReadout(dockingWorstRatio, this.prevDockingAssistWorstRatio)
     const stabilityReadout = this.getAssistStabilityReadout(dockingWorstRatio, this.prevDockingAssistWorstRatio)
     const confidenceReadout = this.getAssistConfidenceReadout(dockingWorstRatio, this.prevDockingAssistWorstRatio)
     const commitReadout = this.getAssistCommitReadout(dockingWorstRatio, this.prevDockingAssistWorstRatio)
     this.prevDockingAssistWorstRatio = dockingWorstRatio
 
-    return `Dock ${riskState} • ${bufferReadout} • ${focusReadout} • ${trendReadout} • ${stabilityReadout} • ${confidenceReadout} • ${commitReadout} • D ${Math.round(dist)}/${level.orbitalDockRadius} ${distState} • S ${Math.round(speed)}/${level.orbitalSafeSpeed} ${speedState} • ETA ${etaReadout} • A ${alignState} • Fix: ${correction}`
+    return `Dock ${riskState} • ${bufferReadout} • ${focusReadout} • ${trendReadout} • ${deltaReadout} • ${stabilityReadout} • ${confidenceReadout} • ${commitReadout} • D ${Math.round(dist)}/${level.orbitalDockRadius} ${distState} • S ${Math.round(speed)}/${level.orbitalSafeSpeed} ${speedState} • ETA ${etaReadout} • A ${alignState} • Fix: ${correction}`
   }
 
   private getLandingAssistCue(level: LevelConfig) {
@@ -2205,12 +2206,13 @@ class EggLanderMissionScene extends Phaser.Scene {
     const focusReadout = this.getAssistFocusReadout(landingRatios, ['Descent', 'Drift', 'Angle'])
     const landingWorstRatio = landingRatios.reduce((max, ratio) => Math.max(max, ratio), 0)
     const trendReadout = this.getAssistTrendReadout(landingWorstRatio, this.prevLandingAssistWorstRatio)
+    const deltaReadout = this.getAssistDeltaReadout(landingWorstRatio, this.prevLandingAssistWorstRatio)
     const stabilityReadout = this.getAssistStabilityReadout(landingWorstRatio, this.prevLandingAssistWorstRatio)
     const confidenceReadout = this.getAssistConfidenceReadout(landingWorstRatio, this.prevLandingAssistWorstRatio)
     const commitReadout = this.getAssistCommitReadout(landingWorstRatio, this.prevLandingAssistWorstRatio)
     this.prevLandingAssistWorstRatio = landingWorstRatio
 
-    return `Landing ${riskState} • ${bufferReadout} • ${focusReadout} • ${trendReadout} • ${stabilityReadout} • ${confidenceReadout} • ${commitReadout} • V ${Math.round(vertical)}/${Math.round(verticalLimit)} ${vState} • H ${Math.round(horizontal)}/${Math.round(horizontalLimit)} ${hState} • A ${Math.round(angleDeg)}°/${Math.round(angleLimitDeg)}° ${aState} • Alt ${altitude}px • ETA ${etaReadout} • Fix: ${correction}`
+    return `Landing ${riskState} • ${bufferReadout} • ${focusReadout} • ${trendReadout} • ${deltaReadout} • ${stabilityReadout} • ${confidenceReadout} • ${commitReadout} • V ${Math.round(vertical)}/${Math.round(verticalLimit)} ${vState} • H ${Math.round(horizontal)}/${Math.round(horizontalLimit)} ${hState} • A ${Math.round(angleDeg)}°/${Math.round(angleLimitDeg)}° ${aState} • Alt ${altitude}px • ETA ${etaReadout} • Fix: ${correction}`
   }
 
   private getAssistRiskLabel(ratios: number[]) {
@@ -2248,6 +2250,15 @@ class EggLanderMissionScene extends Phaser.Scene {
     if (delta <= -0.03) return 'Trend IMPROVING'
     if (delta >= 0.03) return 'Trend WORSENING'
     return 'Trend HOLD'
+  }
+
+  private getAssistDeltaReadout(currentWorstRatio: number, prevWorstRatio: number | null) {
+    if (prevWorstRatio === null) return 'Delta --'
+
+    const deltaPercent = Math.round(Math.abs(currentWorstRatio - prevWorstRatio) * 100)
+    if (currentWorstRatio <= prevWorstRatio - 0.03) return `Delta -${deltaPercent}%`
+    if (currentWorstRatio >= prevWorstRatio + 0.03) return `Delta +${deltaPercent}%`
+    return `Delta ±${deltaPercent}%`
   }
 
   private getAssistStabilityReadout(currentWorstRatio: number, prevWorstRatio: number | null) {
