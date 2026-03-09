@@ -224,3 +224,11 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 - Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: continue incremental gameplay depth/readability passes while waiting for additional art drops.
 - Blockers: no new content art beyond runner sheet.
+
+### 2026-03-09 07:00 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: pending (`gdev-0020`; finalize after commit)
+- Summary: Added mission performance bonuses for first-try clears and no-damage boss clears, and surfaced bonus breakdown in dock completion messaging.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue incremental gameplay depth/readability passes while waiting for additional art drops.
+- Blockers: no new content art beyond runner sheet.

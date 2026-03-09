@@ -28,3 +28,4 @@
 - `gdev-0017` — Orbital docking vector guidance + HUD docking telemetry polish (completed)
 - `gdev-0018` — Powerup gameplay identity pass (Shielded Hull + Fuel Gel functional perks + perk readouts) (completed)
 - `gdev-0019` — Orbital docking grade + precision bonus scoring pass (completed)
+- `gdev-0020` — Mission completion performance bonuses (first-try + clean-fight) (completed)

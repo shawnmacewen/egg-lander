@@ -342,3 +342,16 @@ Implemented the next highest-impact scoring/readability pass: successful orbital
 - Updated completion status text with score breakdown (`grade`, `dock bonus`, optional relic bonus).
 - Updated task registry with `gdev-0019` completion.
 - Build verification: `npm run build` (pass).
+
+## 2026-03-09 — gdev-0020 mission completion performance bonuses
+
+### Assistant summary (exact)
+Implemented the next highest-impact replay-feedback pass: mission clears now award a first-try bonus and a clean-fight bonus (no on-foot damage in boss levels), and the docking completion breakdown now clearly surfaces these bonuses for stronger performance-driven runs. Verified with a clean production build.
+
+### Technical details
+- Added per-level mission failure tracking to detect first-try clears (`+100`).
+- Added per-attempt on-foot damage tracking to award clean-fight clears on boss levels (`+150`).
+- Wired new bonuses into mission completion score resolution and post-dock breakdown text.
+- Ensured tracking resets correctly across retries, level-select returns, and new sessions.
+- Updated task registry with `gdev-0020` completion.
+- Build verification: `npm run build` (pass).

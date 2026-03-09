@@ -188,6 +188,8 @@ class EggLanderMissionScene extends Phaser.Scene {
   private bossHp = 0
   private playerHp = 3
   private playerInvulnerableUntil = 0
+  private missionFailuresOnLevel = 0
+  private tookDamageThisAttempt = false
   private readonly spears: Array<{ obj: Phaser.GameObjects.Rectangle; vx: number; life: number }> = []
   private readonly bossShots: Array<{ obj: Phaser.GameObjects.Ellipse; vx: number; vy: number; life: number }> = []
   private bossTelegraph!: Phaser.GameObjects.Ellipse
@@ -297,6 +299,7 @@ class EggLanderMissionScene extends Phaser.Scene {
         this.updateUi()
       }
       if (Phaser.Input.Keyboard.JustDown(this.cursors.up)) {
+        this.missionFailuresOnLevel = 0
         this.beginPlanetBrief()
       }
       if (Phaser.Input.Keyboard.JustDown(this.keyA)) this.cycleSelectedPowerup(-1)
@@ -662,6 +665,7 @@ class EggLanderMissionScene extends Phaser.Scene {
         }
 
         this.playerHp -= 1
+        this.tookDamageThisAttempt = true
         const invulnerabilityMs = this.saveData.selectedPowerup === 'shielded-hull' ? 1300 : 900
         this.playerInvulnerableUntil = this.time.now + invulnerabilityMs
         const maxHp = this.saveData.selectedPowerup === 'shielded-hull' ? 4 : 3
@@ -713,6 +717,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.bossHp = 0
     this.playerHp = this.saveData.selectedPowerup === 'shielded-hull' ? 4 : 3
     this.playerInvulnerableUntil = 0
+    this.tookDamageThisAttempt = false
     this.runner.clearTint()
     this.bossBody.setVisible(false)
     this.bossEye.setVisible(false)
@@ -743,6 +748,7 @@ class EggLanderMissionScene extends Phaser.Scene {
   private failMission(reason: string) {
     this.phase = 'crashed'
     this.attempts += 1
+    this.missionFailuresOnLevel += 1
     this.velocity.set(0, 0)
     this.dockingApproachLine.setVisible(false)
     this.dockingVelocityLine.setVisible(false)
@@ -765,6 +771,8 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.dockingVelocityLine.setVisible(false)
 
     const relicBonus = this.bonusObjectiveCollected ? 250 : 0
+    const firstTryBonus = this.missionFailuresOnLevel === 0 ? 100 : 0
+    const noHitBonus = level.id >= 2 && !this.tookDamageThisAttempt ? 150 : 0
     const distanceScore = Phaser.Math.Clamp(1 - dockDist / level.orbitalDockRadius, 0, 1)
     const speedScore = Phaser.Math.Clamp(1 - dockSpeed / level.orbitalSafeSpeed, 0, 1)
     const dockingPrecision = distanceScore * 0.6 + speedScore * 0.4
@@ -772,7 +780,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     const dockingGrade = dockingPrecision >= 0.86 ? 'S' : dockingPrecision >= 0.68 ? 'A' : dockingPrecision >= 0.5 ? 'B' : 'C'
     this.lastDockGrade = dockingGrade
 
-    const gained = level.completionScore + Math.round(this.fuel * 0.5) + relicBonus + dockingBonus
+    const gained = level.completionScore + Math.round(this.fuel * 0.5) + relicBonus + dockingBonus + firstTryBonus + noHitBonus
     this.sessionScore += gained
 
     const levelNumber = this.levelIndex + 1
@@ -787,6 +795,8 @@ class EggLanderMissionScene extends Phaser.Scene {
     const breakdownBits = [
       `grade ${dockingGrade}`,
       dockingBonus > 0 ? `+${dockingBonus} dock bonus` : undefined,
+      firstTryBonus ? '+100 first-try bonus' : undefined,
+      noHitBonus ? '+150 clean-fight bonus' : undefined,
       relicBonus ? '+250 relic bonus' : undefined
     ].filter(Boolean)
 
@@ -803,6 +813,7 @@ class EggLanderMissionScene extends Phaser.Scene {
 
   private enterLevelSelect() {
     this.phase = 'level-select'
+    this.missionFailuresOnLevel = 0
     this.planetLayer.setVisible(true)
     this.orbitalLayer.setVisible(false)
     this.ship.setPosition(this.scale.width / 2, 90)
