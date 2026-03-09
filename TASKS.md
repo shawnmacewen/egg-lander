@@ -152,3 +152,4 @@
 - `gdev-0141` — Flight-assist delta telemetry (`Delta -/+N%`) for landing and docking approach-change magnitude readability (completed)
 - `gdev-0142` — Flight-assist tempo telemetry (`Tempo PRESS/FEATHER/STEADY/BRAKE/HARD BRAKE`) for landing and docking control-intensity guidance (completed)
 - `gdev-0143` — Flight-assist window telemetry (`Window WIDE/OPENING/WORKING/STABILIZING/TIGHT/RECOVERING/CRITICAL`) for landing and docking safety-envelope readability (completed)
+- `gdev-0144` — Flight-assist line-integrity telemetry (`Line LOCKED/SETTLING/FRAYING/REBUILD/BROKEN`) for landing and docking control-state readability (completed)

@@ -1,5 +1,23 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0144 flight-assist line-integrity telemetry
+
+### Assistant summary (exact)
+Implemented the next highest-impact flight-readability polish by adding shared assist line-integrity telemetry (`Line LOCKED/SETTLING/FRAYING/REBUILD/BROKEN`) to both landing and docking cues, so players can instantly judge whether their approach control line is solid, slipping, or actively recovering. Verified with `npm run build`.
+
+### Technical details
+- Added `getAssistLineReadout(currentWorstRatio, prevWorstRatio)` helper in `src/main.ts`.
+- Line-integrity cue maps worst safety ratio + short-term trend into control-state labels:
+  - `Line LOCKED` when clearly inside thresholds.
+  - `Line SETTLING` / `Line FRAYING` near threshold depending on improving trend.
+  - `Line REBUILD` / `Line BROKEN` when over-threshold depending on improving trend.
+- Injected line-integrity telemetry into both shared assist cues:
+  - `getDockingAssistCue(...)`
+  - `getLandingAssistCue(...)`
+- Existing risk/window/buffer/focus/trend/delta/stability/confidence/commit/tempo/fix telemetry remains intact; line-integrity is additive readability guidance only.
+- Updated task registry with `gdev-0144` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0143 flight-assist window telemetry
 
 ### Assistant summary (exact)
