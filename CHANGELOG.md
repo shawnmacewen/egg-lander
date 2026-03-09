@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0096 crash/clear quick-action alias keys
+
+### Assistant summary (exact)
+Implemented the next high-impact input-flow QoL pass: crash and post-clear flows now accept `Enter`/`Space` aliases so players can instantly retry after failure and advance after clears without reaching for additional keys. Verified with `npm run build`.
+
+### Technical details
+- Updated crash-state input handling so instant retry accepts `T`, `Enter`, or `Space`.
+- Updated level-complete input handling so next-level advance accepts `N`, `Enter`, or `Space`.
+- Updated crash and completion hint copy to advertise the new aliases.
+- Updated task registry with `gdev-0096` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0094 level-select W/S level cycling
 
 ### Assistant summary (exact)

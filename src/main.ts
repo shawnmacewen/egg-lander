@@ -424,7 +424,11 @@ class EggLanderMissionScene extends Phaser.Scene {
       return
     }
 
-    if (this.phase === 'crashed' && Phaser.Input.Keyboard.JustDown(this.keyT)) {
+    if (this.phase === 'crashed' && (
+      Phaser.Input.Keyboard.JustDown(this.keyT)
+      || Phaser.Input.Keyboard.JustDown(this.keyEnter)
+      || Phaser.Input.Keyboard.JustDown(this.keySpace)
+    )) {
       this.retryAfterCrash()
       this.updateUi()
       return
@@ -471,7 +475,9 @@ class EggLanderMissionScene extends Phaser.Scene {
 
     if (this.phase === 'level-complete') {
       if (Phaser.Input.Keyboard.JustDown(this.keyT)) this.replayCurrentLevelFromComplete()
-      if (Phaser.Input.Keyboard.JustDown(this.keyN)) this.advanceFromComplete()
+      if (Phaser.Input.Keyboard.JustDown(this.keyN)
+        || Phaser.Input.Keyboard.JustDown(this.keyEnter)
+        || Phaser.Input.Keyboard.JustDown(this.keySpace)) this.advanceFromComplete()
       if (Phaser.Input.Keyboard.JustDown(this.keyL)) this.enterLevelSelect()
     }
 
@@ -981,7 +987,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.lastFailReason = reason
     this.crashRetryDueAt = this.time.now + 900
     this.statusText.setText(`Mission failed: ${reason}`)
-    this.hintText.setText('Retrying this level… (T now • L level select • R new session)')
+    this.hintText.setText('Retrying this level… (T/Enter/Space now • L level select • R new session)')
     this.saveSave(this.saveData)
 
     this.pendingCrashRetryTimer = this.time.delayedCall(900, () => {
@@ -1075,7 +1081,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     ].filter(Boolean)
 
     this.statusText.setText(`Dock complete! +${gained} (${breakdownBits.join(' • ')})\nT replay level • N next level • Esc/L level select`)
-    this.hintText.setText('Mission loop clear: land → run → steal → return → takeoff → dock • T instant replay')
+    this.hintText.setText('Mission loop clear: land → run → steal → return → takeoff → dock • T replay • N/Enter/Space next')
   }
 
   private advanceFromComplete() {
@@ -1898,7 +1904,7 @@ class EggLanderMissionScene extends Phaser.Scene {
       const retryCountdown = retryMs > 0 ? `${Math.ceil(retryMs / 10) * 10}ms` : 'now'
       const failReason = this.lastFailReason || 'run failed'
       this.statusText.setText(`Mission failed: ${failReason} • auto-retry ${retryCountdown}`)
-      this.hintText.setText('Crash flow: T instant retry • Esc/L level select • R new session')
+      this.hintText.setText('Crash flow: T/Enter/Space instant retry • Esc/L level select • R new session')
     }
 
     let objective = 'Land on planet, grab egg on foot, return, launch, then precision dock in orbit.'
