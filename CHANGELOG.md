@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0119 post-clear mission-loop hint parity
+
+### Assistant summary (exact)
+Implemented the next highest-impact control-copy parity polish: post-clear mission-loop hint text now advertises `Esc/L` quick-exit and `H` HUD mode alongside existing replay/next-level aliases, so clear-screen guidance matches active controls and reduces between-run friction. Verified with `npm run build`.
+
+### Technical details
+- Updated level-complete hint copy in `src/main.ts` to include `Esc/L level select` and `H HUD mode`.
+- Kept gameplay/input behavior unchanged (copy/readability parity only).
+- Updated task registry with `gdev-0119` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0118 takeoff hint control parity (remove spear prompt)
 
 ### Assistant summary (exact)

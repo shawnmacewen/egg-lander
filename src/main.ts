@@ -1166,7 +1166,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     ].filter(Boolean)
 
     this.statusText.setText(`Dock complete! +${gained} (${breakdownBits.join(' • ')})\nT replay level • ↑/N/Enter/Space next level • Esc/L level select`)
-    this.hintText.setText('Mission loop clear: land → run → steal → return → takeoff → dock • T replay • ↑/N/Enter/Space next')
+    this.hintText.setText('Mission loop clear: land → run → steal → return → takeoff → dock • T replay • ↑/N/Enter/Space next • Esc/L level select • H HUD mode')
   }
 
   private advanceFromComplete() {

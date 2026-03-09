@@ -16,6 +16,14 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ## Entries
 
+### 2026-03-09 15:24 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: `pending` (`gdev-0119`; see git history)
+- Summary: Updated post-clear mission-loop hint parity so completion guidance now includes `Esc/L` quick-exit and `H` HUD mode alongside replay/next-level aliases.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue safe, incremental input-flow/readability polish that lowers between-run friction without changing mission balance.
+- Blockers: none.
+
 ### 2026-03-09 15:18 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
 - Commit: `4f6a818` (`gdev-0118`)

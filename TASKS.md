@@ -127,3 +127,4 @@
 - `gdev-0116` — Level-select dynamic hint parity (`/`/`Tab` controls toggle + `R` new-session reminder in loadout-change hint) (completed)
 - `gdev-0117` — Level-select wrap navigation for level and loadout cycling (`←/→` + `L/N` + `W/S`, `A/D` + `Q/E`) with hint copy update (completed)
 - `gdev-0118` — Takeoff hint control parity: remove on-foot spear prompt from ship-launch guidance (completed)
+- `gdev-0119` — Post-clear mission-loop hint parity (`Esc/L` quick exit + `H` HUD mode in clear-screen hint copy) (completed)
