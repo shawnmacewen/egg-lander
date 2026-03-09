@@ -168,3 +168,11 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 - Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: integrate boss/weapon sprite assets once provided, and continue tightening mission readability.
 - Blockers: no new assets yet beyond runner sheet.
+
+### 2026-03-09 06:25 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: `654ba58` (`gdev-0013`)
+- Summary: Added mission-phase progress tracking and HUD readability improvements so loop state is easier to parse at a glance during runs.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: integrate boss/weapon sprite assets once provided and continue readability/juice tuning around on-foot combat.
+- Blockers: no new content art beyond runner sheet.

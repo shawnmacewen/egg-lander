@@ -245,3 +245,16 @@ Implemented the next highest-impact gameplay slice: added a Stability Thrusters-
 - Updated objective text/hints/status copy to surface optional objective flow without interrupting the core mission loop.
 - Updated task registry with `gdev-0012` completion.
 - Build verification: `npm run build` (pass).
+
+## 2026-03-09 — gdev-0013 mission phase tracker + HUD readability
+
+### Assistant summary (exact)
+Implemented a mission readability polish pass: added a live phase-progress tracker across the full loop, clarified HUD health display so HP only shows during active boss combat, and kept objective callouts in sync with mission state. Verified with a clean production build.
+
+### Technical details
+- Added a dedicated phase line in HUD with explicit mission-step mapping (`0/5` setup through `5/5` orbital docking, plus complete/fail states).
+- Added `getPhaseGuide()` and wired it into `updateUi()` so phase messaging updates in real time.
+- Improved HUD readability by replacing always-on HP with contextual display (`-` when boss combat is not active).
+- Adjusted HUD text layout to fit objective + phase + hint lines cleanly.
+- Updated task registry with `gdev-0013` completion.
+- Build verification: `npm run build` (pass).

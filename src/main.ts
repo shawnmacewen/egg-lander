@@ -117,6 +117,7 @@ class EggLanderMissionScene extends Phaser.Scene {
   private hudText!: Phaser.GameObjects.Text
   private levelText!: Phaser.GameObjects.Text
   private objectiveText!: Phaser.GameObjects.Text
+  private phaseText!: Phaser.GameObjects.Text
   private statusText!: Phaser.GameObjects.Text
   private hintText!: Phaser.GameObjects.Text
 
@@ -226,7 +227,8 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.hudText = this.add.text(14, 10, '', { fontFamily: 'monospace', fontSize: '15px', color: '#f8f8f8' })
     this.levelText = this.add.text(14, 30, '', { fontFamily: 'monospace', fontSize: '14px', color: '#dce2ff' })
     this.objectiveText = this.add.text(14, 50, '', { fontFamily: 'monospace', fontSize: '14px', color: '#cfd6ff' })
-    this.hintText = this.add.text(14, 72, '', { fontFamily: 'monospace', fontSize: '14px', color: '#d4d7ff' })
+    this.phaseText = this.add.text(14, 72, '', { fontFamily: 'monospace', fontSize: '14px', color: '#9ee7ff' })
+    this.hintText = this.add.text(14, 94, '', { fontFamily: 'monospace', fontSize: '14px', color: '#d4d7ff' })
 
     this.cursors = this.input.keyboard!.createCursorKeys()
     this.keyR = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.R)
@@ -731,8 +733,9 @@ class EggLanderMissionScene extends Phaser.Scene {
     const level = LEVELS[this.levelIndex]
     const powerup = this.saveData.selectedPowerup ? POWERUPS[this.saveData.selectedPowerup].name : 'None'
 
+    const hpReadout = this.phase === 'on-foot' && this.bossActive ? `${this.playerHp}` : '-'
     this.hudText.setText(
-      `Score ${this.sessionScore}   Attempts ${this.attempts}   Fuel ${Math.round(this.fuel)}%   HP ${this.playerHp}   V ${Math.abs(this.velocity.y).toFixed(1)}   H ${Math.abs(this.velocity.x).toFixed(1)}   PWR ${powerup}`
+      `Score ${this.sessionScore}   Attempts ${this.attempts}   Fuel ${Math.round(this.fuel)}%   HP ${hpReadout}   V ${Math.abs(this.velocity.y).toFixed(1)}   H ${Math.abs(this.velocity.x).toFixed(1)}   PWR ${powerup}`
     )
     const required = level.requiredPowerup ? POWERUPS[level.requiredPowerup].name : 'None'
     this.levelText.setText(
@@ -752,7 +755,31 @@ class EggLanderMissionScene extends Phaser.Scene {
     if (this.phase === 'on-foot' && this.hasEgg) objective = 'Run back left to board lander with egg.'
     if (this.phase === 'orbital-docking') objective = 'Near-zero-G docking: low speed + upright alignment in ring.'
 
+    const phaseGuide = this.getPhaseGuide()
     this.objectiveText.setText(`Objective: ${objective}`)
+    this.phaseText.setText(`Phase: ${phaseGuide}`)
+  }
+
+  private getPhaseGuide(): string {
+    switch (this.phase) {
+      case 'level-select':
+        return '0/5 Mission setup (select level + loadout)'
+      case 'planet-brief':
+      case 'planet-flying':
+        return '1/5 Planet landing'
+      case 'on-foot':
+        return this.hasEgg ? '3/5 Return to lander' : '2/5 On-foot extraction'
+      case 'takeoff':
+        return '4/5 Planet takeoff'
+      case 'orbital-docking':
+        return '5/5 Orbital docking'
+      case 'level-complete':
+        return 'Complete ✓'
+      case 'crashed':
+        return 'Failed ✕ (auto-retry)'
+      default:
+        return this.phase
+    }
   }
 
   private cycleSelectedPowerup(direction: 1 | -1) {

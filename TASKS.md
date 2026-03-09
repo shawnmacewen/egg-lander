@@ -21,3 +21,4 @@
 
 - `gdev-0010` — Integrate first runner sprite sheet + on-foot animations (completed)
 - `gdev-0012` — Stability-thrusters-gated optional relic side objective with score bonus (completed)
+- `gdev-0013` — Mission phase tracker + HUD readability pass (completed)
