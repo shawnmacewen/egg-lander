@@ -18,7 +18,7 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ### 2026-03-09 10:10 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
-- Commit: `71f9cc6` (`gdev-0057`)
+- Commit: `49ed260` (`gdev-0057`)
 - Summary: Added level-select risk/reward edge telemetry (`Edge Favorable/Even/Costly`) that fuses mission call posture, retry pressure, and streak exposure into one push-vs-stabilize cue.
 - Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: continue incremental, low-risk level-select/readability polish while preserving save compatibility.
