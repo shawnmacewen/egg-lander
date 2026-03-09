@@ -2157,6 +2157,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     const shapeReadout = this.getAssistShapeReadout(dockingRatios)
     const spreadReadout = this.getAssistSpreadReadout(dockingRatios)
     const loadReadout = this.getAssistLoadReadout(dockingRatios)
+    const ceilingReadout = this.getAssistCeilingReadout(dockingRatios)
     const biasReadout = this.getAssistBiasReadout([
       (this.dockingTarget.x - this.ship.x) / Math.max(level.orbitalDockRadius, 1)
     ])
@@ -2177,7 +2178,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.prevDockingAssistWorstRatio = dockingWorstRatio
     this.prevDockingAssistAvgRatio = dockingAvgRatio
 
-    return `Dock ${riskState} • ${windowReadout} • ${lineReadout} • ${controlReadout} • ${vectorReadout} • ${bufferReadout} • ${focusReadout} • ${watchReadout} • ${stackReadout} • ${shapeReadout} • ${spreadReadout} • ${loadReadout} • ${driftReadout} • ${biasReadout} • ${trendReadout} • ${deltaReadout} • ${stabilityReadout} • ${pulseReadout} • ${confidenceReadout} • ${commitReadout} • ${tempoReadout} • D ${Math.round(dist)}/${level.orbitalDockRadius} ${distState} • S ${Math.round(speed)}/${level.orbitalSafeSpeed} ${speedState} • ETA ${etaReadout} • A ${alignState} • Fix: ${correction}`
+    return `Dock ${riskState} • ${windowReadout} • ${lineReadout} • ${controlReadout} • ${vectorReadout} • ${bufferReadout} • ${focusReadout} • ${watchReadout} • ${stackReadout} • ${shapeReadout} • ${spreadReadout} • ${loadReadout} • ${ceilingReadout} • ${driftReadout} • ${biasReadout} • ${trendReadout} • ${deltaReadout} • ${stabilityReadout} • ${pulseReadout} • ${confidenceReadout} • ${commitReadout} • ${tempoReadout} • D ${Math.round(dist)}/${level.orbitalDockRadius} ${distState} • S ${Math.round(speed)}/${level.orbitalSafeSpeed} ${speedState} • ETA ${etaReadout} • A ${alignState} • Fix: ${correction}`
   }
 
   private getLandingAssistCue(level: LevelConfig) {
@@ -2230,6 +2231,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     const shapeReadout = this.getAssistShapeReadout(landingRatios)
     const spreadReadout = this.getAssistSpreadReadout(landingRatios)
     const loadReadout = this.getAssistLoadReadout(landingRatios)
+    const ceilingReadout = this.getAssistCeilingReadout(landingRatios)
     const biasReadout = this.getAssistBiasReadout([
       -this.velocity.x / Math.max(horizontalLimit, 1),
       -Phaser.Math.Angle.Wrap(this.ship.rotation) / Math.max(level.safeAngle * shieldBonus, 0.01)
@@ -2251,7 +2253,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.prevLandingAssistWorstRatio = landingWorstRatio
     this.prevLandingAssistAvgRatio = landingAvgRatio
 
-    return `Landing ${riskState} • ${windowReadout} • ${lineReadout} • ${controlReadout} • ${vectorReadout} • ${bufferReadout} • ${focusReadout} • ${watchReadout} • ${stackReadout} • ${shapeReadout} • ${spreadReadout} • ${loadReadout} • ${driftReadout} • ${biasReadout} • ${trendReadout} • ${deltaReadout} • ${stabilityReadout} • ${pulseReadout} • ${confidenceReadout} • ${commitReadout} • ${tempoReadout} • V ${Math.round(vertical)}/${Math.round(verticalLimit)} ${vState} • H ${Math.round(horizontal)}/${Math.round(horizontalLimit)} ${hState} • A ${Math.round(angleDeg)}°/${Math.round(angleLimitDeg)}° ${aState} • Alt ${altitude}px • ETA ${etaReadout} • Fix: ${correction}`
+    return `Landing ${riskState} • ${windowReadout} • ${lineReadout} • ${controlReadout} • ${vectorReadout} • ${bufferReadout} • ${focusReadout} • ${watchReadout} • ${stackReadout} • ${shapeReadout} • ${spreadReadout} • ${loadReadout} • ${ceilingReadout} • ${driftReadout} • ${biasReadout} • ${trendReadout} • ${deltaReadout} • ${stabilityReadout} • ${pulseReadout} • ${confidenceReadout} • ${commitReadout} • ${tempoReadout} • V ${Math.round(vertical)}/${Math.round(verticalLimit)} ${vState} • H ${Math.round(horizontal)}/${Math.round(horizontalLimit)} ${hState} • A ${Math.round(angleDeg)}°/${Math.round(angleLimitDeg)}° ${aState} • Alt ${altitude}px • ETA ${etaReadout} • Fix: ${correction}`
   }
 
   private getAssistRiskLabel(ratios: number[]) {
@@ -2341,6 +2343,13 @@ class EggLanderMissionScene extends Phaser.Scene {
     if (avgRatio >= 0.75) return 'Load HEAVY'
     if (avgRatio >= 0.5) return 'Load MODERATE'
     return 'Load LIGHT'
+  }
+
+  private getAssistCeilingReadout(ratios: number[]) {
+    if (ratios.length === 0) return 'Ceiling 0%'
+
+    const worstRatio = ratios.reduce((max, ratio) => Math.max(max, ratio), 0)
+    return `Ceiling ${Math.round(worstRatio * 100)}%`
   }
 
   private getAssistSpreadReadout(ratios: number[]) {

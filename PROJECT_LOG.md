@@ -16,6 +16,14 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ## Entries
 
+### 2026-03-09 18:23 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: `pending` (`gdev-0155`; see git history)
+- Summary: Added shared flight-assist threshold occupancy telemetry (`Ceiling N%`) to landing and docking cues so pilots can read worst-limiter threshold fill at a glance (below/at/above 100%) alongside existing spread/load telemetry.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue safe in-run readability polish that improves pilot decision quality without changing mission balance.
+- Blockers: none.
+
 ### 2026-03-09 18:18 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
 - Commit: `ddf0afd` (`gdev-0154`)

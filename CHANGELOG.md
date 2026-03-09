@@ -1,5 +1,23 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0155 flight-assist threshold occupancy telemetry
+
+### Assistant summary (exact)
+Implemented the next highest-impact flight-readability polish by adding shared assist threshold occupancy telemetry (`Ceiling N%`) to both landing and docking cues, so pilots can instantly read how full the current worst limiter is relative to its threshold (headroom saturation) before breaching. Verified with `npm run build`.
+
+### Technical details
+- Added `getAssistCeilingReadout(ratios)` helper in `src/main.ts`.
+- Ceiling cue reports worst normalized assist-pressure occupancy as a percent of threshold:
+  - `Ceiling 100%` indicates at-threshold occupancy.
+  - Values below 100% indicate remaining headroom.
+  - Values above 100% indicate over-threshold saturation.
+- Injected ceiling telemetry into both shared assist cues:
+  - `getDockingAssistCue(...)`
+  - `getLandingAssistCue(...)`
+- Existing risk/window/line/control/vector/buffer/focus/watch/stack/shape/spread/load/drift/bias/trend/delta/stability/pulse/confidence/commit/tempo/fix telemetry remains intact; ceiling is additive readability guidance only.
+- Updated task registry with `gdev-0155` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0154 flight-assist pressure spread telemetry
 
 ### Assistant summary (exact)

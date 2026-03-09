@@ -163,3 +163,4 @@
 - `gdev-0152` — Flight-assist aggregate load telemetry (`Load LIGHT/MODERATE/HEAVY/SATURATED`) for landing and docking multi-metric pressure awareness (completed)
 - `gdev-0153` — Flight-assist aggregate drift telemetry (`Drift EASING/RISING/HOLD`) for landing and docking multi-metric trend readability (completed)
 - `gdev-0154` — Flight-assist pressure spread telemetry (`Spread N%`) for landing and docking limiter-distribution magnitude readability (completed)
+- `gdev-0155` — Flight-assist threshold occupancy telemetry (`Ceiling N%`) for landing and docking worst-metric limit-fill readability (completed)
