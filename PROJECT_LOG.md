@@ -16,6 +16,14 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ## Entries
 
+### 2026-03-09 09:03 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: pending (`gdev-0044`; finalized in git history)
+- Summary: Added level-select mission-match telemetry (`Match Calibrating/Overmatch/Fair/Stretch/Spike`) comparing player mastery tier to mission target tier so difficulty fit is visible at a glance.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue incremental, low-risk level-select/readability polish while preserving save compatibility.
+- Blockers: none.
+
 ### 2026-03-09 09:00 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
 - Commit: `1411591` (`gdev-0043`)

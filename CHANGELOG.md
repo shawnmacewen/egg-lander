@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0044 mission-match telemetry
+
+### Assistant summary (exact)
+Implemented the next safe high-impact readability pass: level-select telemetry now includes a mission-match assessment (`Match Overmatch/Fair/Stretch/Spike`) that compares the selected mission’s target difficulty tier against the player’s current mastery tier, so players can quickly decide whether to stabilize, grind, or push. Verified with `npm run build`.
+
+### Technical details
+- Added derived mission target tier mapping by level (`Bronze/Silver/Gold/Ace`).
+- Added mastery-vs-target comparison readout in `updateUi()`:
+  - `Match Calibrating` when the mission has no clears yet.
+  - `Match Overmatch/Fair/Stretch/Spike` based on tier gap.
+- Extended level-select telemetry line to include mission-match readout beside pressure/outlook/coaching cues.
+- Updated task registry with `gdev-0044` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0043 level-select coaching cue
 
 ### Assistant summary (exact)
