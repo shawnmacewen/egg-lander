@@ -16,6 +16,14 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ## Entries
 
+### 2026-03-09 12:24 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: `9591f0b` (`gdev-0083`)
+- Summary: Added in-run `T` quick retry hotkey using the existing safe mission fail/reset path, plus control-hint updates across launch, pause, docking, and level-select guidance.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue safe, incremental gameplay QoL/readability polish with no save-schema risk.
+- Blockers: none.
+
 ### 2026-03-09 12:21 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
 - Commit: `896f1c3` (`gdev-0082`)

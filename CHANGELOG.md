@@ -1,5 +1,22 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0083 in-run quick retry hotkey
+
+### Assistant summary (exact)
+Implemented the next high-impact gameplay QoL pass: added an in-run quick retry hotkey (`T`) that immediately aborts the current attempt and safely restarts the selected mission loop, with updated control hints across flight/docking/pause and level-select copy. Verified with `npm run build`.
+
+### Technical details
+- Added dedicated `T` key binding (`keyT`) in `EggLanderMissionScene`.
+- Added `canQuickRetry()` gate aligned to active mission phases (`planet-brief`, `planet-flying`, `on-foot`, `takeoff`, `orbital-docking`).
+- Wired `T` handling in `update()` to call existing safe fail/reset path (`failMission('Manual retry')`) and return immediately.
+- Updated hints to surface `T retry` where relevant:
+  - planet launch/flying
+  - orbital docking
+  - pause overlay
+  - pre-launch brief and level-select control summary
+- Updated task registry with `gdev-0083` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0082 HUD detail toggle + compact telemetry mode
 
 ### Assistant summary (exact)

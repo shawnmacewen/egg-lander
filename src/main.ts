@@ -188,6 +188,7 @@ class EggLanderMissionScene extends Phaser.Scene {
   private keySpace!: Phaser.Input.Keyboard.Key
   private keyP!: Phaser.Input.Keyboard.Key
   private keyH!: Phaser.Input.Keyboard.Key
+  private keyT!: Phaser.Input.Keyboard.Key
 
   private hudText!: Phaser.GameObjects.Text
   private levelText!: Phaser.GameObjects.Text
@@ -342,6 +343,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.keySpace = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
     this.keyP = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.P)
     this.keyH = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.H)
+    this.keyT = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.T)
 
     if (!this.anims.exists('runner-idle')) {
       this.anims.create({ key: 'runner-idle', frames: this.anims.generateFrameNumbers('runner-v1', { start: 0, end: 3 }), frameRate: 7, repeat: -1 })
@@ -384,6 +386,12 @@ class EggLanderMissionScene extends Phaser.Scene {
       return
     }
 
+    if (Phaser.Input.Keyboard.JustDown(this.keyT) && this.canQuickRetry()) {
+      this.failMission('Manual retry')
+      this.updateUi()
+      return
+    }
+
     if (Phaser.Input.Keyboard.JustDown(this.keyP) && this.canTogglePause()) {
       this.togglePause()
     }
@@ -397,7 +405,7 @@ class EggLanderMissionScene extends Phaser.Scene {
       this.phase = 'planet-flying'
       this.missionStartAt = this.time.now
       this.statusText.setText('Planet landing in progress')
-      this.hintText.setText('← → rotate • ↑ thrust • P pause • H HUD mode • R new session')
+      this.hintText.setText('← → rotate • ↑ thrust • T retry • P pause • H HUD mode • R new session')
     }
 
     if (this.phase === 'planet-flying') this.updatePlanetFlight(dt)
@@ -417,6 +425,10 @@ class EggLanderMissionScene extends Phaser.Scene {
     return this.phase === 'planet-brief' || this.phase === 'planet-flying' || this.phase === 'on-foot' || this.phase === 'takeoff' || this.phase === 'orbital-docking'
   }
 
+  private canQuickRetry() {
+    return this.phase === 'planet-brief' || this.phase === 'planet-flying' || this.phase === 'on-foot' || this.phase === 'takeoff' || this.phase === 'orbital-docking'
+  }
+
   private togglePause() {
     this.isPaused = !this.isPaused
 
@@ -424,7 +436,7 @@ class EggLanderMissionScene extends Phaser.Scene {
       this.pauseStatusBackup = this.statusText.text
       this.pauseHintBackup = this.hintText.text
       this.statusText.setText('Paused')
-      this.hintText.setText('Press P to resume • H HUD mode • R new session')
+      this.hintText.setText('Press P to resume • T retry • H HUD mode • R new session')
       this.anims.pauseAll()
       return
     }
@@ -531,7 +543,7 @@ class EggLanderMissionScene extends Phaser.Scene {
       this.runner.setVisible(false)
       this.phase = 'takeoff'
       this.statusText.setText('Boarded with egg: launch to orbit')
-      this.hintText.setText('↑ thrust • ←/→ rotate • P pause • H HUD mode • R new session')
+      this.hintText.setText('↑ thrust • ←/→ rotate • T retry • P pause • H HUD mode • R new session')
       this.ship.setFillStyle(0xffd889)
       this.velocity.set(0, -8)
       this.ship.rotation = 0
@@ -715,7 +727,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.dockingVelocityLine.setVisible(true)
 
     this.statusText.setText('Orbital docking: near-zero-G precision')
-    this.hintText.setText('Dock softly and upright inside ring • ↑ thrust • ←/→ rotate • P pause • H HUD mode')
+    this.hintText.setText('Dock softly and upright inside ring • ↑ thrust • ←/→ rotate • T retry • P pause • H HUD mode')
   }
 
   private updateBossCombat(dt: number) {
@@ -811,7 +823,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.orbitalLayer.setVisible(false)
     this.resetMissionEntities()
     this.statusText.setText(`${level.name}\n1) Land 2) Steal egg 3) Return 4) Take off`)
-    this.hintText.setText('Press ↑ to start landing run • R new session')
+    this.hintText.setText('Press ↑ to start landing run • T retry • R new session')
   }
 
   private resetMissionEntities() {
@@ -1836,7 +1848,7 @@ class EggLanderMissionScene extends Phaser.Scene {
 
     const selectedName = this.saveData.selectedPowerup ? POWERUPS[this.saveData.selectedPowerup].name : 'None'
     this.statusText.setText(`Loadout set: ${selectedName}`)
-    this.hintText.setText('Level select: L/N level • A/D powerup • ↑ launch • H HUD detail')
+    this.hintText.setText('Level select: L/N level • A/D powerup • ↑ launch • T retry (in-run) • H HUD detail')
   }
 
   private tryUnlockPowerupsForLevel(levelNumber: number) {
