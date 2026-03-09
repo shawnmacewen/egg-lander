@@ -18,7 +18,7 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ### 2026-03-09 14:55 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
-- Commit: pending (`gdev-0113`; see git history)
+- Commit: `fa094cd` (`gdev-0113`)
 - Summary: Aligned on-foot hint readability with existing controls by advertising `←/→ or A/D` run guidance across boss/non-boss and relic/non-relic on-foot hint variants.
 - Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: continue safe, incremental gameplay QoL/readability improvements that reduce control friction and repeated setup.
