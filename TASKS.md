@@ -24,3 +24,4 @@
 - `gdev-0013` — Mission phase tracker + HUD readability pass (completed)
 - `gdev-0014` — On-foot combat damage fairness pass (invulnerability frames + hit feedback) (completed)
 - `gdev-0015` — On-foot combat HUD telemetry pass (boss HP + spear cooldown readability) (completed)
+- `gdev-0016` — Boss shot telegraph + incoming-fire HUD timer readability pass (completed)

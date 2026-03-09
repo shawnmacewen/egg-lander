@@ -165,6 +165,7 @@ class EggLanderMissionScene extends Phaser.Scene {
   private playerInvulnerableUntil = 0
   private readonly spears: Array<{ obj: Phaser.GameObjects.Rectangle; vx: number; life: number }> = []
   private readonly bossShots: Array<{ obj: Phaser.GameObjects.Ellipse; vx: number; vy: number; life: number }> = []
+  private bossTelegraph!: Phaser.GameObjects.Ellipse
   private lastSpearAt = 0
   private lastBossShotAt = 0
 
@@ -202,7 +203,8 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.runner = this.add.sprite(width / 2, height - 48, 'runner-v1', 0).setVisible(false).setScale(0.42)
     this.bossBody = this.add.ellipse(width - 240, height - 52, 66, 66, 0x0c0c0c).setStrokeStyle(4, 0x1f1f1f).setVisible(false)
     this.bossEye = this.add.ellipse(width - 240, height - 52, 18, 18, 0xffffff).setVisible(false)
-    this.planetLayer.add([skyBand, sunDisc, farMount, nearMount, eyeTotem, eyePupil, this.terrain, this.planetPad, this.egg, this.bonusRelic, this.bossBody, this.bossEye, this.runner])
+    this.bossTelegraph = this.add.ellipse(width - 240, height - 52, 44, 44, 0xffd17a).setStrokeStyle(2, 0x5a2c0c).setAlpha(0.18).setVisible(false)
+    this.planetLayer.add([skyBand, sunDisc, farMount, nearMount, eyeTotem, eyePupil, this.terrain, this.planetPad, this.egg, this.bonusRelic, this.bossBody, this.bossEye, this.bossTelegraph, this.runner])
 
     this.orbitalLayer.add([
       this.add.rectangle(width / 2, height / 2, width, height, 0x070b17),
@@ -496,6 +498,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.runner.clearTint()
     this.bossBody.setVisible(this.bossActive)
     this.bossEye.setVisible(this.bossActive)
+    this.bossTelegraph.setVisible(false)
     if (this.bossActive) {
       this.statusText.setText('Landed. Defeat boss with spears, then steal egg')
       this.hintText.setText(this.bonusObjectiveActive ? 'On foot: ←/→ run • Space spear • grab cyan relic for bonus' : 'On foot: ←/→ run • Space throw spear')
@@ -539,6 +542,7 @@ class EggLanderMissionScene extends Phaser.Scene {
           this.bossActive = false
           this.bossBody.setVisible(false)
           this.bossEye.setVisible(false)
+          this.bossTelegraph.setVisible(false)
           this.statusText.setText('Boss down! Grab the egg and return')
         }
         continue
@@ -570,8 +574,20 @@ class EggLanderMissionScene extends Phaser.Scene {
     const level = LEVELS[this.levelIndex]
     const now = this.time.now
     const fireCadence = level.id >= 3 ? 700 : 950
+    const shotCooldownRemaining = Math.max(0, fireCadence - (now - this.lastBossShotAt))
+
+    if (shotCooldownRemaining < 260) {
+      this.bossTelegraph.setVisible(true)
+      this.bossTelegraph.setPosition(this.runner.x, this.runner.y - 2)
+      const pulse = 1 + Math.sin(now / 28) * 0.15
+      this.bossTelegraph.setScale(pulse)
+      this.bossTelegraph.setAlpha(0.14 + (1 - shotCooldownRemaining / 260) * 0.35)
+    } else {
+      this.bossTelegraph.setVisible(false)
+    }
 
     if (now - this.lastBossShotAt > fireCadence) {
+      this.bossTelegraph.setVisible(false)
       this.lastBossShotAt = now
       const dx = this.runner.x - this.bossBody.x
       const dy = this.runner.y - this.bossBody.y
@@ -658,6 +674,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.runner.clearTint()
     this.bossBody.setVisible(false)
     this.bossEye.setVisible(false)
+    this.bossTelegraph.setVisible(false)
 
     for (let i = this.spears.length - 1; i >= 0; i -= 1) {
       this.spears[i].obj.destroy()
@@ -756,12 +773,17 @@ class EggLanderMissionScene extends Phaser.Scene {
       ? `${this.playerHp}${this.time.now < this.playerInvulnerableUntil ? ' (i)' : ''}`
       : '-'
     const bossReadout = this.phase === 'on-foot' && this.bossActive ? `${Math.max(0, this.bossHp)}/3` : '-'
+    const bossCadence = level.id >= 3 ? 700 : 950
+    const bossShotCooldownMs = Math.max(0, bossCadence - (this.time.now - this.lastBossShotAt))
+    const bossShotReadout = this.phase === 'on-foot' && this.bossActive
+      ? (bossShotCooldownMs <= 0 ? 'firing' : `${Math.ceil(bossShotCooldownMs / 10) * 10}ms`)
+      : '-'
     const spearCooldownMs = Math.max(0, 180 - (this.time.now - this.lastSpearAt))
     const spearReadout = this.phase === 'on-foot'
       ? (spearCooldownMs <= 0 ? 'ready' : `${Math.ceil(spearCooldownMs / 10) * 10}ms`)
       : '-'
     this.hudText.setText(
-      `Score ${this.sessionScore}   Attempts ${this.attempts}   Fuel ${Math.round(this.fuel)}%   HP ${hpReadout}   Boss ${bossReadout}   Spear ${spearReadout}   V ${Math.abs(this.velocity.y).toFixed(1)}   H ${Math.abs(this.velocity.x).toFixed(1)}   PWR ${powerup}`
+      `Score ${this.sessionScore}   Attempts ${this.attempts}   Fuel ${Math.round(this.fuel)}%   HP ${hpReadout}   Boss ${bossReadout}   BossShot ${bossShotReadout}   Spear ${spearReadout}   V ${Math.abs(this.velocity.y).toFixed(1)}   H ${Math.abs(this.velocity.x).toFixed(1)}   PWR ${powerup}`
     )
     const required = level.requiredPowerup ? POWERUPS[level.requiredPowerup].name : 'None'
     this.levelText.setText(

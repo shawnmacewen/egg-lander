@@ -285,3 +285,15 @@ Implemented the next readability-focused combat pass: added live boss HP telemet
 - Kept readouts hidden (`-`) outside relevant phases to reduce HUD noise.
 - Updated task registry with `gdev-0015` completion.
 - Build verification: `npm run build` (pass).
+
+## 2026-03-09 — gdev-0016 boss shot telegraph + incoming-fire HUD timer
+
+### Assistant summary (exact)
+Implemented the next combat readability/juice pass: added a pre-fire boss telegraph ring that briefly tracks the player before shots launch, plus a live HUD timer for incoming boss fire cadence so dodge timing is easier to parse under pressure. Verified with a clean production build.
+
+### Technical details
+- Added an on-foot pre-fire telegraph ring that appears shortly before boss volleys and pulses near the runner position.
+- Hid telegraph cleanly on boss defeat and phase resets.
+- Added contextual HUD readout for boss-shot cadence (`BossShot`) showing milliseconds until fire / firing state.
+- Updated task registry with `gdev-0016` completion.
+- Build verification: `npm run build` (pass).

@@ -192,3 +192,11 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 - Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: continue combat juice/readability polish while waiting for additional boss/weapon art.
 - Blockers: no new content art beyond runner sheet.
+
+### 2026-03-09 06:40 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: pending (`gdev-0016`; finalized in git history)
+- Summary: Added boss pre-fire telegraph visuals and boss-shot cadence HUD timer to improve on-foot dodge readability.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue combat juice/readability polish while waiting for additional boss/weapon art.
+- Blockers: no new content art beyond runner sheet.
