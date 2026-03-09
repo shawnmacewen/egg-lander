@@ -16,6 +16,14 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ## Entries
 
+### 2026-03-09 08:35 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: pending (`gdev-0038`)
+- Summary: Added weighted mastery component breakdown telemetry in level-select (`Mix C/F/N/R/S`) to show how the mastery score is composed from existing metrics.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue incremental, low-risk level-select/readability polish while preserving save compatibility.
+- Blockers: none.
+
 ### 2026-03-09 08:29 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
 - Commit: `17f2dd6` (`gdev-0037`)

@@ -1,5 +1,22 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0038 mastery weighted-component breakdown telemetry
+
+### Assistant summary (exact)
+Implemented the next safe high-impact readability pass: level-select mastery telemetry now includes a weighted component breakdown (`Mix C/F/N/R/S`) so players can see exactly where their mastery score is coming from (clear, first-try, clean, relic, and S-dock performance) without changing save data. Verified with `npm run build`.
+
+### Technical details
+- Added derived mastery contribution points in `updateUi()`:
+  - `C` clear-rate contribution (0-35)
+  - `F` first-try contribution (0-20)
+  - `N` clean-clear contribution (0-20)
+  - `R` relic contribution (0-10)
+  - `S` S-dock contribution (0-15)
+- Switched mastery score computation to explicit weighted point summation for readability/traceability.
+- Extended level-select telemetry with `Mix C#/F#/N#/R#/S#` directly beside existing mastery tier/tier-gap/focus readouts.
+- Updated task registry with `gdev-0038` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0037 mastery tier-gap telemetry
 
 ### Assistant summary (exact)
