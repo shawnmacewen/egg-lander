@@ -1,5 +1,20 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0042 mission-outlook guidance telemetry
+
+### Assistant summary (exact)
+Implemented the next safe high-impact readability pass: level-select telemetry now includes a mission-outlook guidance line (`Outlook Stable/Shaky/Fragile/Critical`) that combines retry-pressure and mastery momentum into a quick "what to do next" cue, helping players decide whether to push PBs or stabilize consistency. Verified with `npm run build`.
+
+### Technical details
+- Added derived pressure label normalization (`Low/Medium/High/Extreme`) to reuse in telemetry composition.
+- Added a new derived outlook readout in `updateUi()`:
+  - `Outlook Fresh (seed baseline run)` when no attempts exist.
+  - `Outlook Breakthrough (land first clear)` when attempts exist but no clears.
+  - `Outlook Stable/Shaky/Fragile/Critical` after first clear, with momentum + action cue based on mastery score and retry pressure.
+- Extended level-select telemetry line to display `Outlook ...` beside `Pressure ...` and existing mastery/readability metrics.
+- Updated task registry with `gdev-0042` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0041 mission-pressure telemetry
 
 ### Assistant summary (exact)
