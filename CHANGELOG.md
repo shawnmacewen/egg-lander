@@ -453,3 +453,16 @@ Implemented per-level mission time persistence with save-schema migration, added
 - Added HUD `Time` readout for active runs and `Best Time` readout in level telemetry.
 - Added completion breakdown time messaging (including new PB time deltas).
 - Updated task registry for `gdev-0027` completion.
+
+## 2026-03-09 — gdev-0028 per-level clear-rate telemetry pass
+
+### Assistant summary (exact)
+Implemented the next safe progression telemetry pass: per-level attempts and clears now persist in save data, level select now shows each mission record and clear rate, and schema migration remains backward-safe for existing players. Verified with `npm run build`.
+
+### Technical details
+- Bumped save schema to `v7` and added per-level arrays: `levelAttempts` and `levelClears`.
+- Added migration defaults/sanitization for legacy saves missing the new fields.
+- On mission fail, per-level attempts now persist immediately.
+- On mission complete, both per-level attempts and clears increment and persist.
+- Added level-select telemetry: `Record clears/attempts (rate%)` for the selected mission.
+- Updated task registry for `gdev-0028` completion.
