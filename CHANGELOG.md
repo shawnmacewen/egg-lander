@@ -1,5 +1,18 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0098 persistent controls-overlay preference
+
+### Assistant summary (exact)
+Implemented the next high-impact QoL pass: controls overlay visibility (`/`) now persists across reloads and fresh sessions, so players keep their preferred hotkey-reference mode without re-toggling every run. Verified with `npm run build`.
+
+### Technical details
+- Bumped save schema to v14 and added `controlsOverlayVisible` to `SaveData`.
+- Added migration-safe load behavior (`controlsOverlayVisible` defaults to `false` when absent in older saves).
+- Applied saved controls-overlay preference on scene boot and on `R` new-session reset.
+- Persisted overlay visibility immediately when `/` toggles the panel.
+- Updated task registry with `gdev-0098` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0097 toggleable controls overlay (`/`)
 
 ### Assistant summary (exact)
