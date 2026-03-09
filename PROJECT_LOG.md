@@ -18,7 +18,7 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ### 2026-03-09 10:55 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
-- Commit: pending (`gdev-0066`)
+- Commit: `e2883fb` (`gdev-0066`)
 - Summary: Added level-select targeted drill telemetry (`Drill ...`) that maps the weakest mastery metric to a concrete rep set (consistency/first-try/clean/relic/S-dock) so players get an immediate, focused practice prescription.
 - Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: continue incremental, low-risk level-select/readability polish while preserving save compatibility.
