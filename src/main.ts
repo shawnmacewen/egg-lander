@@ -42,6 +42,7 @@ type SaveData = {
   highestLevelReached: number
   bestScore: number
   totalClears: number
+  bestDockGrades: string[]
   unlockedPowerups: PowerupId[]
   selectedPowerup: PowerupId | null
 }
@@ -53,7 +54,7 @@ type PowerupMeta = {
   description: string
 }
 
-const SAVE_VERSION = 3
+const SAVE_VERSION = 4
 const SAVE_KEY = 'egg-lander-save'
 
 const LEVELS: LevelConfig[] = [
@@ -145,6 +146,8 @@ const LEVELS: LevelConfig[] = [
   }
 ]
 
+const DOCK_GRADE_ORDER = ['-', 'C', 'B', 'A', 'S'] as const
+
 const POWERUPS: Record<PowerupId, PowerupMeta> = {
   'stability-thrusters': {
     name: 'Stability Thrusters',
@@ -209,6 +212,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     highestLevelReached: 1,
     bestScore: 0,
     totalClears: 0,
+    bestDockGrades: Array(LEVELS.length).fill('-'),
     unlockedPowerups: [],
     selectedPowerup: null
   }
@@ -826,6 +830,10 @@ class EggLanderMissionScene extends Phaser.Scene {
     const dockingGrade = dockingPrecision >= 0.86 ? 'S' : dockingPrecision >= 0.68 ? 'A' : dockingPrecision >= 0.5 ? 'B' : 'C'
     this.lastDockGrade = dockingGrade
 
+    const previousBestGrade = this.saveData.bestDockGrades[this.levelIndex] ?? '-'
+    const isNewDockBest = DOCK_GRADE_ORDER.indexOf(dockingGrade) > DOCK_GRADE_ORDER.indexOf(previousBestGrade as (typeof DOCK_GRADE_ORDER)[number])
+    if (isNewDockBest) this.saveData.bestDockGrades[this.levelIndex] = dockingGrade
+
     const gained = level.completionScore + Math.round(this.fuel * 0.5) + relicBonus + dockingBonus + firstTryBonus + noHitBonus + streakBonus
     this.sessionScore += gained
     this.clearStreak = nextStreak
@@ -842,6 +850,7 @@ class EggLanderMissionScene extends Phaser.Scene {
 
     const breakdownBits = [
       `grade ${dockingGrade}`,
+      isNewDockBest ? `new PB dock grade (${previousBestGrade}→${dockingGrade})` : undefined,
       dockingBonus > 0 ? `+${dockingBonus} dock bonus` : undefined,
       firstTryBonus ? '+100 first-try bonus' : undefined,
       noHitBonus ? '+150 clean-fight bonus' : undefined,
@@ -917,8 +926,9 @@ class EggLanderMissionScene extends Phaser.Scene {
       `Score ${this.sessionScore}   Attempts ${this.attempts}   Clears ${this.saveData.totalClears}   Streak ${this.clearStreak}   Fuel ${Math.round(this.fuel)}/${this.maxFuel}   HP ${hpReadout}   Boss ${bossReadout}   BossShot ${bossShotReadout}   Spear ${spearReadout}   Dock ${dockReadout}   V ${Math.abs(this.velocity.y).toFixed(1)}   H ${Math.abs(this.velocity.x).toFixed(1)}   PWR ${powerup}`
     )
     const required = level.requiredPowerup ? POWERUPS[level.requiredPowerup].name : 'None'
+    const levelBestDockGrade = this.saveData.bestDockGrades[this.levelIndex] ?? '-'
     this.levelText.setText(
-      `Level ${level.id}/${LEVELS.length}: ${level.name}   Requires ${required}   Unlocked ${this.saveData.unlockedLevel}/${LEVELS.length}   Best ${this.saveData.bestScore}   Perk: ${powerupDescription}`
+      `Level ${level.id}/${LEVELS.length}: ${level.name}   Requires ${required}   Unlocked ${this.saveData.unlockedLevel}/${LEVELS.length}   Best ${this.saveData.bestScore}   Best Dock ${levelBestDockGrade}   Perk: ${powerupDescription}`
     )
 
     let objective = 'Land on planet, grab egg on foot, return, launch, then precision dock in orbit.'
@@ -1002,6 +1012,7 @@ class EggLanderMissionScene extends Phaser.Scene {
       highestLevelReached: 1,
       bestScore: 0,
       totalClears: 0,
+      bestDockGrades: Array(LEVELS.length).fill('-'),
       unlockedPowerups: [],
       selectedPowerup: null
     }
@@ -1028,12 +1039,21 @@ class EggLanderMissionScene extends Phaser.Scene {
       selectedPowerup = null
     }
 
+    const bestDockGradesRaw = Array.isArray(parsed.bestDockGrades) ? parsed.bestDockGrades : []
+    const bestDockGrades = Array.from({ length: LEVELS.length }, (_, i) => {
+      const grade = bestDockGradesRaw[i]
+      return typeof grade === 'string' && DOCK_GRADE_ORDER.includes(grade as (typeof DOCK_GRADE_ORDER)[number])
+        ? grade
+        : '-'
+    })
+
     return {
       version: SAVE_VERSION,
       unlockedLevel: Phaser.Math.Clamp(Math.floor(parsed.unlockedLevel ?? 1), 1, LEVELS.length),
       highestLevelReached: Phaser.Math.Clamp(Math.floor(parsed.highestLevelReached ?? 1), 1, LEVELS.length),
       bestScore: Math.max(0, Math.floor(parsed.bestScore ?? 0)),
       totalClears: Math.max(0, Math.floor(parsed.totalClears ?? 0)),
+      bestDockGrades,
       unlockedPowerups,
       selectedPowerup
     }

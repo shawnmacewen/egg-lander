@@ -414,3 +414,18 @@ Implemented a safe persistence pass: upgraded save schema handling with explicit
 - Guarded invalid `selectedPowerup` states by clearing selection if the selected perk is not in unlocked perks.
 - Surfaced lifetime clear count directly in the HUD alongside score/attempts/streak.
 - Updated task registry with `gdev-0024` completion.
+- Build verification: `npm run build` (pass).
+
+## 2026-03-09 — gdev-0025 per-level dock PB persistence + level-select telemetry
+
+### Assistant summary (exact)
+Implemented the next safe progression-readability pass: docking grades are now persisted per level as personal bests, level select now surfaces each mission’s best dock grade, and level-complete feedback now calls out when a new dock-grade PB is set. Verified with a clean production build.
+
+### Technical details
+- Extended save schema to v4 with `bestDockGrades` (one slot per level).
+- Added migration/sanitization for legacy saves so missing/invalid grade entries safely default to `-`.
+- Added dock-grade ordering and update logic so only improved grades overwrite saved bests.
+- Updated level-select telemetry to show selected mission `Best Dock` grade.
+- Added completion breakdown line when a new per-level dock PB is achieved.
+- Updated task registry with `gdev-0025` completion.
+- Build verification: `npm run build` (pass).

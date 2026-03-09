@@ -264,3 +264,11 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 - Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: continue post-MVP polish with low-risk readability/feel passes while preserving stable progression saves.
 - Blockers: no new content art beyond runner sheet.
+
+### 2026-03-09 07:23 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: pending (`gdev-0025`; finalized in git history)
+- Summary: Added per-level dock-grade personal-best persistence (save schema v4), surfaced per-level Best Dock telemetry in level select, and added new-PB dock-grade completion callouts.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue post-MVP readability/depth passes while preserving backwards-safe save migrations.
+- Blockers: no new content art beyond runner sheet.
