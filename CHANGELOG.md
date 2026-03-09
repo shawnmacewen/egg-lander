@@ -1,5 +1,28 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0035 level mastery tier + score telemetry
+
+### Assistant summary (exact)
+Implemented the next safe high-impact readability pass: level select now computes a single mission mastery rollup (`Bronze`→`Ace`) from existing performance metrics (clear rate, first-try, clean clears, relic clears, and S-dock clears) and shows both tier + score without changing save schema. Verified with `npm run build`.
+
+### Technical details
+- Added derived per-level metric values in `updateUi()` (`levelClearRateValue`, `levelFirstTryRateValue`, `levelCleanRateValue`, `levelRelicRateValue`, `levelSDockRateValue`).
+- Added weighted mastery score computation (0–100):
+  - clear rate 35%
+  - first-try rate 20%
+  - clean-clear rate 20%
+  - relic completion rate 10%
+  - S-dock rate 15%
+- Added mastery tier mapping:
+  - `Ace` (>=90)
+  - `Gold` (>=75)
+  - `Silver` (>=55)
+  - `Bronze` (<55 with clears)
+  - `Unrated` (no clears)
+- Updated level-select telemetry line with `Mastery <Tier> (<Score>)`.
+- Updated task registry for `gdev-0035` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0034 S-grade dock persistence + telemetry pass
 
 ### Assistant summary (exact)

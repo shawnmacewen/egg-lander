@@ -43,3 +43,4 @@
 - `gdev-0032` — Per-level first-try clear persistence + level-select first-try telemetry (completed)
 - `gdev-0033` — Per-level relic-objective completion persistence + level-select relic telemetry (completed)
 - `gdev-0034` — Per-level S-grade docking completion persistence + level-select S-dock telemetry (completed)
+- `gdev-0035` — Level-select mastery tier/score telemetry rollup from existing performance metrics (completed)
