@@ -1134,3 +1134,14 @@ Added a level-select `Warmup` telemetry cue that prescribes a small pre-launch r
 - Integrated `Warmup ...` cue into the level-select HUD telemetry line next to launch-check guidance.
 - Updated task registry in `TASKS.md` with `gdev-0065` marked completed.
 - Build verification: `npm run build` (pass).
+
+## 2026-03-09 — gdev-0070 mission focus telemetry
+
+### Assistant summary (exact)
+Added a level-select `Focus` telemetry cue that surfaces one highest-priority action for the next run block (baseline, first clear, pressure recovery, or weakest-metric improvement) so players can act on a single clear objective instead of scanning the full guidance stack. Verified with `npm run build`.
+
+### Technical details
+- Added `missionFocusReadout` derivation in `src/main.ts`, keyed off early-run state (`attempts/clears`), commitment state (`Recover`), and weakest mastery metric.
+- Integrated `Focus ...` into the level-select telemetry line immediately after `Session Goal`.
+- Updated task registry in `TASKS.md` with `gdev-0070` marked completed.
+- Build verification: `npm run build` (pass).
