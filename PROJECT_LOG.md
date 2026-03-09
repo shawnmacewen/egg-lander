@@ -18,7 +18,7 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ### 2026-03-09 15:51 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
-- Commit: `pending` (`gdev-0124`; see git history)
+- Commit: `0c52a2e` (`gdev-0124`)
 - Summary: Added per-level landing-zone staging for the widened map by offsetting pad placement per mission and re-anchoring ship spawn/on-foot objective bounds to the active pad center for better traversal pacing.
 - Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: continue safe, incremental readability/feel polish (camera and traversal cues) without changing mission balance.
