@@ -1,5 +1,23 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0151 flight-assist pressure-shape telemetry
+
+### Assistant summary (exact)
+Implemented the next highest-impact flight-readability polish by adding shared assist pressure-shape telemetry (`Shape PINPOINT/SPLIT/EVEN`) to both landing and docking cues, so pilots can instantly see whether control pressure is concentrated on one limiter or distributed across multiple dimensions. Verified with `npm run build`.
+
+### Technical details
+- Added `getAssistShapeReadout(ratios)` helper in `src/main.ts`.
+- Shape cue classifies limiter-pressure distribution from normalized assist ratios:
+  - `Shape PINPOINT` when one limiter clearly dominates pressure.
+  - `Shape SPLIT` when pressure is shared between a leading limiter and a close secondary limiter.
+  - `Shape EVEN` when pressure is broadly balanced (or generally low) across dimensions.
+- Injected shape telemetry into both shared assist cues:
+  - `getDockingAssistCue(...)`
+  - `getLandingAssistCue(...)`
+- Existing risk/window/line/control/vector/buffer/focus/watch/stack/bias/trend/delta/stability/pulse/confidence/commit/tempo/fix telemetry remains intact; shape is additive readability guidance only.
+- Updated task registry with `gdev-0151` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0150 flight-assist pressure-stack telemetry
 
 ### Assistant summary (exact)

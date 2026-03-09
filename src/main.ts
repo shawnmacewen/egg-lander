@@ -2150,6 +2150,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     const focusReadout = this.getAssistFocusReadout(dockingRatios, ['Center', 'Speed', 'Angle'])
     const watchReadout = this.getAssistWatchReadout(dockingRatios, ['Center', 'Speed', 'Angle'])
     const stackReadout = this.getAssistStackReadout(dockingRatios)
+    const shapeReadout = this.getAssistShapeReadout(dockingRatios)
     const biasReadout = this.getAssistBiasReadout([
       (this.dockingTarget.x - this.ship.x) / Math.max(level.orbitalDockRadius, 1)
     ])
@@ -2167,7 +2168,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     const vectorReadout = this.getAssistVectorReadout(dockingWorstRatio, this.prevDockingAssistWorstRatio)
     this.prevDockingAssistWorstRatio = dockingWorstRatio
 
-    return `Dock ${riskState} • ${windowReadout} • ${lineReadout} • ${controlReadout} • ${vectorReadout} • ${bufferReadout} • ${focusReadout} • ${watchReadout} • ${stackReadout} • ${biasReadout} • ${trendReadout} • ${deltaReadout} • ${stabilityReadout} • ${pulseReadout} • ${confidenceReadout} • ${commitReadout} • ${tempoReadout} • D ${Math.round(dist)}/${level.orbitalDockRadius} ${distState} • S ${Math.round(speed)}/${level.orbitalSafeSpeed} ${speedState} • ETA ${etaReadout} • A ${alignState} • Fix: ${correction}`
+    return `Dock ${riskState} • ${windowReadout} • ${lineReadout} • ${controlReadout} • ${vectorReadout} • ${bufferReadout} • ${focusReadout} • ${watchReadout} • ${stackReadout} • ${shapeReadout} • ${biasReadout} • ${trendReadout} • ${deltaReadout} • ${stabilityReadout} • ${pulseReadout} • ${confidenceReadout} • ${commitReadout} • ${tempoReadout} • D ${Math.round(dist)}/${level.orbitalDockRadius} ${distState} • S ${Math.round(speed)}/${level.orbitalSafeSpeed} ${speedState} • ETA ${etaReadout} • A ${alignState} • Fix: ${correction}`
   }
 
   private getLandingAssistCue(level: LevelConfig) {
@@ -2217,6 +2218,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     const focusReadout = this.getAssistFocusReadout(landingRatios, ['Descent', 'Drift', 'Angle'])
     const watchReadout = this.getAssistWatchReadout(landingRatios, ['Descent', 'Drift', 'Angle'])
     const stackReadout = this.getAssistStackReadout(landingRatios)
+    const shapeReadout = this.getAssistShapeReadout(landingRatios)
     const biasReadout = this.getAssistBiasReadout([
       -this.velocity.x / Math.max(horizontalLimit, 1),
       -Phaser.Math.Angle.Wrap(this.ship.rotation) / Math.max(level.safeAngle * shieldBonus, 0.01)
@@ -2235,7 +2237,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     const vectorReadout = this.getAssistVectorReadout(landingWorstRatio, this.prevLandingAssistWorstRatio)
     this.prevLandingAssistWorstRatio = landingWorstRatio
 
-    return `Landing ${riskState} • ${windowReadout} • ${lineReadout} • ${controlReadout} • ${vectorReadout} • ${bufferReadout} • ${focusReadout} • ${watchReadout} • ${stackReadout} • ${biasReadout} • ${trendReadout} • ${deltaReadout} • ${stabilityReadout} • ${pulseReadout} • ${confidenceReadout} • ${commitReadout} • ${tempoReadout} • V ${Math.round(vertical)}/${Math.round(verticalLimit)} ${vState} • H ${Math.round(horizontal)}/${Math.round(horizontalLimit)} ${hState} • A ${Math.round(angleDeg)}°/${Math.round(angleLimitDeg)}° ${aState} • Alt ${altitude}px • ETA ${etaReadout} • Fix: ${correction}`
+    return `Landing ${riskState} • ${windowReadout} • ${lineReadout} • ${controlReadout} • ${vectorReadout} • ${bufferReadout} • ${focusReadout} • ${watchReadout} • ${stackReadout} • ${shapeReadout} • ${biasReadout} • ${trendReadout} • ${deltaReadout} • ${stabilityReadout} • ${pulseReadout} • ${confidenceReadout} • ${commitReadout} • ${tempoReadout} • V ${Math.round(vertical)}/${Math.round(verticalLimit)} ${vState} • H ${Math.round(horizontal)}/${Math.round(horizontalLimit)} ${hState} • A ${Math.round(angleDeg)}°/${Math.round(angleLimitDeg)}° ${aState} • Alt ${altitude}px • ETA ${etaReadout} • Fix: ${correction}`
   }
 
   private getAssistRiskLabel(ratios: number[]) {
@@ -2300,6 +2302,21 @@ class EggLanderMissionScene extends Phaser.Scene {
     if (activeCount >= 3) return 'Stack TRIPLE'
     if (activeCount === 2) return 'Stack DUAL'
     return 'Stack SOLO'
+  }
+
+  private getAssistShapeReadout(ratios: number[]) {
+    if (ratios.length < 2) return 'Shape PINPOINT'
+
+    const sorted = [...ratios].sort((a, b) => b - a)
+    const worst = sorted[0] ?? 0
+    const second = sorted[1] ?? 0
+
+    if (worst < 0.6) return 'Shape EVEN'
+
+    const gap = worst - second
+    if (gap >= 0.3) return 'Shape PINPOINT'
+    if (gap >= 0.12) return 'Shape SPLIT'
+    return 'Shape EVEN'
   }
 
   private getAssistBiasReadout(signedRatios: number[]) {

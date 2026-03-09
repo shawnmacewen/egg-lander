@@ -159,3 +159,4 @@
 - `gdev-0148` — Flight-assist vector telemetry (`Vector SETUP/INBOUND/HOLD/OUTBOUND/RECOVER`) for landing and docking trajectory-state readability (completed)
 - `gdev-0149` — Flight-assist secondary-pressure telemetry (`Watch ...`) for landing and docking near-tie limiter awareness (completed)
 - `gdev-0150` — Flight-assist pressure-stack telemetry (`Stack SOLO/DUAL/TRIPLE`) for landing and docking multi-limiter load awareness (completed)
+- `gdev-0151` — Flight-assist pressure-shape telemetry (`Shape PINPOINT/SPLIT/EVEN`) for landing and docking limiter-distribution awareness (completed)
