@@ -443,14 +443,14 @@ class EggLanderMissionScene extends Phaser.Scene {
       if (Phaser.Input.Keyboard.JustDown(this.keyN)
         || Phaser.Input.Keyboard.JustDown(this.keyS)
         || Phaser.Input.Keyboard.JustDown(this.cursors.right)) {
-        this.levelIndex = Math.min(this.levelIndex + 1, this.saveData.unlockedLevel - 1)
+        this.cycleSelectedLevel(1)
         this.persistSelectedLevelIndex()
         this.updateUi()
       }
       if (Phaser.Input.Keyboard.JustDown(this.keyL)
         || Phaser.Input.Keyboard.JustDown(this.keyW)
         || Phaser.Input.Keyboard.JustDown(this.cursors.left)) {
-        this.levelIndex = Math.max(this.levelIndex - 1, 0)
+        this.cycleSelectedLevel(-1)
         this.persistSelectedLevelIndex()
         this.updateUi()
       }
@@ -2113,7 +2113,12 @@ class EggLanderMissionScene extends Phaser.Scene {
   }
 
   private getLevelSelectHintText() {
-    return 'Level select: 1-4 jump • ←/→ or L/N or W/S level • A/D or Q/E powerup • Z/X/C/V direct loadout • ↑/Enter/Space launch • / or Tab controls • H HUD detail • R new session'
+    return 'Level select: 1-4 jump • ←/→ or L/N or W/S level (wrap) • A/D or Q/E powerup (wrap) • Z/X/C/V direct loadout • ↑/Enter/Space launch • / or Tab controls • H HUD detail • R new session'
+  }
+
+  private cycleSelectedLevel(direction: 1 | -1) {
+    const unlocked = Math.max(1, this.saveData.unlockedLevel)
+    this.levelIndex = (this.levelIndex + direction + unlocked) % unlocked
   }
 
   private persistSelectedLevelIndex() {

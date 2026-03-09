@@ -1748,3 +1748,14 @@ Added a universal `Esc` quick-abort flow so active missions can return to level 
 - Updated in-game HUD/status hint copy to advertise `Esc` level-select exit paths across flight, docking, pause, crash, and completion contexts.
 - Updated task registry in `TASKS.md` with `gdev-0095` marked completed.
 - Build verification: `npm run build` (pass).
+## 2026-03-09 — gdev-0117 level-select wrap navigation polish
+
+### Assistant summary (exact)
+Added wrap-around level-select navigation so level cycling (`←/→`, `L/N`, `W/S`) and loadout cycling (`A/D`, `Q/E`) loop from ends instead of dead-ending, reducing input friction during rapid mission prep. Verified with `npm run build`.
+
+### Technical details
+- Added `cycleSelectedLevel(direction)` helper in `src/main.ts` using modulo math over unlocked levels.
+- Replaced clamped level increment/decrement handlers in level-select update flow with wrap cycling.
+- Updated level-select hint copy to advertise wrap behavior for level and loadout cycling.
+- Updated task registry in `TASKS.md` with `gdev-0117` marked completed.
+- Build verification: `npm run build` (pass).

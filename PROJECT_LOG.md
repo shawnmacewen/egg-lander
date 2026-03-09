@@ -997,3 +997,11 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 - Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: continue safe quality-of-life/input-flow improvements that cut retry friction without changing mission balance.
 - Blockers: none.
+
+### 2026-03-09 15:13 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: pending (`gdev-0117`)
+- Summary: Added wrap-around level-select cycling so level navigation loops across unlocked levels and existing loadout cycling behavior is explicitly documented in hint text.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue safe, incremental input-flow/readability polish that lowers prep friction without changing mission balance.
+- Blockers: none.
