@@ -147,3 +147,4 @@
 - `gdev-0136` — Flight-assist focus telemetry (`Focus ...`) for landing and docking weakest-metric prioritization readability (completed)
 - `gdev-0137` — Flight-assist trend telemetry (`Trend IMPROVING/WORSENING/HOLD`) for landing and docking approach momentum readability (completed)
 - `gdev-0138` — Flight-assist stability telemetry (`Stability STEADY/SHAKY/SWING`) for landing and docking volatility readability (completed)
+- `gdev-0139` — Flight-assist confidence telemetry (`Confidence HIGH/HIGH+/MED/BUILDING/LOW/RECOVERING`) for landing and docking approach conviction readability (completed)

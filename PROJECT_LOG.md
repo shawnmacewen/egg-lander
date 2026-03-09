@@ -1181,3 +1181,11 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 - Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: continue safe, incremental readability/QoL improvements (camera feel and pacing) without changing mission balance.
 - Blockers: none.
+
+### 2026-03-09 17:03 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: pending (`gdev-0139`)
+- Summary: Added flight-assist `Confidence` telemetry in landing+docking cues, combining current safety margin and short-term trend (`HIGH+ / HIGH / MED / BUILDING / LOW / RECOVERING`) for faster approach commit/recover decisions.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue safe in-run readability polish that improves pilot decision quality without changing mission balance.
+- Blockers: none.

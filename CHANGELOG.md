@@ -2066,3 +2066,18 @@ Done — I widened the playable stage, removed horizontal wrap-through behavior,
   - green grass top strip
   - brown soil base
 - Build verification: `npm run build` (pass).
+
+## 2026-03-09 — gdev-0139 flight-assist confidence telemetry
+
+### Assistant summary (exact)
+Added a new in-flight `Confidence` cue to both landing and docking assist readouts so players can quickly judge whether their current approach is stable enough to commit, still building, or needs recovery. Verified with `npm run build`.
+
+### Technical details
+- Added `getAssistConfidenceReadout(currentWorstRatio, prevWorstRatio)` in `src/main.ts`.
+- Derived confidence tiers from worst-ratio safety bands plus short-term trend:
+  - `Confidence HIGH+`, `HIGH`, `MED`, `BUILDING`, `LOW`, `RECOVERING`.
+- Injected the new confidence readout into both assist HUD strings:
+  - `getDockingAssistCue(...)`
+  - `getLandingAssistCue(...)`
+- Updated task registry in `TASKS.md` with `gdev-0139` marked completed.
+- Build verification: `npm run build` (pass).
