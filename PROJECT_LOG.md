@@ -18,7 +18,7 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ### 2026-03-09 08:44 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
-- Commit: `61e3987` (`gdev-0040`)
+- Commit: `a9fa74b` (`gdev-0040`)
 - Summary: Added level-select retry-load telemetry (`Retries n` + retries-per-clear) to expose mission consistency pressure without schema changes.
 - Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: continue incremental, low-risk level-select/readability polish while preserving save compatibility.
