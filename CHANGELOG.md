@@ -1,5 +1,23 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0046 mission-plan telemetry
+
+### Assistant summary (exact)
+Implemented the next safe high-impact readability pass: level-select telemetry now includes a concise mission-plan directive (`Plan ...`) that tells players whether to seed baseline progress, drill for first clear, stabilize consistency, or push a focused PB rep using the weakest mastery metric as the target. Verified with `npm run build`.
+
+### Technical details
+- Added derived `missionPlanReadout` in `updateUi()` with no save-schema changes.
+- Mission-plan logic branches safely on existing telemetry state:
+  - no attempts → `Plan Seed baseline clear`
+  - no clears → `Plan Drill first clear route`
+  - high/extreme pressure → `Plan Stabilize with 2 safe reps`
+  - ready/locked confidence + strong weakest metric → `Plan Push PB pace now`
+  - ready/locked confidence + weak spot present → `Plan Push <metric> quality rep`
+  - otherwise → `Plan Practice <metric> fundamentals`
+- Extended level-select telemetry line to include `Plan ...` directly after confidence and before coach guidance.
+- Updated task registry with `gdev-0046` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0045 mission-confidence telemetry
 
 ### Assistant summary (exact)

@@ -54,3 +54,4 @@
 - `gdev-0043` — Level-select coaching cue (weakest-metric action plan + contextual loadout hint) (completed)
 - `gdev-0044` — Level-select mission-match telemetry (Overmatch/Fair/Stretch/Spike vs mission target tier) (completed)
 - `gdev-0045` — Level-select mission-confidence telemetry (band + score + cue from mastery/pressure/match signals) (completed)
+- `gdev-0046` — Level-select mission-plan telemetry (stabilize/practice/PB push call based on confidence + pressure + weakest metric) (completed)
