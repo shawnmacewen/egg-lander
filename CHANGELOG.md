@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0118 takeoff hint control parity (remove spear prompt)
+
+### Assistant summary (exact)
+Implemented the next highest-impact control-copy correctness fix: takeoff launch guidance no longer shows the on-foot `Space/Enter spear` prompt after boarding, so ship-phase hints now match actual available controls and reduce misinput confusion. Verified with `npm run build`.
+
+### Technical details
+- Updated takeoff transition hint copy in `src/main.ts` to remove the irrelevant spear control prompt.
+- Preserved existing ship-phase controls guidance (`↑/W` thrust, `←/→ or A/D` rotate, retry/exit/pause/HUD/new-session cues).
+- Updated task registry with `gdev-0118` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0116 level-select dynamic hint parity (`/`/`Tab` + `R`)
 
 ### Assistant summary (exact)

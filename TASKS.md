@@ -126,3 +126,4 @@
 - `gdev-0115` — On-foot hint HUD-toggle parity (`H`) across landed/combat guidance strings (completed)
 - `gdev-0116` — Level-select dynamic hint parity (`/`/`Tab` controls toggle + `R` new-session reminder in loadout-change hint) (completed)
 - `gdev-0117` — Level-select wrap navigation for level and loadout cycling (`←/→` + `L/N` + `W/S`, `A/D` + `Q/E`) with hint copy update (completed)
+- `gdev-0118` — Takeoff hint control parity: remove on-foot spear prompt from ship-launch guidance (completed)

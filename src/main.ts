@@ -725,7 +725,7 @@ class EggLanderMissionScene extends Phaser.Scene {
       this.runner.setVisible(false)
       this.phase = 'takeoff'
       this.statusText.setText('Boarded with egg: launch to orbit')
-      this.hintText.setText('↑/W thrust • ←/→ or A/D rotate • Space/Enter spear • T retry • Esc/L level select • P pause • H HUD mode • R new session')
+      this.hintText.setText('↑/W thrust • ←/→ or A/D rotate • T retry • Esc/L level select • P pause • H HUD mode • R new session')
       this.ship.setFillStyle(0xffd889)
       this.velocity.set(0, -8)
       this.ship.rotation = 0
