@@ -1,5 +1,23 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0062 mission stop-rule telemetry
+
+### Assistant summary (exact)
+Implemented the next high-impact level-select decision pass: added `Stop Rule ...` telemetry that sets an explicit anti-tilt cutoff per commitment posture (when to end a push block, switch to hold, or reset) so players avoid over-grinding bad reps. Verified with `npm run build`.
+
+### Technical details
+- Added derived `missionStopReadout` in `updateUi()` with no save-schema changes.
+- Stop-rule guidance branches from existing progression + commitment signals:
+  - pre-attempt → `Stop Rule None (seed run for baseline first)`
+  - attempts/no clears → `Stop Rule Pause after 3 misses and review route`
+  - `Commit Push` → `Stop Rule End push block after 1 failed PB rep`
+  - `Commit Bank` → `Stop Rule If two reps lose quality, switch to hold`
+  - `Commit Recover` → `Stop Rule End set once pressure band drops`
+  - `Commit Hold` → `Stop Rule One clean rep only, then hard reset`
+- Extended level-select telemetry line to include `Stop Rule ...` immediately after cadence guidance.
+- Updated task registry with `gdev-0062` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0061 mission cadence telemetry
 
 ### Assistant summary (exact)

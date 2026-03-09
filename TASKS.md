@@ -70,3 +70,4 @@
 - `gdev-0059` — Level-select mission fallback telemetry (`Fallback ...` contingency cue after commitment) (completed)
 - `gdev-0060` — Level-select mission execution telemetry (`Execute ...` immediate rep plan from commitment state) (completed)
 - `gdev-0061` — Level-select mission cadence telemetry (`Cadence ...` run-tempo cue from commitment state) (completed)
+- `gdev-0062` — Level-select mission stop-rule telemetry (`Stop Rule ...` anti-tilt cutoff cue from commitment state) (completed)

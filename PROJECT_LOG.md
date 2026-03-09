@@ -16,6 +16,14 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ## Entries
 
+### 2026-03-09 10:33 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: pending (`gdev-0062`)
+- Summary: Added level-select mission stop-rule telemetry (`Stop Rule ...`) to encode anti-tilt cutoffs (when to end push blocks or switch to hold/recovery) directly from commitment state.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue incremental, low-risk level-select/readability polish while preserving save compatibility.
+- Blockers: none.
+
 ### 2026-03-09 10:29 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
 - Commit: `464b44e` (`gdev-0061`)
