@@ -240,3 +240,11 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 - Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: continue incremental gameplay depth/readability passes while waiting for additional art drops.
 - Blockers: no new content art beyond runner sheet.
+
+### 2026-03-09 07:08 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: pending (`gdev-0022`; finalized in git history)
+- Summary: Added level 4 "Storm Cradle" with stricter planet/orbit tolerances, higher completion reward, and Shielded Hull gate to deepen late-run progression.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue incremental gameplay depth/readability passes while waiting for additional art drops.
+- Blockers: no new content art beyond runner sheet.

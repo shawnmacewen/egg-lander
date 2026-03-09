@@ -368,3 +368,18 @@ Implemented the next highest-impact replay loop polish: added a consecutive miss
 - Added live `Streak` telemetry to the HUD and bonus-line messaging in dock completion breakdown.
 - Updated task registry with `gdev-0021` completion.
 - Build verification: `npm run build` (pass).
+
+## 2026-03-09 — gdev-0022 level 4 challenge expansion
+
+### Assistant summary (exact)
+Added a new late-game mission, **Level 4: Storm Cradle**, with tighter landing/docking tolerances and higher score value, gated by **Shielded Hull** to extend progression depth and give the loadout system another meaningful checkpoint. Verified with `npm run build`.
+
+### Technical details
+- Extended `LEVELS` in `src/main.ts` with a fourth mission (`id: 4`, `Storm Cradle`).
+- Tuned level 4 parameters for a meaningful difficulty step-up:
+  - higher gravity/fuel pressure
+  - narrower landing pad and stricter safe landing thresholds
+  - tighter orbital docking radius/safe speed
+  - increased completion score reward
+- Added gate requirement for level 4: `requiredPowerup: 'shielded-hull'`.
+- Updated task registry in `TASKS.md` with `gdev-0022` marked completed.

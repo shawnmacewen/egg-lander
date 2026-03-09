@@ -103,6 +103,24 @@ const LEVELS: LevelConfig[] = [
     orbitalSafeSpeed: 62,
     completionScore: 1800,
     requiredPowerup: 'stability-thrusters'
+  },
+  {
+    id: 4,
+    name: 'Storm Cradle',
+    gravity: 368,
+    thrust: 478,
+    padWidth: 108,
+    fuelBurnPerSecond: 31,
+    safeVertical: 86,
+    safeHorizontal: 58,
+    safeAngle: 0.5,
+    runDistance: 390,
+    orbitalGravity: 42,
+    orbitalThrust: 252,
+    orbitalDockRadius: 32,
+    orbitalSafeSpeed: 56,
+    completionScore: 2300,
+    requiredPowerup: 'shielded-hull'
   }
 ]
 
