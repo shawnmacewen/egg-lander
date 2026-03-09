@@ -18,7 +18,7 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ### 2026-03-09 08:25 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
-- Commit: `0ea82ff` (`gdev-0036`)
+- Commit: `3be18b7` (`gdev-0036`)
 - Summary: Added level-select mastery focus recommendation that calls out the weakest mastery metric for the selected mission to guide next-run improvement.
 - Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: continue incremental, low-risk readability/telemetry polish while preserving save compatibility.
