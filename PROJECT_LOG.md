@@ -18,7 +18,7 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ### 2026-03-09 12:21 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
-- Commit: `9811dc7` (`gdev-0082`)
+- Commit: `896f1c3` (`gdev-0082`)
 - Summary: Added `H` HUD detail toggle with compact telemetry mode, surfaced HUD mode in readouts, and updated control hints so players can quickly declutter active runs.
 - Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: continue safe, incremental gameplay QoL/readability polish with no save-schema risk.
