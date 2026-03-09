@@ -16,6 +16,14 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ## Entries
 
+### 2026-03-09 15:30 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: `pending` (`gdev-0120`; see git history)
+- Summary: Corrected active controls-overlay pause label so it no longer implies `Enter/Space` can pause mid-run; overlay now states `P` pauses and `Enter/Space` resumes only once paused.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue safe, incremental input-flow/readability polish that removes misleading control copy without changing mission balance.
+- Blockers: none.
+
 ### 2026-03-09 15:24 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
 - Commit: `pending` (`gdev-0119`; see git history)

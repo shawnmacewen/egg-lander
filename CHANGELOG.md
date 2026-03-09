@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0120 active controls-overlay pause label correctness
+
+### Assistant summary (exact)
+Implemented the next highest-impact control-copy correctness fix: active in-run controls overlay now labels pause behavior accurately (`P` pauses; `Enter/Space` resume only when already paused), reducing misleading input guidance during live runs. Verified with `npm run build`.
+
+### Technical details
+- Updated active-run controls overlay copy in `src/main.ts` from `P or Enter/Space  Pause/resume` to `P  Pause (Enter/Space resume when paused)`.
+- Gameplay/input behavior unchanged; copy-only correctness/readability fix.
+- Updated task registry with `gdev-0120` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0119 post-clear mission-loop hint parity
 
 ### Assistant summary (exact)

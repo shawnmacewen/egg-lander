@@ -2069,7 +2069,7 @@ class EggLanderMissionScene extends Phaser.Scene {
                 'Space/Enter  Spear throw',
                 'T  Quick retry',
                 'Esc/L  Back to level select',
-                'P or Enter/Space  Pause/resume',
+                'P  Pause (Enter/Space resume when paused)',
                 'H  HUD detail',
                 '/ or Tab  Hide this panel',
                 'R  New session'
