@@ -844,13 +844,13 @@ class EggLanderMissionScene extends Phaser.Scene {
     if (this.bossActive) {
       this.statusText.setText('Landed. Defeat boss with spears, then steal egg')
       this.hintText.setText(this.bonusObjectiveActive
-        ? 'On foot: ←/→ run • Space/Enter spear • grab cyan relic • T retry • Esc/L level select • P pause'
-        : 'On foot: ←/→ run • Space/Enter throw spear • T retry • Esc/L level select • P pause')
+        ? 'On foot: ←/→ or A/D run • Space/Enter spear • grab cyan relic • T retry • Esc/L level select • P pause'
+        : 'On foot: ←/→ or A/D run • Space/Enter throw spear • T retry • Esc/L level select • P pause')
     } else {
       this.statusText.setText('Landed. Exit, steal egg, return')
       this.hintText.setText(this.bonusObjectiveActive
-        ? 'On foot: ←/→ run • grab cyan relic • steal egg then return • T retry • Esc/L level select • P pause'
-        : 'On foot: ←/→ run • steal egg then return • T retry • Esc/L level select • P pause')
+        ? 'On foot: ←/→ or A/D run • grab cyan relic • steal egg then return • T retry • Esc/L level select • P pause'
+        : 'On foot: ←/→ or A/D run • steal egg then return • T retry • Esc/L level select • P pause')
     }
   }
 

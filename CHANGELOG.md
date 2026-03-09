@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0113 on-foot movement hint parity (`←/→` + `A/D`)
+
+### Assistant summary (exact)
+Implemented the next highest-impact control-readability parity polish: on-foot hint copy now consistently advertises both arrow keys and `A/D` for running, aligning player guidance with existing movement controls in boss and non-boss on-foot states. Verified with `npm run build`.
+
+### Technical details
+- Updated on-foot phase hint text variants to show `←/→ or A/D run` in both boss and non-boss flows (including relic-objective messaging variants).
+- Kept gameplay behavior unchanged (copy/readability parity only).
+- Updated task registry with `gdev-0113` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0112 on-foot spear alias parity (`Enter`)
 
 ### Assistant summary (exact)
