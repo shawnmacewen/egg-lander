@@ -1,5 +1,25 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0148 flight-assist vector telemetry
+
+### Assistant summary (exact)
+Implemented the next highest-impact flight-readability polish by adding shared assist vector telemetry (`Vector SETUP/INBOUND/HOLD/OUTBOUND/RECOVER`) to both landing and docking cues, so players can instantly see whether their approach line is converging, drifting away, or actively recovering. Verified with `npm run build`.
+
+### Technical details
+- Added `getAssistVectorReadout(currentWorstRatio, prevWorstRatio)` helper in `src/main.ts`.
+- Vector cue maps short-term worst-ratio direction into trajectory-state labels:
+  - `Vector SETUP` when no prior frame baseline exists.
+  - `Vector INBOUND` when safety ratio is improving meaningfully.
+  - `Vector OUTBOUND` when safety ratio is deteriorating meaningfully.
+  - `Vector HOLD` when near-steady and still within limits.
+  - `Vector RECOVER` when near-steady but still over-threshold.
+- Injected vector telemetry into both shared assist cues:
+  - `getDockingAssistCue(...)`
+  - `getLandingAssistCue(...)`
+- Existing risk/window/line/control/buffer/focus/bias/trend/delta/stability/pulse/confidence/commit/tempo/fix telemetry remains intact; vector is additive readability guidance only.
+- Updated task registry with `gdev-0148` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0147 flight-assist control-state telemetry
 
 ### Assistant summary (exact)

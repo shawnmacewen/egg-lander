@@ -156,3 +156,4 @@
 - `gdev-0145` — Flight-assist pulse telemetry (`Pulse CALM/ACTIVE/SWING/HOT/SPIKE`) for landing and docking control-intensity readability (completed)
 - `gdev-0146` — Flight-assist directional bias telemetry (`Bias LEFT/CENTER/RIGHT`) for landing and docking corrective-side readability (completed)
 - `gdev-0147` — Flight-assist control-state telemetry (`Control SMOOTH/FEATHER/CHECK/TIDYING/CATCHING/RESET`) for landing and docking handling-readability cues (completed)
+- `gdev-0148` — Flight-assist vector telemetry (`Vector SETUP/INBOUND/HOLD/OUTBOUND/RECOVER`) for landing and docking trajectory-state readability (completed)
