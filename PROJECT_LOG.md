@@ -18,7 +18,7 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ### 2026-03-09 16:34 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
-- Commit: `pending` (`gdev-0133`; see git history)
+- Commit: `e797956` (`gdev-0133`)
 - Summary: Extended shared planet-landing assist telemetry with a live touchdown ETA (`ETA Ns`) so hint/HUD guidance now exposes approximate time-to-pad-contact alongside speed/angle safety states and corrective-action cue.
 - Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: continue safe, incremental readability/feel polish focused on landing/docking decision clarity.
