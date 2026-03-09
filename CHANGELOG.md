@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0091 level-select quick launch hotkeys
+
+### Assistant summary (exact)
+Implemented the next high-impact run-loop QoL pass: level select now accepts `Enter` and `Space` as quick launch hotkeys (in addition to `↑`), so starting attempts is faster from either hand position while preserving existing controls and gating. Verified with `npm run build`.
+
+### Technical details
+- Added dedicated `ENTER` key binding in `EggLanderMissionScene` input setup.
+- Updated level-select launch handling to start mission brief on any of: `↑`, `Enter`, or `Space`.
+- Updated level-select hint copy to advertise `↑/Enter/Space launch`.
+- Updated task registry with `gdev-0091` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0090 level-select numeric jump hotkeys
 
 ### Assistant summary (exact)
