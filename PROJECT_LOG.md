@@ -16,6 +16,14 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ## Entries
 
+### 2026-03-09 16:28 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: `pending` (`gdev-0132`; see git history)
+- Summary: Extended shared orbital docking assist telemetry with a live closure ETA (`ETA Ns`) so hint/HUD guidance now exposes approximate time-to-contact alongside distance/speed/alignment states and existing corrective-action cue.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue safe, incremental readability/feel polish focused on landing/docking decision clarity.
+- Blockers: none.
+
 ### 2026-03-09 16:23 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
 - Commit: `pending` (`gdev-0131`; see git history)

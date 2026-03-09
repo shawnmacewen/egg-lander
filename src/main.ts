@@ -2126,7 +2126,13 @@ class EggLanderMissionScene extends Phaser.Scene {
       correction = 'center on ring'
     }
 
-    return `Dock D ${Math.round(dist)}/${level.orbitalDockRadius} ${distState} • S ${Math.round(speed)}/${level.orbitalSafeSpeed} ${speedState} • A ${alignState} • Fix: ${correction}`
+    const closingSpeed = Phaser.Math.Distance.Between(0, 0, this.velocity.x, this.velocity.y)
+    const etaSeconds = closingSpeed > 0.1 ? dist / closingSpeed : Infinity
+    const etaReadout = Number.isFinite(etaSeconds)
+      ? `${etaSeconds.toFixed(1)}s`
+      : '--'
+
+    return `Dock D ${Math.round(dist)}/${level.orbitalDockRadius} ${distState} • S ${Math.round(speed)}/${level.orbitalSafeSpeed} ${speedState} • ETA ${etaReadout} • A ${alignState} • Fix: ${correction}`
   }
 
   private getLandingAssistCue(level: LevelConfig) {

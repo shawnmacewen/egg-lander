@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0132 orbital docking closure ETA telemetry
+
+### Assistant summary (exact)
+Implemented the next highest-impact docking-readability polish by extending the shared docking assist cue with live time-to-contact telemetry (`ETA Ns`) derived from current closing speed and distance, so players can better judge when to bleed speed before ring entry. Verified with `npm run build`.
+
+### Technical details
+- Updated `getDockingAssistCue(level, dist, speed, aligned)` in `src/main.ts`.
+- Added `ETA` readout based on current ship speed magnitude and distance to dock center:
+  - finite ETA when moving (`ETA 0.0s` format)
+  - `ETA --` when nearly stationary.
+- Inserted ETA into both hint/HUD docking cue text via existing shared assist formatter.
+- Updated task registry with `gdev-0132` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0131 orbital-docking assist corrective-action cue
 
 ### Assistant summary (exact)
