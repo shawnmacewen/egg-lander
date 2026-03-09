@@ -192,6 +192,10 @@ class EggLanderMissionScene extends Phaser.Scene {
   private keyS!: Phaser.Input.Keyboard.Key
   private keyQ!: Phaser.Input.Keyboard.Key
   private keyE!: Phaser.Input.Keyboard.Key
+  private keyZ!: Phaser.Input.Keyboard.Key
+  private keyX!: Phaser.Input.Keyboard.Key
+  private keyC!: Phaser.Input.Keyboard.Key
+  private keyV!: Phaser.Input.Keyboard.Key
   private keySpace!: Phaser.Input.Keyboard.Key
   private keyP!: Phaser.Input.Keyboard.Key
   private keyH!: Phaser.Input.Keyboard.Key
@@ -375,6 +379,10 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.keyS = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.S)
     this.keyQ = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.Q)
     this.keyE = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.E)
+    this.keyZ = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.Z)
+    this.keyX = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.X)
+    this.keyC = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.C)
+    this.keyV = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.V)
     this.keySpace = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
     this.keyP = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.P)
     this.keyH = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.H)
@@ -450,6 +458,10 @@ class EggLanderMissionScene extends Phaser.Scene {
       }
       if (Phaser.Input.Keyboard.JustDown(this.keyA) || Phaser.Input.Keyboard.JustDown(this.keyQ)) this.cycleSelectedPowerup(-1)
       if (Phaser.Input.Keyboard.JustDown(this.keyD) || Phaser.Input.Keyboard.JustDown(this.keyE)) this.cycleSelectedPowerup(1)
+      if (Phaser.Input.Keyboard.JustDown(this.keyZ)) this.selectPowerupByHotkey(null)
+      if (Phaser.Input.Keyboard.JustDown(this.keyX)) this.selectPowerupByHotkey('stability-thrusters')
+      if (Phaser.Input.Keyboard.JustDown(this.keyC)) this.selectPowerupByHotkey('shielded-hull')
+      if (Phaser.Input.Keyboard.JustDown(this.keyV)) this.selectPowerupByHotkey('fuel-gel')
       return
     }
 
@@ -547,6 +559,14 @@ class EggLanderMissionScene extends Phaser.Scene {
   private replayCurrentLevelFromComplete() {
     this.missionFailuresOnLevel = 0
     this.beginPlanetBrief()
+  }
+
+  private selectPowerupByHotkey(target: PowerupId | null) {
+    if (target && !this.saveData.unlockedPowerups.includes(target)) return
+    if (this.saveData.selectedPowerup === target) return
+    this.saveData.selectedPowerup = target
+    this.saveSave(this.saveData)
+    this.updateUi()
   }
 
   private retryAfterCrash() {
@@ -1149,7 +1169,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.ship.rotation = 0
     this.velocity.set(0, 0)
     this.thruster.setVisible(false)
-    this.statusText.setText(`Level Select\nL / N or W / S choose • A / D / Q / E powerup • ↑ / Enter / Space launch mission`)
+    this.statusText.setText(`Level Select\nL / N or W / S choose • A / D / Q / E powerup • Z/X/C/V direct loadout • ↑ / Enter / Space launch mission`)
     this.hintText.setText('R starts a fresh session (keeps saved progression) • H toggles HUD detail')
     this.resetMissionEntities()
     this.updateUi()
@@ -1986,7 +2006,8 @@ class EggLanderMissionScene extends Phaser.Scene {
           'CONTROLS',
           '↑ / Enter / Space  Launch',
           '←/→ or W/S or L/N  Level',
-          'A/D or Q/E  Loadout',
+          'A/D or Q/E  Loadout cycle',
+          'Z/X/C/V  Direct loadout',
           '1-4  Jump to unlocked level',
           'H  HUD detail',
           '/ or Tab  Hide this panel',
@@ -2088,7 +2109,7 @@ class EggLanderMissionScene extends Phaser.Scene {
 
     const selectedName = this.saveData.selectedPowerup ? POWERUPS[this.saveData.selectedPowerup].name : 'None'
     this.statusText.setText(`Loadout set: ${selectedName}`)
-    this.hintText.setText('Level select: 1-4 jump • ←/→ or L/N or W/S level • A/D or Q/E powerup • ↑/Enter/Space launch • T retry (in-run/crash) • Esc/L abort run (in-run) • H HUD detail')
+    this.hintText.setText('Level select: 1-4 jump • ←/→ or L/N or W/S level • A/D or Q/E powerup • Z/X/C/V direct loadout • ↑/Enter/Space launch • T retry (in-run/crash) • Esc/L abort run (in-run) • H HUD detail')
   }
 
   private tryUnlockPowerupsForLevel(levelNumber: number) {

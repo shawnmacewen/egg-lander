@@ -1,5 +1,18 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0109 direct loadout hotkeys in level select
+
+### Assistant summary (exact)
+Implemented the next highest-impact control-flow polish: level select now supports direct loadout hotkeys (`Z/X/C/V`) for None/Stability/Shield/Fuel with unlock gating, plus control-hint/overlay parity updates so players can pick perks instantly without cycling. Verified with `npm run build`.
+
+### Technical details
+- Added direct loadout key bindings: `Z` (None), `X` (Stability Thrusters), `C` (Shielded Hull), `V` (Fuel Gel).
+- Added `selectPowerupByHotkey()` helper that enforces unlock gating and persists selection immediately.
+- Wired direct loadout handling into level-select update flow alongside existing cycle controls (`A/D` and `Q/E`).
+- Updated level-select status/hint copy and controls overlay to advertise direct loadout hotkeys.
+- Updated task registry with `gdev-0109` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0108 controls-overlay phase parity pass
 
 ### Assistant summary (exact)

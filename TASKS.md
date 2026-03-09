@@ -117,3 +117,4 @@
 - `gdev-0106` — Persist level-select mission cursor across sessions/reloads with unlock-safe clamping (completed)
 - `gdev-0107` — Post-clear next-level alias parity (`↑` alongside `N/Enter/Space`) + completion hint copy update (completed)
 - `gdev-0108` — Controls-overlay phase parity pass (crash/pause/clear context-aware quick-action key cards) (completed)
+- `gdev-0109` — Level-select direct loadout hotkeys (`Z/X/C/V`) with unlock gating + control-hint parity (completed)
