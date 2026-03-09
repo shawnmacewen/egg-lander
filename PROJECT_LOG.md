@@ -696,7 +696,7 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ### 2026-03-09 12:03 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
-- Commit: pending (`gdev-0079`)
+- Commit: `ab4b4ba` (`gdev-0079`)
 - Summary: Added level-select `Stability` telemetry to indicate when consistency should be spent (single PB shot) versus protected (bank/recover/hold flow).
 - Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: continue safe level-select guidance polish with low-risk readability improvements.
