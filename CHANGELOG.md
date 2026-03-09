@@ -1,5 +1,23 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0150 flight-assist pressure-stack telemetry
+
+### Assistant summary (exact)
+Implemented the next highest-impact flight-readability polish by adding shared assist pressure-stack telemetry (`Stack SOLO/DUAL/TRIPLE`) to both landing and docking cues, so pilots can instantly see whether one, two, or all three control dimensions are simultaneously near-threshold. Verified with `npm run build`.
+
+### Technical details
+- Added `getAssistStackReadout(ratios)` helper in `src/main.ts`.
+- Stack cue classifies concurrent limiter pressure from normalized assist ratios:
+  - `Stack SOLO` when only one dimension is near-threshold.
+  - `Stack DUAL` when two dimensions are concurrently near-threshold.
+  - `Stack TRIPLE` when all three dimensions are simultaneously near-threshold.
+- Injected stack telemetry into both shared assist cues:
+  - `getDockingAssistCue(...)`
+  - `getLandingAssistCue(...)`
+- Existing risk/window/line/control/vector/buffer/focus/watch/bias/trend/delta/stability/pulse/confidence/commit/tempo/fix telemetry remains intact; stack is additive readability guidance only.
+- Updated task registry with `gdev-0150` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0149 flight-assist secondary-pressure telemetry
 
 ### Assistant summary (exact)
