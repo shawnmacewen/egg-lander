@@ -1,5 +1,23 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0140 flight-assist commit telemetry
+
+### Assistant summary (exact)
+Implemented the next highest-impact flight-readability polish by adding shared assist commit telemetry (`Commit GO/BUILD/HOLD/RECOVER/ABORT`) to both landing and docking cues, so players get an immediate go/no-go action cue from current safety margin and momentum. Verified with `npm run build`.
+
+### Technical details
+- Added `getAssistCommitReadout(currentWorstRatio, prevWorstRatio)` helper in `src/main.ts`.
+- Commit cue logic now maps approach state into one action label:
+  - `Commit GO` when safely inside margin.
+  - `Commit BUILD` / `Commit HOLD` when near-threshold depending on improving trend.
+  - `Commit RECOVER` / `Commit ABORT` when over-threshold depending on improving trend.
+- Injected commit telemetry into both shared assist strings:
+  - `getDockingAssistCue(...)`
+  - `getLandingAssistCue(...)`
+- Existing risk/buffer/focus/trend/stability/confidence/fix telemetry remains intact; commit is additive readability guidance only.
+- Updated task registry with `gdev-0140` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0138 flight-assist stability telemetry
 
 ### Assistant summary (exact)
