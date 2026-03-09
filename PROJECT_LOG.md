@@ -631,3 +631,10 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 - Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: continue safe level-select guidance polish with low-risk readability improvements.
 - Blockers: none.
+### 2026-03-09 11:20 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: pending (`gdev-0071`)
+- Summary: Added level-select `Loadout Hint` telemetry that recommends a perk plan based on run maturity, recovery state, and weakest mastery metric.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue safe level-select guidance polish with low-risk readability improvements.
+- Blockers: none.

@@ -1145,3 +1145,14 @@ Added a level-select `Focus` telemetry cue that surfaces one highest-priority ac
 - Integrated `Focus ...` into the level-select telemetry line immediately after `Session Goal`.
 - Updated task registry in `TASKS.md` with `gdev-0070` marked completed.
 - Build verification: `npm run build` (pass).
+
+## 2026-03-09 — gdev-0071 mission loadout telemetry
+
+### Assistant summary (exact)
+Added a level-select `Loadout Hint` telemetry cue that recommends a perk setup for the next run block based on first-clear/recovery state and weakest mastery metric, so players can choose safer or more targeted loadouts before launch. Verified with `npm run build`.
+
+### Technical details
+- Added `missionLoadoutReadout` derivation in `src/main.ts` using unlocked powerup state, commitment/recovery status, and weakest mastery focus area.
+- Integrated `Loadout Hint ...` into the level-select HUD telemetry line immediately after `Focus` and before coaching copy.
+- Updated task registry in `TASKS.md` with `gdev-0071` marked completed.
+- Build verification: `npm run build` (pass).
