@@ -824,7 +824,7 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ### 2026-03-09 13:23 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
-- Commit: pending (`gdev-0095`)
+- Commit: `433be1d` (`gdev-0095`)
 - Summary: Added universal `Esc` quick-abort so active missions can immediately return to level select from in-run, paused, crashed, and post-clear states with updated HUD control hints.
 - Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: continue safe quality-of-life/input-flow improvements that cut retry friction without changing mission balance.
