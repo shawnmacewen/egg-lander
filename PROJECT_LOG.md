@@ -18,7 +18,7 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ### 2026-03-09 15:18 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
-- Commit: `pending` (`gdev-0118`; see git history)
+- Commit: `4f6a818` (`gdev-0118`)
 - Summary: Corrected takeoff-phase hint parity by removing the on-foot `Space/Enter spear` prompt after boarding, leaving only ship-appropriate controls to reduce launch-phase misinputs.
 - Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: continue safe, incremental input-flow/readability polish that improves control clarity without changing mission balance.
