@@ -18,7 +18,7 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ### 2026-03-09 15:01 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
-- Commit: pending (`gdev-0114`; see git history)
+- Commit: `5ad7f88` (`gdev-0114`)
 - Summary: Performed a control-copy parity sweep so post-dock next-level guidance now advertises `↑/N/Enter/Space`, crash-retry hint now shows `Esc/L`, and level-select status now includes `←/→` navigation parity.
 - Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: continue safe, incremental gameplay QoL/readability improvements that reduce control friction and repeated setup.
