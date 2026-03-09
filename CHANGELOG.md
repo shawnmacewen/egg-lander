@@ -1,5 +1,24 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0122 controls-overlay hint discoverability parity
+
+### Assistant summary (exact)
+Implemented the next highest-impact control-discoverability pass: hint text now consistently advertises controls-overlay toggle (`/` or `Tab`) across mission brief, active in-run phases, pause, crash, and post-clear flows, so players can access hotkey help from every major state without hunting. Verified with `npm run build`.
+
+### Technical details
+- Updated mission-phase hint copy in `src/main.ts` to include `/ or Tab controls` in:
+  - mission start brief
+  - planetary flight
+  - on-foot variants (boss/relic/non-relic)
+  - takeoff and orbital docking
+  - pause/resume hint
+  - crash retry/countdown hint
+  - post-clear mission-loop hint
+  - boss-hit reminder hint.
+- Gameplay/input behavior unchanged; copy/discoverability parity only.
+- Updated task registry with `gdev-0122` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0121 mission-brief/crash hint HUD-toggle parity
 
 ### Assistant summary (exact)

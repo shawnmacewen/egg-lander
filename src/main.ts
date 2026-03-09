@@ -326,7 +326,8 @@ class EggLanderMissionScene extends Phaser.Scene {
     const nearMount = this.add.rectangle(width / 2, height - 66, width + 220, 120, 0x2f235a)
     const eyeTotem = this.add.ellipse(120, height - 90, 70, 86, 0x111111).setStrokeStyle(4, 0x000000)
     const eyePupil = this.add.circle(120, height - 90, 11, 0xffffff)
-    this.terrain = this.add.rectangle(width / 2, height - 8, width, 16, 0x130f2f)
+    const grassTop = this.add.rectangle(width / 2, height - 16, width, 12, 0x69d25f)
+    this.terrain = this.add.rectangle(width / 2, height - 5, width, 22, 0x7a4c2d)
     this.planetPad = this.add.rectangle(width / 2, height - 25, 170, 16, 0xc9f25a).setStrokeStyle(3, 0x151515)
     this.egg = this.add.ellipse(width - 140, height - 44, 24, 30, 0xfff2ba).setStrokeStyle(2, 0x242424)
     this.bonusRelic = this.add.star(width / 2 + 120, height - 48, 5, 6, 12, 0x8dfdff).setStrokeStyle(2, 0x1f2d35).setVisible(false)
@@ -334,7 +335,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.bossBody = this.add.ellipse(width - 240, height - 52, 66, 66, 0x0c0c0c).setStrokeStyle(4, 0x1f1f1f).setVisible(false)
     this.bossEye = this.add.ellipse(width - 240, height - 52, 18, 18, 0xffffff).setVisible(false)
     this.bossTelegraph = this.add.ellipse(width - 240, height - 52, 44, 44, 0xffd17a).setStrokeStyle(2, 0x5a2c0c).setAlpha(0.18).setVisible(false)
-    this.planetLayer.add([skyBand, sunDisc, farMount, nearMount, eyeTotem, eyePupil, this.terrain, this.planetPad, this.egg, this.bonusRelic, this.bossBody, this.bossEye, this.bossTelegraph, this.runner])
+    this.planetLayer.add([skyBand, sunDisc, farMount, nearMount, eyeTotem, eyePupil, grassTop, this.terrain, this.planetPad, this.egg, this.bonusRelic, this.bossBody, this.bossEye, this.bossTelegraph, this.runner])
 
     this.orbitalLayer.add([
       this.add.rectangle(width / 2, height / 2, width, height, 0x070b17),
@@ -524,7 +525,7 @@ class EggLanderMissionScene extends Phaser.Scene {
       this.phase = 'planet-flying'
       this.missionStartAt = this.time.now
       this.statusText.setText('Planet landing in progress')
-      this.hintText.setText('←/→ or A/D rotate • ↑/W thrust • T retry • Esc/L level select • P pause • H HUD mode • R new session')
+      this.hintText.setText('←/→ or A/D rotate • ↑/W thrust • T retry • Esc/L level select • P pause • / or Tab controls • H HUD mode • R new session')
     }
 
     if (this.phase === 'planet-flying') this.updatePlanetFlight(dt)
@@ -618,7 +619,7 @@ class EggLanderMissionScene extends Phaser.Scene {
       this.pauseStatusBackup = this.statusText.text
       this.pauseHintBackup = this.hintText.text
       this.statusText.setText('Paused')
-      this.hintText.setText('Press P / Enter / Space to resume • T retry • Esc/L level select • H HUD mode • R new session')
+      this.hintText.setText('Press P / Enter / Space to resume • T retry • Esc/L level select • / or Tab controls • H HUD mode • R new session')
       this.anims.pauseAll()
       return
     }
@@ -725,7 +726,7 @@ class EggLanderMissionScene extends Phaser.Scene {
       this.runner.setVisible(false)
       this.phase = 'takeoff'
       this.statusText.setText('Boarded with egg: launch to orbit')
-      this.hintText.setText('↑/W thrust • ←/→ or A/D rotate • T retry • Esc/L level select • P pause • H HUD mode • R new session')
+      this.hintText.setText('↑/W thrust • ←/→ or A/D rotate • T retry • Esc/L level select • P pause • / or Tab controls • H HUD mode • R new session')
       this.ship.setFillStyle(0xffd889)
       this.velocity.set(0, -8)
       this.ship.rotation = 0
@@ -844,13 +845,13 @@ class EggLanderMissionScene extends Phaser.Scene {
     if (this.bossActive) {
       this.statusText.setText('Landed. Defeat boss with spears, then steal egg')
       this.hintText.setText(this.bonusObjectiveActive
-        ? 'On foot: ←/→ or A/D run • Space/Enter spear • grab cyan relic • T retry • Esc/L level select • P pause • H HUD mode'
-        : 'On foot: ←/→ or A/D run • Space/Enter throw spear • T retry • Esc/L level select • P pause • H HUD mode')
+        ? 'On foot: ←/→ or A/D run • Space/Enter spear • grab cyan relic • T retry • Esc/L level select • P pause • / or Tab controls • H HUD mode'
+        : 'On foot: ←/→ or A/D run • Space/Enter throw spear • T retry • Esc/L level select • P pause • / or Tab controls • H HUD mode')
     } else {
       this.statusText.setText('Landed. Exit, steal egg, return')
       this.hintText.setText(this.bonusObjectiveActive
-        ? 'On foot: ←/→ or A/D run • grab cyan relic • steal egg then return • T retry • Esc/L level select • P pause • H HUD mode'
-        : 'On foot: ←/→ or A/D run • steal egg then return • T retry • Esc/L level select • P pause • H HUD mode')
+        ? 'On foot: ←/→ or A/D run • grab cyan relic • steal egg then return • T retry • Esc/L level select • P pause • / or Tab controls • H HUD mode'
+        : 'On foot: ←/→ or A/D run • steal egg then return • T retry • Esc/L level select • P pause • / or Tab controls • H HUD mode')
     }
   }
 
@@ -913,7 +914,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.dockingVelocityLine.setVisible(true)
 
     this.statusText.setText('Orbital docking: near-zero-G precision')
-    this.hintText.setText('Dock softly and upright inside ring • ↑/W thrust • ←/→ or A/D rotate • T retry • Esc/L level select • P pause • H HUD mode')
+    this.hintText.setText('Dock softly and upright inside ring • ↑/W thrust • ←/→ or A/D rotate • T retry • Esc/L level select • P pause • / or Tab controls • H HUD mode')
   }
 
   private updateBossCombat(dt: number) {
@@ -978,7 +979,7 @@ class EggLanderMissionScene extends Phaser.Scene {
         this.playerInvulnerableUntil = this.time.now + invulnerabilityMs
         const maxHp = this.saveData.selectedPowerup === 'shielded-hull' ? 4 : 3
         this.statusText.setText(`Hit! HP ${this.playerHp}/${maxHp}`)
-        this.hintText.setText('Dodge shots + throw spears (Space/Enter) • T retry • Esc/L level select • P pause • H HUD mode')
+        this.hintText.setText('Dodge shots + throw spears (Space/Enter) • T retry • Esc/L level select • P pause • / or Tab controls • H HUD mode')
         if (this.playerHp <= 0) {
           this.failMission('On-foot defeat')
           return
@@ -1014,7 +1015,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.orbitalLayer.setVisible(false)
     this.resetMissionEntities()
     this.statusText.setText(`${level.name}\n1) Land 2) Steal egg 3) Return 4) Take off`)
-    this.hintText.setText('Press ↑ / Enter / Space to start landing run • T retry • Esc/L level select • H HUD mode • R new session')
+    this.hintText.setText('Press ↑ / Enter / Space to start landing run • T retry • Esc/L level select • / or Tab controls • H HUD mode • R new session')
   }
 
   private resetMissionEntities() {
@@ -1072,7 +1073,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.lastFailReason = reason
     this.crashRetryDueAt = this.time.now + 900
     this.statusText.setText(`Mission failed: ${reason}`)
-    this.hintText.setText('Retrying this level… (T/Enter/Space now • Esc/L level select • H HUD mode • R new session)')
+    this.hintText.setText('Retrying this level… (T/Enter/Space now • Esc/L level select • / or Tab controls • H HUD mode • R new session)')
     this.saveSave(this.saveData)
 
     this.pendingCrashRetryTimer = this.time.delayedCall(900, () => {
@@ -1166,7 +1167,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     ].filter(Boolean)
 
     this.statusText.setText(`Dock complete! +${gained} (${breakdownBits.join(' • ')})\nT replay level • ↑/N/Enter/Space next level • Esc/L level select`)
-    this.hintText.setText('Mission loop clear: land → run → steal → return → takeoff → dock • T replay • ↑/N/Enter/Space next • Esc/L level select • H HUD mode')
+    this.hintText.setText('Mission loop clear: land → run → steal → return → takeoff → dock • T replay • ↑/N/Enter/Space next • Esc/L level select • / or Tab controls • H HUD mode')
   }
 
   private advanceFromComplete() {
@@ -1993,7 +1994,7 @@ class EggLanderMissionScene extends Phaser.Scene {
       const retryCountdown = retryMs > 0 ? `${Math.ceil(retryMs / 10) * 10}ms` : 'now'
       const failReason = this.lastFailReason || 'run failed'
       this.statusText.setText(`Mission failed: ${failReason} • auto-retry ${retryCountdown}`)
-      this.hintText.setText('Crash flow: T/Enter/Space instant retry • Esc/L level select • H HUD mode • R new session')
+      this.hintText.setText('Crash flow: T/Enter/Space instant retry • Esc/L level select • / or Tab controls • H HUD mode • R new session')
     }
 
     let objective = 'Land on planet, grab egg on foot, return, launch, then precision dock in orbit.'
