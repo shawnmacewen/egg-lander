@@ -232,3 +232,11 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 - Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: continue incremental gameplay depth/readability passes while waiting for additional art drops.
 - Blockers: no new content art beyond runner sheet.
+
+### 2026-03-09 07:05 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: pending (`gdev-0021`)
+- Summary: Added a consecutive mission-clear streak system with escalating score bonus, streak reset on failures/new sessions, and HUD/completion breakdown streak telemetry.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue incremental gameplay depth/readability passes while waiting for additional art drops.
+- Blockers: no new content art beyond runner sheet.

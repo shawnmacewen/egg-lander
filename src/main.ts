@@ -189,6 +189,7 @@ class EggLanderMissionScene extends Phaser.Scene {
   private playerHp = 3
   private playerInvulnerableUntil = 0
   private missionFailuresOnLevel = 0
+  private clearStreak = 0
   private tookDamageThisAttempt = false
   private readonly spears: Array<{ obj: Phaser.GameObjects.Rectangle; vx: number; life: number }> = []
   private readonly bossShots: Array<{ obj: Phaser.GameObjects.Ellipse; vx: number; vy: number; life: number }> = []
@@ -749,6 +750,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.phase = 'crashed'
     this.attempts += 1
     this.missionFailuresOnLevel += 1
+    this.clearStreak = 0
     this.velocity.set(0, 0)
     this.dockingApproachLine.setVisible(false)
     this.dockingVelocityLine.setVisible(false)
@@ -773,6 +775,8 @@ class EggLanderMissionScene extends Phaser.Scene {
     const relicBonus = this.bonusObjectiveCollected ? 250 : 0
     const firstTryBonus = this.missionFailuresOnLevel === 0 ? 100 : 0
     const noHitBonus = level.id >= 2 && !this.tookDamageThisAttempt ? 150 : 0
+    const nextStreak = this.clearStreak + 1
+    const streakBonus = Math.min(Math.max(0, nextStreak - 1) * 75, 225)
     const distanceScore = Phaser.Math.Clamp(1 - dockDist / level.orbitalDockRadius, 0, 1)
     const speedScore = Phaser.Math.Clamp(1 - dockSpeed / level.orbitalSafeSpeed, 0, 1)
     const dockingPrecision = distanceScore * 0.6 + speedScore * 0.4
@@ -780,8 +784,9 @@ class EggLanderMissionScene extends Phaser.Scene {
     const dockingGrade = dockingPrecision >= 0.86 ? 'S' : dockingPrecision >= 0.68 ? 'A' : dockingPrecision >= 0.5 ? 'B' : 'C'
     this.lastDockGrade = dockingGrade
 
-    const gained = level.completionScore + Math.round(this.fuel * 0.5) + relicBonus + dockingBonus + firstTryBonus + noHitBonus
+    const gained = level.completionScore + Math.round(this.fuel * 0.5) + relicBonus + dockingBonus + firstTryBonus + noHitBonus + streakBonus
     this.sessionScore += gained
+    this.clearStreak = nextStreak
 
     const levelNumber = this.levelIndex + 1
     const nextLevel = levelNumber + 1
@@ -797,6 +802,7 @@ class EggLanderMissionScene extends Phaser.Scene {
       dockingBonus > 0 ? `+${dockingBonus} dock bonus` : undefined,
       firstTryBonus ? '+100 first-try bonus' : undefined,
       noHitBonus ? '+150 clean-fight bonus' : undefined,
+      streakBonus ? `+${streakBonus} streak bonus (x${this.clearStreak})` : undefined,
       relicBonus ? '+250 relic bonus' : undefined
     ].filter(Boolean)
 
@@ -833,6 +839,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.sessionScore = 0
     this.attempts = 0
     this.levelIndex = 0
+    this.clearStreak = 0
     this.saveData = this.loadSave()
     this.enterLevelSelect()
   }
@@ -863,7 +870,7 @@ class EggLanderMissionScene extends Phaser.Scene {
         ? `grade ${this.lastDockGrade}`
         : '-'
     this.hudText.setText(
-      `Score ${this.sessionScore}   Attempts ${this.attempts}   Fuel ${Math.round(this.fuel)}/${this.maxFuel}   HP ${hpReadout}   Boss ${bossReadout}   BossShot ${bossShotReadout}   Spear ${spearReadout}   Dock ${dockReadout}   V ${Math.abs(this.velocity.y).toFixed(1)}   H ${Math.abs(this.velocity.x).toFixed(1)}   PWR ${powerup}`
+      `Score ${this.sessionScore}   Attempts ${this.attempts}   Streak ${this.clearStreak}   Fuel ${Math.round(this.fuel)}/${this.maxFuel}   HP ${hpReadout}   Boss ${bossReadout}   BossShot ${bossShotReadout}   Spear ${spearReadout}   Dock ${dockReadout}   V ${Math.abs(this.velocity.y).toFixed(1)}   H ${Math.abs(this.velocity.x).toFixed(1)}   PWR ${powerup}`
     )
     const required = level.requiredPowerup ? POWERUPS[level.requiredPowerup].name : 'None'
     this.levelText.setText(

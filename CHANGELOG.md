@@ -355,3 +355,16 @@ Implemented the next highest-impact replay-feedback pass: mission clears now awa
 - Ensured tracking resets correctly across retries, level-select returns, and new sessions.
 - Updated task registry with `gdev-0020` completion.
 - Build verification: `npm run build` (pass).
+
+## 2026-03-09 — gdev-0021 mission-clear streak bonus + HUD streak telemetry
+
+### Assistant summary (exact)
+Implemented the next highest-impact replay loop polish: added a consecutive mission-clear streak system that awards escalating score bonuses for back-to-back clears without failures, resets streak on mission fail/new session, and surfaces live streak count in HUD plus completion breakdown text. Verified with a clean production build.
+
+### Technical details
+- Added session-scoped clear streak tracking (`clearStreak`) to the mission scene.
+- Added escalating streak bonus on level completion (`+75` per consecutive clear after the first, capped at `+225`).
+- Reset streak on mission failure and on explicit new-session reset.
+- Added live `Streak` telemetry to the HUD and bonus-line messaging in dock completion breakdown.
+- Updated task registry with `gdev-0021` completion.
+- Build verification: `npm run build` (pass).
