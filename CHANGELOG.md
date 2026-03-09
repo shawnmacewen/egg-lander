@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0030 lifetime pilot telemetry pass
+
+### Assistant summary (exact)
+Implemented the next safe progression-readability task: level-select telemetry now includes lifetime clears/attempts with overall clear rate plus a fastest-level spotlight (best recorded mission time across all levels), and build verification passed.
+
+### Technical details
+- Extended level-select telemetry in `src/main.ts` to compute and render:
+  - lifetime attempts/clears aggregate
+  - lifetime clear-rate percentage
+  - fastest recorded level/time spotlight (`L# m:ss.cc`)
+- Kept changes backward-safe by deriving metrics from existing persisted arrays (`levelAttempts`, `levelClears`, `bestLevelTimesMs`) with no save-schema bump.
+- Updated task registry for `gdev-0030` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0029 lifetime best-streak persistence
 
 ### Assistant summary (exact)

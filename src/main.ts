@@ -968,8 +968,20 @@ class EggLanderMissionScene extends Phaser.Scene {
     const levelAttempts = this.saveData.levelAttempts[this.levelIndex] ?? 0
     const levelClears = this.saveData.levelClears[this.levelIndex] ?? 0
     const levelClearRate = levelAttempts > 0 ? `${Math.round((levelClears / levelAttempts) * 100)}%` : '--'
+    const totalAttempts = this.saveData.levelAttempts.reduce((sum, value) => sum + (value ?? 0), 0)
+    const totalLevelClears = this.saveData.levelClears.reduce((sum, value) => sum + (value ?? 0), 0)
+    const lifetimeClearRate = totalAttempts > 0 ? `${Math.round((totalLevelClears / totalAttempts) * 100)}%` : '--'
+    const bestTimePairs = this.saveData.bestLevelTimesMs
+      .map((ms, index) => ({ ms: ms ?? 0, index }))
+      .filter((entry) => entry.ms > 0)
+    const fastestLevelTag = bestTimePairs.length > 0
+      ? (() => {
+          const fastest = bestTimePairs.reduce((best, entry) => (entry.ms < best.ms ? entry : best))
+          return `L${fastest.index + 1} ${this.formatMs(fastest.ms)}`
+        })()
+      : '--'
     this.levelText.setText(
-      `Level ${level.id}/${LEVELS.length}: ${level.name}   Requires ${required}   Unlocked ${this.saveData.unlockedLevel}/${LEVELS.length}   Best ${this.saveData.bestScore}   Best Streak ${this.saveData.bestStreak}   Best Run ${levelBestScore}   Best Time ${this.formatMs(levelBestTimeMs)}   Best Dock ${levelBestDockGrade}   Record ${levelClears}/${levelAttempts} (${levelClearRate})   Perk: ${powerupDescription}`
+      `Level ${level.id}/${LEVELS.length}: ${level.name}   Requires ${required}   Unlocked ${this.saveData.unlockedLevel}/${LEVELS.length}   Best ${this.saveData.bestScore}   Best Streak ${this.saveData.bestStreak}   Best Run ${levelBestScore}   Best Time ${this.formatMs(levelBestTimeMs)}   Best Dock ${levelBestDockGrade}   Record ${levelClears}/${levelAttempts} (${levelClearRate})   Lifetime ${totalLevelClears}/${totalAttempts} (${lifetimeClearRate})   Fastest ${fastestLevelTag}   Perk: ${powerupDescription}`
     )
 
     let objective = 'Land on planet, grab egg on foot, return, launch, then precision dock in orbit.'

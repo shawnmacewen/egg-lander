@@ -304,3 +304,10 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 - Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: continue safe post-MVP progression polish (low-risk persistence/readability wins) while waiting on new art drops.
 - Blockers: no new content art beyond runner sheet.
+### 2026-03-09 07:55 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: pending (`gdev-0030`)
+- Summary: Added lifetime pilot telemetry to level-select HUD (overall clear rate + fastest-level spotlight) using existing persisted stats.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue incremental progression/readability passes with small, safe telemetry and UX upgrades.
+- Blockers: none.
