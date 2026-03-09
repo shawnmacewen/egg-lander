@@ -1,5 +1,21 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0048 score-target telemetry
+
+### Assistant summary (exact)
+Implemented the next safe high-impact readability pass: level-select telemetry now includes a dynamic `Score Target ...` cue that recommends either a PB push or a safer stabilization score based on mission confidence and retry pressure, anchored to each level's saved best run score. Verified with `npm run build`.
+
+### Technical details
+- Added derived `missionScoreTargetReadout` in `updateUi()` with no save-schema changes.
+- Score-target logic branches safely on existing telemetry state:
+  - no clears → `Score Target set after first clear`
+  - clears but no run PB score yet → `Score Target set from next clear`
+  - otherwise computes a target score from saved per-level best run score using blended pressure/confidence factors.
+- Target score includes an intent cue (`+N push` / `N safe` / `hold PB line`) to clarify whether the run should be aggressive or stabilizing.
+- Extended level-select telemetry line to include `Score Target ...` directly after pace targeting.
+- Updated task registry with `gdev-0048` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0047 pace-target telemetry
 
 ### Assistant summary (exact)
