@@ -80,3 +80,4 @@
 - `gdev-0069` — Level-select mission session-goal telemetry (`Session Goal ...` block-end objective cue by commitment state) (completed)
 - `gdev-0070` — Level-select mission focus telemetry (`Focus ...` single-priority action cue from commitment + weakest metric) (completed)
 - `gdev-0071` — Level-select mission loadout telemetry (`Loadout Hint ...` perk recommendation keyed to recovery state + weakest metric) (completed)
+- `gdev-0072` — Level-select mission exit-rule telemetry (`Exit Rule ...` anti-overgrind session stop cue by commitment state) (completed)

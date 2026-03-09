@@ -16,6 +16,14 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ## Entries
 
+### 2026-03-09 11:25 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: `46f6711` (`gdev-0072`)
+- Summary: Added level-select mission exit-rule telemetry (`Exit Rule ...`) so each commitment state now communicates a concrete stop condition to prevent overgrinding and enforce cleaner session boundaries.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue safe level-select guidance polish with low-risk readability improvements.
+- Blockers: none.
+
 ### 2026-03-09 11:08 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
 - Commit: `4fca189` (`gdev-0069`)

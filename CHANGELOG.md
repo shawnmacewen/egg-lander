@@ -1,5 +1,23 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0072 mission exit-rule telemetry
+
+### Assistant summary (exact)
+Implemented the next high-impact level-select pacing pass: added `Exit Rule ...` telemetry that tells players exactly when to end the current block by commitment state (seed/first-clear/push/bank/recover/hold), reducing overgrind and tilt spirals. Verified with `npm run build`.
+
+### Technical details
+- Added derived `missionExitReadout` in `updateUi()` with no save-schema changes.
+- Exit-rule guidance branches from existing progression + commitment signals:
+  - pre-attempt → `Exit Rule Stop after baseline clear and log notes`
+  - attempts/no clears → `Exit Rule Stop after first clear to lock safe route memory`
+  - `Commit Push` → `Exit Rule End block once one PB shot is taken`
+  - `Commit Bank` → `Exit Rule End after two clean banks or one quality drop`
+  - `Commit Recover` → `Exit Rule End if pressure fails to drop after this set`
+  - `Commit Hold` → `Exit Rule End after one stable hold rep and reset fresh`
+- Extended level-select telemetry line to include `Exit Rule ...` immediately after `Session Goal ...` guidance.
+- Updated task registry with `gdev-0072` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0069 mission session-goal telemetry
 
 ### Assistant summary (exact)
