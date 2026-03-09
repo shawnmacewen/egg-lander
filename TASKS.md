@@ -41,3 +41,4 @@
 - `gdev-0030` — Lifetime pilot telemetry pass (overall clear rate + fastest-level spotlight in level-select HUD) (completed)
 - `gdev-0031` — Per-level clean-clear persistence + level-select clean-rate telemetry (completed)
 - `gdev-0032` — Per-level first-try clear persistence + level-select first-try telemetry (completed)
+- `gdev-0033` — Per-level relic-objective completion persistence + level-select relic telemetry (completed)

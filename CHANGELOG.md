@@ -1,5 +1,18 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0033 relic-objective persistence + telemetry pass
+
+### Assistant summary (exact)
+Implemented the next safe mastery-feedback pass: per-level relic side-objective completions now persist (save schema v11), level-select telemetry now shows relic completion rate per mission, and relic completion progress now survives restarts. Verified with `npm run build`.
+
+### Technical details
+- Bumped save schema version to `v11`.
+- Extended `SaveData` with `relicLevelCompletions` and added backward-safe migration/default handling.
+- On mission completion, now increments per-level relic completion count when the optional cyan relic objective was collected.
+- Added level-select telemetry readout: `Relic x/y (z%)` per level.
+- Updated task registry for `gdev-0033` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0032 first-try clear persistence + telemetry pass
 
 ### Assistant summary (exact)
