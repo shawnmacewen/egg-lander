@@ -132,3 +132,4 @@
 - `gdev-0121` — Mission-brief/crash hint HUD-toggle parity (`H`) across pre-launch and crash flows (completed)
 - `gdev-0122` — Hint discoverability parity for controls overlay (`/`/`Tab`) across mission-brief, active phases, pause, crash, and clear flows (completed)
 - `gdev-0123` — Wide-screen framing pass: larger ship silhouette + wider spawn spread + re-centered orbital station anchors (completed)
+- `gdev-0124` — Per-level landing-zone staging pass (offset pad placement + spawn/objective anchoring for wider map pacing) (completed)

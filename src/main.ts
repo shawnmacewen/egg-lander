@@ -71,6 +71,7 @@ const SAVE_KEY = 'egg-lander-save'
 const SHIP_RENDER_SCALE = 1.2
 const SHIP_THRUSTER_OFFSET = 22
 const SHIP_WORLD_EDGE_BUFFER = 16
+const LEVEL_PAD_CENTER_FACTORS = [0.5, 0.42, 0.6, 0.36] as const
 
 const LEVELS: LevelConfig[] = [
   {
@@ -634,6 +635,11 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.anims.resumeAll()
   }
 
+  private getPadCenterX() {
+    const factor = LEVEL_PAD_CENTER_FACTORS[this.levelIndex] ?? 0.5
+    return Math.round(this.scale.width * factor)
+  }
+
   private updatePlanetFlight(dt: number) {
     const level = LEVELS[this.levelIndex]
     this.velocity.y += level.gravity * dt
@@ -660,7 +666,7 @@ class EggLanderMissionScene extends Phaser.Scene {
 
     if (this.ship.y >= this.scale.height - 34) {
       this.ship.y = this.scale.height - 34
-      const onPad = Math.abs(this.ship.x - this.scale.width / 2) <= level.padWidth / 2
+      const onPad = Math.abs(this.ship.x - this.getPadCenterX()) <= level.padWidth / 2
       const shieldBonus = this.saveData.selectedPowerup === 'shielded-hull' ? 1.15 : 1
       const stableY = Math.abs(this.velocity.y) <= level.safeVertical * shieldBonus
       const stableX = Math.abs(this.velocity.x) <= level.safeHorizontal * shieldBonus
@@ -677,8 +683,9 @@ class EggLanderMissionScene extends Phaser.Scene {
   private updateOnFoot(dt: number) {
     this.thruster.setVisible(false)
     const level = LEVELS[this.levelIndex]
-    const minX = this.scale.width / 2 - 26
-    const maxX = this.scale.width / 2 + level.runDistance
+    const padCenterX = this.getPadCenterX()
+    const minX = Phaser.Math.Clamp(padCenterX - 26, 24, this.scale.width - 24)
+    const maxX = Phaser.Math.Clamp(padCenterX + level.runDistance, minX + 80, this.scale.width - 24)
 
     let moving = false
     if (this.cursors.right.isDown || this.keyD.isDown) {
@@ -1058,11 +1065,14 @@ class EggLanderMissionScene extends Phaser.Scene {
       this.bossShots.splice(i, 1)
     }
 
+    const padCenterX = this.getPadCenterX()
+    this.planetPad.setPosition(padCenterX, this.planetPad.y)
     this.planetPad.setSize(level.padWidth, 16)
-    this.egg.x = this.scale.width / 2 + level.runDistance
-    this.bonusRelic.x = this.scale.width / 2 + Math.round(level.runDistance * 0.58)
+    this.egg.x = Phaser.Math.Clamp(padCenterX + level.runDistance, 64, this.scale.width - 64)
+    this.bonusRelic.x = Phaser.Math.Clamp(padCenterX + Math.round(level.runDistance * 0.58), 64, this.scale.width - 64)
 
-    this.ship.setPosition(this.scale.width / 2 + Phaser.Math.Between(-170, 170), 104)
+    const spawnX = Phaser.Math.Clamp(padCenterX + Phaser.Math.Between(-170, 170), SHIP_WORLD_EDGE_BUFFER + 30, this.scale.width - SHIP_WORLD_EDGE_BUFFER - 30)
+    this.ship.setPosition(spawnX, 104)
     this.ship.setRotation(Phaser.Math.FloatBetween(-0.08, 0.08))
     this.velocity.set(Phaser.Math.FloatBetween(-8, 8), Phaser.Math.FloatBetween(-4, 4))
 

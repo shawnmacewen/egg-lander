@@ -1,5 +1,18 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0124 per-level landing-zone staging pass
+
+### Assistant summary (exact)
+Implemented the next highest-impact pacing polish for the widened map: landing pads are now positioned per level (instead of always center), and mission entities/spawn points anchor to that pad so each mission uses more of the 1280x720 space without breaking objective flow. Verified with `npm run build`.
+
+### Technical details
+- Added `LEVEL_PAD_CENTER_FACTORS` and `getPadCenterX()` in `src/main.ts` for per-level pad anchoring.
+- Updated landing validation to test pad contact against dynamic pad center.
+- Updated mission reset anchoring so pad, egg, relic, and initial ship spawn align to the active level’s pad center with safe world-bound clamps.
+- Updated on-foot run bounds to derive from dynamic pad center instead of fixed screen center.
+- Updated task registry with `gdev-0124` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0123 wide-screen framing and ship readability pass
 
 ### Assistant summary (exact)
