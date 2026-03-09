@@ -190,6 +190,10 @@ class EggLanderMissionScene extends Phaser.Scene {
   private keyP!: Phaser.Input.Keyboard.Key
   private keyH!: Phaser.Input.Keyboard.Key
   private keyT!: Phaser.Input.Keyboard.Key
+  private key1!: Phaser.Input.Keyboard.Key
+  private key2!: Phaser.Input.Keyboard.Key
+  private key3!: Phaser.Input.Keyboard.Key
+  private key4!: Phaser.Input.Keyboard.Key
 
   private hudText!: Phaser.GameObjects.Text
   private levelText!: Phaser.GameObjects.Text
@@ -349,6 +353,10 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.keyP = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.P)
     this.keyH = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.H)
     this.keyT = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.T)
+    this.key1 = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.ONE)
+    this.key2 = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.TWO)
+    this.key3 = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.THREE)
+    this.key4 = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.FOUR)
 
     if (!this.anims.exists('runner-idle')) {
       this.anims.create({ key: 'runner-idle', frames: this.anims.generateFrameNumbers('runner-v1', { start: 0, end: 3 }), frameRate: 7, repeat: -1 })
@@ -385,6 +393,10 @@ class EggLanderMissionScene extends Phaser.Scene {
         this.levelIndex = Math.max(this.levelIndex - 1, 0)
         this.updateUi()
       }
+      if (Phaser.Input.Keyboard.JustDown(this.key1)) this.selectLevelByHotkey(0)
+      if (Phaser.Input.Keyboard.JustDown(this.key2)) this.selectLevelByHotkey(1)
+      if (Phaser.Input.Keyboard.JustDown(this.key3)) this.selectLevelByHotkey(2)
+      if (Phaser.Input.Keyboard.JustDown(this.key4)) this.selectLevelByHotkey(3)
       if (Phaser.Input.Keyboard.JustDown(this.cursors.up)) {
         this.missionFailuresOnLevel = 0
         this.beginPlanetBrief()
@@ -448,6 +460,13 @@ class EggLanderMissionScene extends Phaser.Scene {
 
   private canQuickRetry() {
     return this.phase === 'planet-brief' || this.phase === 'planet-flying' || this.phase === 'on-foot' || this.phase === 'takeoff' || this.phase === 'orbital-docking'
+  }
+
+  private selectLevelByHotkey(targetIndex: number) {
+    if (targetIndex < 0 || targetIndex >= LEVELS.length) return
+    if (targetIndex >= this.saveData.unlockedLevel) return
+    this.levelIndex = targetIndex
+    this.updateUi()
   }
 
   private replayCurrentLevelFromComplete() {
@@ -1918,7 +1937,7 @@ class EggLanderMissionScene extends Phaser.Scene {
 
     const selectedName = this.saveData.selectedPowerup ? POWERUPS[this.saveData.selectedPowerup].name : 'None'
     this.statusText.setText(`Loadout set: ${selectedName}`)
-    this.hintText.setText('Level select: L/N level • A/D powerup • ↑ launch • T retry (in-run/crash) • H HUD detail')
+    this.hintText.setText('Level select: 1-4 jump • L/N level • A/D powerup • ↑ launch • T retry (in-run/crash) • H HUD detail')
   }
 
   private tryUnlockPowerupsForLevel(levelNumber: number) {

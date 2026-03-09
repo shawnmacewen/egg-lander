@@ -16,6 +16,14 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ## Entries
 
+### 2026-03-09 13:00 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: pending (`gdev-0090`; see git history)
+- Summary: Added level-select direct numeric jump hotkeys (`1-4`) with unlock gating so unlocked missions can be selected instantly without cycling.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue safe, incremental gameplay QoL/readability improvements.
+- Blockers: none.
+
 ### 2026-03-09 12:55 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
 - Commit: pending (`gdev-0089`; see git history)

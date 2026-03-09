@@ -1,5 +1,18 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0090 level-select numeric jump hotkeys
+
+### Assistant summary (exact)
+Implemented the next high-impact run-loop QoL pass: level select now supports direct numeric level jump hotkeys (`1-4`) with unlock gating, so players can swap to unlocked missions instantly without stepping through `L/N` repeatedly. Verified with `npm run build`.
+
+### Technical details
+- Added dedicated number key bindings (`ONE`–`FOUR`) to `EggLanderMissionScene` input setup.
+- Added `selectLevelByHotkey(targetIndex)` helper with bounds + unlock checks to keep flow safe.
+- Wired hotkey handling in `level-select` update flow to jump directly to unlocked levels only.
+- Updated level-select hint copy to advertise `1-4 jump` alongside existing controls.
+- Updated task registry with `gdev-0090` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0089 crash-state auto-retry countdown telemetry
 
 ### Assistant summary (exact)
