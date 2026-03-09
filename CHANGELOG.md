@@ -1,5 +1,23 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0138 flight-assist stability telemetry
+
+### Assistant summary (exact)
+Implemented the next highest-impact flight-readability polish by adding shared assist stability telemetry (`Stability STEADY/SHAKY/SWING`) to both landing and docking cues, so players can instantly read control volatility (how jumpy the approach safety margin is) in addition to direction-of-change trend. Verified with `npm run build`.
+
+### Technical details
+- Added `getAssistStabilityReadout(currentWorstRatio, prevWorstRatio)` helper in `src/main.ts`.
+- Stability readout uses per-frame worst-ratio volatility bands:
+  - `Stability STEADY` for low volatility
+  - `Stability SHAKY` for moderate volatility
+  - `Stability SWING` for high volatility.
+- Appended stability telemetry to both shared assist cues:
+  - docking assist
+  - landing assist.
+- Existing risk/buffer/focus/trend/ETA/fix readouts remain intact; this is additive readability telemetry only.
+- Updated task registry with `gdev-0138` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0137 flight-assist trend telemetry
 
 ### Assistant summary (exact)

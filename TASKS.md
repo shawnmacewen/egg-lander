@@ -146,3 +146,4 @@
 - `gdev-0135` — Flight-assist buffer telemetry (`Buffer +/-N%`) for landing and docking headroom readability (completed)
 - `gdev-0136` — Flight-assist focus telemetry (`Focus ...`) for landing and docking weakest-metric prioritization readability (completed)
 - `gdev-0137` — Flight-assist trend telemetry (`Trend IMPROVING/WORSENING/HOLD`) for landing and docking approach momentum readability (completed)
+- `gdev-0138` — Flight-assist stability telemetry (`Stability STEADY/SHAKY/SWING`) for landing and docking volatility readability (completed)

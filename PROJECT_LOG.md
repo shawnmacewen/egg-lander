@@ -16,6 +16,14 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ## Entries
 
+### 2026-03-09 16:59 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: `pending` (`gdev-0138`; see git history)
+- Summary: Added shared assist stability telemetry (`Stability STEADY/SHAKY/SWING`) to landing and docking cues so hint/HUD guidance now reports approach volatility (how jumpy safety margin is) alongside existing trend direction.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue safe, incremental readability/feel polish focused on landing/docking decision clarity.
+- Blockers: none.
+
 ### 2026-03-09 16:55 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
 - Commit: `pending` (`gdev-0137`; see git history)
