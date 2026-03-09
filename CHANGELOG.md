@@ -1,5 +1,21 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0131 orbital-docking assist corrective-action cue
+
+### Assistant summary (exact)
+Implemented the next highest-impact docking-readability polish by replacing raw orbital docking hint telemetry with a live assist cue that includes status bands and a prioritized corrective-action prompt (`Fix: ...`) for ring centering, speed control, and tilt recovery. Verified with `npm run build`.
+
+### Technical details
+- Added `getDockingAssistCue(level, dist, speed, aligned)` in `src/main.ts`.
+- Orbital docking hint text now uses the shared assist cue format:
+  - `Dock D ... IN/OUT` for radius compliance.
+  - `S ... OK/HOT` for closing-speed safety.
+  - `A OK/TILT` for orientation.
+  - `Fix: ...` for immediate recovery priority (`center on ring`, `bleed speed`, `tilt left/right`, `hold vector`).
+- Updated in-run HUD dock readout during `orbital-docking` to use the same assist cue for parity between hint and HUD telemetry.
+- Updated task registry with `gdev-0131` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0130 planet-landing assist corrective-action cue
 
 ### Assistant summary (exact)

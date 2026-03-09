@@ -808,9 +808,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.dockingVelocityLine.setTo(this.ship.x, this.ship.y, this.ship.x + this.velocity.x * velocityScale, this.ship.y + this.velocity.y * velocityScale)
     this.dockingVelocityLine.setStrokeStyle(2, speed <= level.orbitalSafeSpeed ? 0x8dffc0 : 0xffd17a, 0.62)
 
-    this.hintText.setText(
-      `Docking: dist ${Math.round(dist)} / ${level.orbitalDockRadius}, speed ${Math.round(speed)} / ${level.orbitalSafeSpeed}, ${aligned ? 'aligned' : 'tilted'}`
-    )
+    this.hintText.setText(this.getDockingAssistCue(level, dist, speed, aligned))
 
     if (dist <= level.orbitalDockRadius && speed <= level.orbitalSafeSpeed && aligned) {
       this.completeLevel(dist, speed)
@@ -1254,8 +1252,9 @@ class EggLanderMissionScene extends Phaser.Scene {
       : '-'
     const dockingDist = Phaser.Math.Distance.Between(this.ship.x, this.ship.y, this.dockingTarget.x, this.dockingTarget.y)
     const dockingSpeed = this.velocity.length()
+    const dockAligned = Math.abs(Phaser.Math.Angle.Wrap(this.ship.rotation)) < 0.22
     const dockReadout = this.phase === 'orbital-docking'
-      ? `${Math.round(dockingDist)}/${level.orbitalDockRadius} @ ${Math.round(dockingSpeed)}/${level.orbitalSafeSpeed}`
+      ? this.getDockingAssistCue(level, dockingDist, dockingSpeed, dockAligned)
       : this.phase === 'level-complete'
         ? `grade ${this.lastDockGrade}`
         : '-'
@@ -2109,6 +2108,25 @@ class EggLanderMissionScene extends Phaser.Scene {
               ]
 
     this.controlsOverlayText.setText(controls.join('\n')).setVisible(true)
+  }
+
+  private getDockingAssistCue(level: LevelConfig, dist: number, speed: number, aligned: boolean) {
+    const distState = dist <= level.orbitalDockRadius ? 'IN' : 'OUT'
+    const speedState = speed <= level.orbitalSafeSpeed ? 'OK' : 'HOT'
+    const alignState = aligned ? 'OK' : 'TILT'
+
+    let correction = 'hold vector'
+    if (!aligned) {
+      correction = this.ship.rotation < 0 ? 'tilt right' : 'tilt left'
+    }
+    if (speed > level.orbitalSafeSpeed) {
+      correction = 'bleed speed'
+    }
+    if (dist > level.orbitalDockRadius) {
+      correction = 'center on ring'
+    }
+
+    return `Dock D ${Math.round(dist)}/${level.orbitalDockRadius} ${distState} • S ${Math.round(speed)}/${level.orbitalSafeSpeed} ${speedState} • A ${alignState} • Fix: ${correction}`
   }
 
   private getLandingAssistCue(level: LevelConfig) {
