@@ -291,7 +291,7 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ### 2026-03-09 07:40 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
-- Commit: pending (`gdev-0028`; to be finalized in git history)
+- Commit: `f694a3f` (`gdev-0028`)
 - Summary: Added per-level attempts/clears persistence (save schema v7), wired fail/clear events into persistent mission record tracking, and surfaced per-level clear-rate telemetry in level select.
 - Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: continue safe progression/readability passes (low-risk UI and persistence polish) while waiting on new art drops.
