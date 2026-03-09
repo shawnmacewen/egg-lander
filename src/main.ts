@@ -41,6 +41,13 @@ type SaveData = {
   selectedPowerup: PowerupId | null
 }
 
+type PowerupMeta = {
+  name: string
+  unlockLevel: number
+  functional: boolean
+  description: string
+}
+
 const SAVE_VERSION = 2
 const SAVE_KEY = 'egg-lander-save'
 
@@ -99,10 +106,25 @@ const LEVELS: LevelConfig[] = [
   }
 ]
 
-const POWERUPS: Record<PowerupId, { name: string; unlockLevel: number; functional: boolean }> = {
-  'stability-thrusters': { name: 'Stability Thrusters', unlockLevel: 2, functional: true },
-  'shielded-hull': { name: 'Shielded Hull', unlockLevel: 3, functional: false },
-  'fuel-gel': { name: 'Fuel Gel', unlockLevel: 3, functional: false }
+const POWERUPS: Record<PowerupId, PowerupMeta> = {
+  'stability-thrusters': {
+    name: 'Stability Thrusters',
+    unlockLevel: 2,
+    functional: true,
+    description: 'Dampens lateral drift/rotation and enables relic side objective.'
+  },
+  'shielded-hull': {
+    name: 'Shielded Hull',
+    unlockLevel: 3,
+    functional: true,
+    description: 'Adds +1 HP and extends invulnerability after on-foot hits.'
+  },
+  'fuel-gel': {
+    name: 'Fuel Gel',
+    unlockLevel: 3,
+    functional: true,
+    description: 'Starts with 120 fuel and burns less during thrust.'
+  }
 }
 
 class EggLanderMissionScene extends Phaser.Scene {
@@ -153,6 +175,7 @@ class EggLanderMissionScene extends Phaser.Scene {
 
   private sessionScore = 0
   private attempts = 0
+  private maxFuel = 100
   private fuel = 100
   private velocity = new Phaser.Math.Vector2(0, 0)
 
@@ -503,7 +526,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     // Boss appears from level 2 onward.
     this.bossActive = LEVELS[this.levelIndex].id >= 2
     this.bossHp = this.bossActive ? 3 : 0
-    this.playerHp = 3
+    this.playerHp = this.saveData.selectedPowerup === 'shielded-hull' ? 4 : 3
     this.playerInvulnerableUntil = 0
     this.runner.clearTint()
     this.bossBody.setVisible(this.bossActive)
@@ -638,8 +661,10 @@ class EggLanderMissionScene extends Phaser.Scene {
         }
 
         this.playerHp -= 1
-        this.playerInvulnerableUntil = this.time.now + 900
-        this.statusText.setText(`Hit! HP ${this.playerHp}/3`)
+        const invulnerabilityMs = this.saveData.selectedPowerup === 'shielded-hull' ? 1300 : 900
+        this.playerInvulnerableUntil = this.time.now + invulnerabilityMs
+        const maxHp = this.saveData.selectedPowerup === 'shielded-hull' ? 4 : 3
+        this.statusText.setText(`Hit! HP ${this.playerHp}/${maxHp}`)
         this.hintText.setText('Dodge boss shots and throw spears (Space)')
         if (this.playerHp <= 0) {
           this.failMission('On-foot defeat')
@@ -674,7 +699,8 @@ class EggLanderMissionScene extends Phaser.Scene {
 
   private resetMissionEntities() {
     const level = LEVELS[this.levelIndex]
-    this.fuel = 100
+    this.maxFuel = this.saveData.selectedPowerup === 'fuel-gel' ? 120 : 100
+    this.fuel = this.maxFuel
     this.hasEgg = false
     this.eggStolen = false
     this.bonusObjectiveActive = false
@@ -683,7 +709,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.bonusRelic.setVisible(false)
     this.bossActive = false
     this.bossHp = 0
-    this.playerHp = 3
+    this.playerHp = this.saveData.selectedPowerup === 'shielded-hull' ? 4 : 3
     this.playerInvulnerableUntil = 0
     this.runner.clearTint()
     this.bossBody.setVisible(false)
@@ -788,6 +814,7 @@ class EggLanderMissionScene extends Phaser.Scene {
   private updateUi() {
     const level = LEVELS[this.levelIndex]
     const powerup = this.saveData.selectedPowerup ? POWERUPS[this.saveData.selectedPowerup].name : 'None'
+    const powerupDescription = this.saveData.selectedPowerup ? POWERUPS[this.saveData.selectedPowerup].description : 'No active perk'
 
     const hpReadout = this.phase === 'on-foot' && this.bossActive
       ? `${this.playerHp}${this.time.now < this.playerInvulnerableUntil ? ' (i)' : ''}`
@@ -808,11 +835,11 @@ class EggLanderMissionScene extends Phaser.Scene {
       ? `${Math.round(dockingDist)}/${level.orbitalDockRadius} @ ${Math.round(dockingSpeed)}/${level.orbitalSafeSpeed}`
       : '-'
     this.hudText.setText(
-      `Score ${this.sessionScore}   Attempts ${this.attempts}   Fuel ${Math.round(this.fuel)}%   HP ${hpReadout}   Boss ${bossReadout}   BossShot ${bossShotReadout}   Spear ${spearReadout}   Dock ${dockReadout}   V ${Math.abs(this.velocity.y).toFixed(1)}   H ${Math.abs(this.velocity.x).toFixed(1)}   PWR ${powerup}`
+      `Score ${this.sessionScore}   Attempts ${this.attempts}   Fuel ${Math.round(this.fuel)}/${this.maxFuel}   HP ${hpReadout}   Boss ${bossReadout}   BossShot ${bossShotReadout}   Spear ${spearReadout}   Dock ${dockReadout}   V ${Math.abs(this.velocity.y).toFixed(1)}   H ${Math.abs(this.velocity.x).toFixed(1)}   PWR ${powerup}`
     )
     const required = level.requiredPowerup ? POWERUPS[level.requiredPowerup].name : 'None'
     this.levelText.setText(
-      `Level ${level.id}/${LEVELS.length}: ${level.name}   Requires ${required}   Unlocked ${this.saveData.unlockedLevel}/${LEVELS.length}   Best ${this.saveData.bestScore}`
+      `Level ${level.id}/${LEVELS.length}: ${level.name}   Requires ${required}   Unlocked ${this.saveData.unlockedLevel}/${LEVELS.length}   Best ${this.saveData.bestScore}   Perk: ${powerupDescription}`
     )
 
     let objective = 'Land on planet, grab egg on foot, return, launch, then precision dock in orbit.'

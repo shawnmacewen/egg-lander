@@ -312,3 +312,20 @@ Implemented the next highest-impact docking readability pass: added live orbital
 - Ensured docking guide lines hide cleanly on phase resets, failures, and level completion.
 - Updated task registry with `gdev-0017` completion.
 - Build verification: `npm run build` (pass).
+
+## 2026-03-09 — gdev-0018 powerup gameplay identity pass
+
+### Assistant summary (exact)
+Implemented the next highest-impact progression pass by making all currently unlockable powerups meaningfully functional and readable in play: Shielded Hull now grants +1 on-foot HP and longer post-hit invulnerability, Fuel Gel now starts runs with extra fuel, and HUD/level-select text now surfaces active perk behavior clearly. Verified with a clean production build.
+
+### Technical details
+- Added powerup metadata descriptions and surfaced active perk description in level readout.
+- Implemented Shielded Hull gameplay effect:
+  - +1 on-foot HP (4 total)
+  - longer damage invulnerability window after boss hits.
+- Implemented Fuel Gel gameplay effect:
+  - increased mission fuel tank from 100 to 120
+  - existing reduced thrust burn remains active.
+- Updated HUD fuel display from percent to explicit `current/max` for readability.
+- Updated task registry with `gdev-0018` completion.
+- Build verification: `npm run build` (pass).

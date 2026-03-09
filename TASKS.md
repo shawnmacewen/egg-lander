@@ -26,3 +26,4 @@
 - `gdev-0015` — On-foot combat HUD telemetry pass (boss HP + spear cooldown readability) (completed)
 - `gdev-0016` — Boss shot telegraph + incoming-fire HUD timer readability pass (completed)
 - `gdev-0017` — Orbital docking vector guidance + HUD docking telemetry polish (completed)
+- `gdev-0018` — Powerup gameplay identity pass (Shielded Hull + Fuel Gel functional perks + perk readouts) (completed)

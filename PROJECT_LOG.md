@@ -208,3 +208,11 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 - Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: continue incremental mission readability polish while waiting for additional boss/weapon art.
 - Blockers: no new content art beyond runner sheet.
+
+### 2026-03-09 06:50 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: pending (`gdev-0018`; finalize after build+commit)
+- Summary: Implemented powerup identity pass: Shielded Hull now grants +1 on-foot HP + longer i-frames, Fuel Gel starts runs with larger fuel tank, and perk descriptions/readouts are now visible in HUD/level info.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue incremental gameplay depth/readability passes while waiting for additional art drops.
+- Blockers: no new content art beyond runner sheet.
