@@ -51,3 +51,4 @@
 - `gdev-0040` — Level-select retry-load telemetry (`Retries n` + retries-per-clear) (completed)
 - `gdev-0041` — Level-select mission-pressure telemetry derived from retries-per-clear (`Pressure Low/Medium/High/Extreme`) (completed)
 - `gdev-0042` — Level-select mission-outlook guidance derived from pressure + mastery momentum (completed)
+- `gdev-0043` — Level-select coaching cue (weakest-metric action plan + contextual loadout hint) (completed)

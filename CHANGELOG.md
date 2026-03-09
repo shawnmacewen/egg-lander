@@ -1,5 +1,21 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0043 level-select coaching cue
+
+### Assistant summary (exact)
+Implemented the next safe high-impact readability pass: level-select telemetry now includes a contextual `Coach:` cue that turns the weakest mastery metric into an actionable run plan and, when relevant, recommends an unlocked loadout perk (Shielded Hull / Fuel Gel / Stability Thrusters). This keeps progression guidance specific without changing save schema. Verified with `npm run build`.
+
+### Technical details
+- Refactored weakest-metric derivation into a reusable `weakestFocusArea` value in `updateUi()`.
+- Added derived `coachReadout` telemetry with safe, no-schema branches:
+  - First-clear guidance before any clears.
+  - Speed-PB guidance when all mastery metrics are capped.
+  - Weakest-metric action plans (`consistency reps` vs `quality scoring run`) based on mission pressure.
+  - Contextual perk hints when the relevant powerup is unlocked.
+- Extended level-select HUD telemetry line to include `Coach: ...` directly beside pressure/outlook/mastery guidance.
+- Updated task registry with `gdev-0043` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0042 mission-outlook guidance telemetry
 
 ### Assistant summary (exact)

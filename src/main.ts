@@ -1065,12 +1065,12 @@ class EggLanderMissionScene extends Phaser.Scene {
       { label: 'Relic', value: levelRelicRateValue },
       { label: 'S Dock', value: levelSDockRateValue },
     ]
+    const weakestFocusArea = masteryFocusAreas.reduce((worst, area) => (area.value < worst.value ? area : worst))
     const masteryFocus = levelClears <= 0
       ? 'Complete first clear to seed mastery telemetry'
-      : (() => {
-          const weakest = masteryFocusAreas.reduce((worst, area) => (area.value < worst.value ? area : worst))
-          return weakest.value >= 1 ? 'All metrics capped — push speed PBs' : `Focus ${weakest.label} (${Math.round(weakest.value * 100)}%)`
-        })()
+      : weakestFocusArea.value >= 1
+        ? 'All metrics capped — push speed PBs'
+        : `Focus ${weakestFocusArea.label} (${Math.round(weakestFocusArea.value * 100)}%)`
     const nextMasteryTier = masteryTier === 'Unrated'
       ? 'Bronze'
       : masteryTier === 'Bronze'
@@ -1127,6 +1127,29 @@ class EggLanderMissionScene extends Phaser.Scene {
                   : 'stabilize before pushing PBs'
             return `Outlook ${stability} (${momentum}; ${cue})`
           })()
+    const coachReadout = levelClears <= 0
+      ? 'Coach: Land first clear, then optimize.'
+      : weakestFocusArea.value >= 1
+        ? 'Coach: Metrics capped. Chase faster mission times.'
+        : (() => {
+            const focus = weakestFocusArea.label
+            const hasShield = this.saveData.unlockedPowerups.includes('shielded-hull')
+            const hasFuelGel = this.saveData.unlockedPowerups.includes('fuel-gel')
+            const hasStability = this.saveData.unlockedPowerups.includes('stability-thrusters')
+            const perkHint = focus === 'Clean' && hasShield
+              ? 'equip Shielded Hull'
+              : focus === 'S Dock' && hasFuelGel
+                ? 'equip Fuel Gel'
+                : focus === 'Relic' && hasStability
+                  ? 'equip Stability Thrusters'
+                  : null
+            const plan = pressureLabel === 'High' || pressureLabel === 'Extreme'
+              ? 'run 2 safe consistency reps'
+              : 'push one quality scoring run'
+            return perkHint
+              ? `Coach: ${focus} weak spot — ${perkHint}, then ${plan}.`
+              : `Coach: ${focus} weak spot — ${plan}.`
+          })()
     const totalAttempts = this.saveData.levelAttempts.reduce((sum, value) => sum + (value ?? 0), 0)
     const totalLevelClears = this.saveData.levelClears.reduce((sum, value) => sum + (value ?? 0), 0)
     const lifetimeClearRate = totalAttempts > 0 ? `${Math.round((totalLevelClears / totalAttempts) * 100)}%` : '--'
@@ -1140,7 +1163,7 @@ class EggLanderMissionScene extends Phaser.Scene {
         })()
       : '--'
     this.levelText.setText(
-      `Level ${level.id}/${LEVELS.length}: ${level.name}   Requires ${required}   Unlocked ${this.saveData.unlockedLevel}/${LEVELS.length}   Best ${this.saveData.bestScore}   Best Streak ${this.saveData.bestStreak}   Best Run ${levelBestScore}   Best Time ${this.formatMs(levelBestTimeMs)}   Best Dock ${levelBestDockGrade}   Record ${levelClears}/${levelAttempts} (${levelClearRate})   ${retriesReadout}   ${missionPressureReadout}   ${missionOutlookReadout}   First Try ${levelFirstTryClears}/${levelClears} (${levelFirstTryRate})   Clean ${levelCleanClears}/${levelClears} (${levelCleanRate})   Relic ${levelRelicCompletions}/${levelClears} (${levelRelicRate})   S Dock ${levelSDockClears}/${levelClears} (${levelSDockRate})   Mastery ${masteryTier} (${masteryScore}, ${masteryTierProgress})   ${masteryMixReadout}   ${masteryCapsReadout}   Next ${masteryFocus}   Lifetime ${totalLevelClears}/${totalAttempts} (${lifetimeClearRate})   Fastest ${fastestLevelTag}   Perk: ${powerupDescription}`
+      `Level ${level.id}/${LEVELS.length}: ${level.name}   Requires ${required}   Unlocked ${this.saveData.unlockedLevel}/${LEVELS.length}   Best ${this.saveData.bestScore}   Best Streak ${this.saveData.bestStreak}   Best Run ${levelBestScore}   Best Time ${this.formatMs(levelBestTimeMs)}   Best Dock ${levelBestDockGrade}   Record ${levelClears}/${levelAttempts} (${levelClearRate})   ${retriesReadout}   ${missionPressureReadout}   ${missionOutlookReadout}   ${coachReadout}   First Try ${levelFirstTryClears}/${levelClears} (${levelFirstTryRate})   Clean ${levelCleanClears}/${levelClears} (${levelCleanRate})   Relic ${levelRelicCompletions}/${levelClears} (${levelRelicRate})   S Dock ${levelSDockClears}/${levelClears} (${levelSDockRate})   Mastery ${masteryTier} (${masteryScore}, ${masteryTierProgress})   ${masteryMixReadout}   ${masteryCapsReadout}   Next ${masteryFocus}   Lifetime ${totalLevelClears}/${totalAttempts} (${lifetimeClearRate})   Fastest ${fastestLevelTag}   Perk: ${powerupDescription}`
     )
 
     let objective = 'Land on planet, grab egg on foot, return, launch, then precision dock in orbit.'
