@@ -583,3 +583,11 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 - Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: continue incremental progression/readability passes with safe telemetry/feedback upgrades.
 - Blockers: none.
+
+### 2026-03-09 10:50 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: pending (`gdev-0065`)
+- Summary: Added level-select mission warmup telemetry (`Warmup ...`) with context-aware prep-rep guidance for seed/breakthrough/push/bank/recover/hold states.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue safe level-select guidance polish with low-risk readability improvements.
+- Blockers: none.

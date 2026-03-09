@@ -1050,3 +1050,14 @@ Added per-level clean-clear persistence with backward-safe save migration, surfa
 - Added completion breakdown line showing updated clean-clear progress after clean clears.
 - Updated task registry for `gdev-0031` completion.
 - Build verification: `npm run build` (pass).
+
+## 2026-03-09 — gdev-0065 mission warmup telemetry
+
+### Assistant summary (exact)
+Added a level-select `Warmup` telemetry cue that prescribes a small pre-launch rep plan based on current mission state (seed/breakthrough/push/bank/recover/hold) so players can stabilize execution before committing to a run. Verified with `npm run build`.
+
+### Technical details
+- Added `missionWarmupReadout` derivation in `src/main.ts` using existing commitment and progression signals.
+- Integrated `Warmup ...` cue into the level-select HUD telemetry line next to launch-check guidance.
+- Updated task registry in `TASKS.md` with `gdev-0065` marked completed.
+- Build verification: `npm run build` (pass).
