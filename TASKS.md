@@ -137,3 +137,4 @@
 - `gdev-0126` — On-foot objective off-screen tagging (`off-screen`) when egg/lander target is outside camera view (completed)
 - `gdev-0127` — On-foot objective edge-distance telemetry (`off-screen +Npx`) for off-camera target depth awareness (completed)
 - `gdev-0128` — On-foot objective off-screen edge-side telemetry (`off-screen LEFT/RIGHT +Npx`) for instant camera-edge orientation (completed)
+- `gdev-0129` — Planet-landing assist telemetry cue (live V/H/angle safety states + altitude in-flight guidance) (completed)

@@ -16,6 +16,14 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ## Entries
 
+### 2026-03-09 16:16 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: `5726ed6` (`gdev-0129`)
+- Summary: Added live planet-landing assist telemetry during flight (`V/H/angle` safety states + altitude) and surfaced the same readout in full HUD to improve pre-touchdown correction clarity.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue safe, incremental readability/feel polish (landing/docking clarity) without changing mission balance.
+- Blockers: none.
+
 ### 2026-03-09 16:08 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
 - Commit: `f3c2e0d` (`gdev-0128`)

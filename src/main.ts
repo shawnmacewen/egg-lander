@@ -664,6 +664,10 @@ class EggLanderMissionScene extends Phaser.Scene {
 
     this.moveShip(dt, thrusting)
 
+    this.hintText.setText(
+      `${this.getLandingAssistCue(level)} • ←/→ or A/D rotate • ↑/W thrust • T retry • Esc/L level select • P pause • / or Tab controls • H HUD mode • R new session`
+    )
+
     if (this.ship.y >= this.scale.height - 34) {
       this.ship.y = this.scale.height - 34
       const onPad = Math.abs(this.ship.x - this.getPadCenterX()) <= level.padWidth / 2
@@ -1255,11 +1259,14 @@ class EggLanderMissionScene extends Phaser.Scene {
       : this.phase === 'level-complete'
         ? `grade ${this.lastDockGrade}`
         : '-'
+    const landingReadout = this.phase === 'planet-flying'
+      ? this.getLandingAssistCue(level)
+      : '-'
     const runElapsedMs = this.missionStartAt > 0 && this.phase !== 'level-select'
       ? Math.max(0, Math.floor(this.time.now - this.missionStartAt))
       : 0
     const hudMode = this.isHudCompact ? 'Compact' : 'Full'
-    const fullHud = `Score ${this.sessionScore}   Attempts ${this.attempts}   Clears ${this.saveData.totalClears}   Streak ${this.clearStreak}   Time ${this.formatMs(runElapsedMs)}   Fuel ${Math.round(this.fuel)}/${this.maxFuel}   HP ${hpReadout}   Boss ${bossReadout}   BossShot ${bossShotReadout}   Spear ${spearReadout}   Dock ${dockReadout}   V ${Math.abs(this.velocity.y).toFixed(1)}   H ${Math.abs(this.velocity.x).toFixed(1)}   PWR ${powerup}`
+    const fullHud = `Score ${this.sessionScore}   Attempts ${this.attempts}   Clears ${this.saveData.totalClears}   Streak ${this.clearStreak}   Time ${this.formatMs(runElapsedMs)}   Fuel ${Math.round(this.fuel)}/${this.maxFuel}   HP ${hpReadout}   Boss ${bossReadout}   BossShot ${bossShotReadout}   Spear ${spearReadout}   Dock ${dockReadout}   Land ${landingReadout}   V ${Math.abs(this.velocity.y).toFixed(1)}   H ${Math.abs(this.velocity.x).toFixed(1)}   PWR ${powerup}`
     const compactHud = `HUD ${hudMode}   Score ${this.sessionScore}   Time ${this.formatMs(runElapsedMs)}   Fuel ${Math.round(this.fuel)}/${this.maxFuel}   HP ${hpReadout}   Boss ${bossReadout}   Spear ${spearReadout}   Dock ${dockReadout}   PWR ${powerup}`
     this.hudText.setText(this.isHudCompact ? compactHud : fullHud)
     const required = level.requiredPowerup ? POWERUPS[level.requiredPowerup].name : 'None'
@@ -2102,6 +2109,23 @@ class EggLanderMissionScene extends Phaser.Scene {
               ]
 
     this.controlsOverlayText.setText(controls.join('\n')).setVisible(true)
+  }
+
+  private getLandingAssistCue(level: LevelConfig) {
+    const shieldBonus = this.saveData.selectedPowerup === 'shielded-hull' ? 1.15 : 1
+    const verticalLimit = level.safeVertical * shieldBonus
+    const horizontalLimit = level.safeHorizontal * shieldBonus
+    const angleLimitDeg = Phaser.Math.RadToDeg(level.safeAngle * shieldBonus)
+    const altitude = Math.max(0, Math.round(this.scale.height - 34 - this.ship.y))
+    const vertical = Math.abs(this.velocity.y)
+    const horizontal = Math.abs(this.velocity.x)
+    const angleDeg = Math.abs(Phaser.Math.RadToDeg(Phaser.Math.Angle.Wrap(this.ship.rotation)))
+
+    const vState = vertical <= verticalLimit ? 'OK' : 'HOT'
+    const hState = horizontal <= horizontalLimit ? 'OK' : 'HOT'
+    const aState = angleDeg <= angleLimitDeg ? 'OK' : 'TILT'
+
+    return `Landing V ${Math.round(vertical)}/${Math.round(verticalLimit)} ${vState} • H ${Math.round(horizontal)}/${Math.round(horizontalLimit)} ${hState} • A ${Math.round(angleDeg)}°/${Math.round(angleLimitDeg)}° ${aState} • Alt ${altitude}px`
   }
 
   private getOnFootObjectiveCue(targetX: number, label: string) {

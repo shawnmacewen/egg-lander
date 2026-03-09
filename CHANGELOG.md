@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0129 planet-landing assist telemetry cue
+
+### Assistant summary (exact)
+Implemented the next highest-impact landing-readability polish by adding live planet-flight landing assist telemetry (vertical speed, horizontal speed, tilt angle safety states, and altitude) directly into in-flight guidance so players can correct before touchdown instead of discovering instability only at impact. Verified with `npm run build`.
+
+### Technical details
+- Added `getLandingAssistCue(level)` in `src/main.ts` to compute per-frame landing safety telemetry using level limits (+ Shielded Hull safety bonus where applicable).
+- Planet-flight hint text now updates live with `Landing V/H/A/Alt` readouts plus safety states (`OK`/`HOT`/`TILT`) while preserving existing control guidance.
+- Full HUD telemetry now includes `Land ...` readout during planet flight for parity with other mission telemetry channels.
+- Updated task registry with `gdev-0129` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0128 on-foot objective edge-side telemetry
 
 ### Assistant summary (exact)
