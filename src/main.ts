@@ -2155,9 +2155,10 @@ class EggLanderMissionScene extends Phaser.Scene {
     const confidenceReadout = this.getAssistConfidenceReadout(dockingWorstRatio, this.prevDockingAssistWorstRatio)
     const commitReadout = this.getAssistCommitReadout(dockingWorstRatio, this.prevDockingAssistWorstRatio)
     const tempoReadout = this.getAssistTempoReadout(dockingWorstRatio, this.prevDockingAssistWorstRatio)
+    const windowReadout = this.getAssistWindowReadout(dockingWorstRatio, this.prevDockingAssistWorstRatio)
     this.prevDockingAssistWorstRatio = dockingWorstRatio
 
-    return `Dock ${riskState} • ${bufferReadout} • ${focusReadout} • ${trendReadout} • ${deltaReadout} • ${stabilityReadout} • ${confidenceReadout} • ${commitReadout} • ${tempoReadout} • D ${Math.round(dist)}/${level.orbitalDockRadius} ${distState} • S ${Math.round(speed)}/${level.orbitalSafeSpeed} ${speedState} • ETA ${etaReadout} • A ${alignState} • Fix: ${correction}`
+    return `Dock ${riskState} • ${windowReadout} • ${bufferReadout} • ${focusReadout} • ${trendReadout} • ${deltaReadout} • ${stabilityReadout} • ${confidenceReadout} • ${commitReadout} • ${tempoReadout} • D ${Math.round(dist)}/${level.orbitalDockRadius} ${distState} • S ${Math.round(speed)}/${level.orbitalSafeSpeed} ${speedState} • ETA ${etaReadout} • A ${alignState} • Fix: ${correction}`
   }
 
   private getLandingAssistCue(level: LevelConfig) {
@@ -2212,9 +2213,10 @@ class EggLanderMissionScene extends Phaser.Scene {
     const confidenceReadout = this.getAssistConfidenceReadout(landingWorstRatio, this.prevLandingAssistWorstRatio)
     const commitReadout = this.getAssistCommitReadout(landingWorstRatio, this.prevLandingAssistWorstRatio)
     const tempoReadout = this.getAssistTempoReadout(landingWorstRatio, this.prevLandingAssistWorstRatio)
+    const windowReadout = this.getAssistWindowReadout(landingWorstRatio, this.prevLandingAssistWorstRatio)
     this.prevLandingAssistWorstRatio = landingWorstRatio
 
-    return `Landing ${riskState} • ${bufferReadout} • ${focusReadout} • ${trendReadout} • ${deltaReadout} • ${stabilityReadout} • ${confidenceReadout} • ${commitReadout} • ${tempoReadout} • V ${Math.round(vertical)}/${Math.round(verticalLimit)} ${vState} • H ${Math.round(horizontal)}/${Math.round(horizontalLimit)} ${hState} • A ${Math.round(angleDeg)}°/${Math.round(angleLimitDeg)}° ${aState} • Alt ${altitude}px • ETA ${etaReadout} • Fix: ${correction}`
+    return `Landing ${riskState} • ${windowReadout} • ${bufferReadout} • ${focusReadout} • ${trendReadout} • ${deltaReadout} • ${stabilityReadout} • ${confidenceReadout} • ${commitReadout} • ${tempoReadout} • V ${Math.round(vertical)}/${Math.round(verticalLimit)} ${vState} • H ${Math.round(horizontal)}/${Math.round(horizontalLimit)} ${hState} • A ${Math.round(angleDeg)}°/${Math.round(angleLimitDeg)}° ${aState} • Alt ${altitude}px • ETA ${etaReadout} • Fix: ${correction}`
   }
 
   private getAssistRiskLabel(ratios: number[]) {
@@ -2300,6 +2302,15 @@ class EggLanderMissionScene extends Phaser.Scene {
     if (volatility >= 0.1) return 'Tempo STEADY'
     if (currentWorstRatio <= 0.75) return 'Tempo PRESS'
     return 'Tempo FEATHER'
+  }
+
+  private getAssistWindowReadout(currentWorstRatio: number, prevWorstRatio: number | null) {
+    const improving = prevWorstRatio !== null && currentWorstRatio <= prevWorstRatio - 0.03
+
+    if (currentWorstRatio <= 0.65) return 'Window WIDE'
+    if (currentWorstRatio <= 0.9) return improving ? 'Window OPENING' : 'Window WORKING'
+    if (currentWorstRatio <= 1) return improving ? 'Window STABILIZING' : 'Window TIGHT'
+    return improving ? 'Window RECOVERING' : 'Window CRITICAL'
   }
 
   private getOnFootObjectiveCue(targetX: number, label: string) {

@@ -16,6 +16,14 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ## Entries
 
+### 2026-03-09 17:23 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: `pending` (`gdev-0143`; see git history)
+- Summary: Added shared assist window telemetry (`Window WIDE/OPENING/WORKING/STABILIZING/TIGHT/RECOVERING/CRITICAL`) to landing and docking cues so hint/HUD guidance now surfaces real-time safety-envelope openness (open, tightening, or critical recovery) from margin plus trend.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue safe in-run readability polish that improves pilot decision quality without changing mission balance.
+- Blockers: none.
+
 ### 2026-03-09 17:20 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
 - Commit: `pending` (`gdev-0142`; see git history)

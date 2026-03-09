@@ -1,5 +1,24 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0143 flight-assist window telemetry
+
+### Assistant summary (exact)
+Implemented the next highest-impact flight-readability polish by adding shared assist window telemetry (`Window WIDE/OPENING/WORKING/STABILIZING/TIGHT/RECOVERING/CRITICAL`) to both landing and docking cues, so players can instantly judge whether their current safety envelope is comfortably open, tightening, or in critical recovery. Verified with `npm run build`.
+
+### Technical details
+- Added `getAssistWindowReadout(currentWorstRatio, prevWorstRatio)` helper in `src/main.ts`.
+- Window cue maps worst safety ratio + short-term trend into an envelope state:
+  - `Window WIDE` when safely inside thresholds.
+  - `Window OPENING` / `Window WORKING` while inside thresholds depending on improving trend.
+  - `Window STABILIZING` / `Window TIGHT` near threshold depending on improving trend.
+  - `Window RECOVERING` / `Window CRITICAL` when over-threshold depending on improving trend.
+- Injected window telemetry into both shared assist cues:
+  - `getDockingAssistCue(...)`
+  - `getLandingAssistCue(...)`
+- Existing risk/buffer/focus/trend/delta/stability/confidence/commit/tempo/fix telemetry remains intact; window is additive readability guidance only.
+- Updated task registry with `gdev-0143` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0142 flight-assist tempo telemetry
 
 ### Assistant summary (exact)
