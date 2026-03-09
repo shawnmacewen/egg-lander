@@ -1,5 +1,23 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0146 flight-assist directional bias telemetry
+
+### Assistant summary (exact)
+Implemented the next highest-impact flight-readability polish by adding shared assist directional bias telemetry (`Bias LEFT/CENTER/RIGHT`) to both landing and docking cues, so players can instantly see which side to favor when correcting approach drift/tilt. Verified with `npm run build`.
+
+### Technical details
+- Added `getAssistBiasReadout(signedRatios)` helper in `src/main.ts`.
+- Bias cue picks the dominant signed corrective pressure and reports:
+  - `Bias LEFT` when correction should favor leftward stabilization.
+  - `Bias RIGHT` when correction should favor rightward stabilization.
+  - `Bias CENTER` when lateral/tilt pressure is effectively neutral.
+- Injected bias telemetry into both shared assist cues:
+  - `getDockingAssistCue(...)` using orbital centerline offset pressure.
+  - `getLandingAssistCue(...)` using lateral drift + tilt correction pressure.
+- Existing risk/window/line/buffer/focus/trend/delta/stability/pulse/confidence/commit/tempo/fix telemetry remains intact; bias is additive readability guidance only.
+- Updated task registry with `gdev-0146` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0145 flight-assist pulse telemetry
 
 ### Assistant summary (exact)

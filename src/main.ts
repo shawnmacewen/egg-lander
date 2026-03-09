@@ -2148,6 +2148,9 @@ class EggLanderMissionScene extends Phaser.Scene {
     ]
     const bufferReadout = this.getAssistBufferReadout(dockingRatios)
     const focusReadout = this.getAssistFocusReadout(dockingRatios, ['Center', 'Speed', 'Angle'])
+    const biasReadout = this.getAssistBiasReadout([
+      (this.dockingTarget.x - this.ship.x) / Math.max(level.orbitalDockRadius, 1)
+    ])
     const dockingWorstRatio = dockingRatios.reduce((max, ratio) => Math.max(max, ratio), 0)
     const trendReadout = this.getAssistTrendReadout(dockingWorstRatio, this.prevDockingAssistWorstRatio)
     const deltaReadout = this.getAssistDeltaReadout(dockingWorstRatio, this.prevDockingAssistWorstRatio)
@@ -2160,7 +2163,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     const lineReadout = this.getAssistLineReadout(dockingWorstRatio, this.prevDockingAssistWorstRatio)
     this.prevDockingAssistWorstRatio = dockingWorstRatio
 
-    return `Dock ${riskState} • ${windowReadout} • ${lineReadout} • ${bufferReadout} • ${focusReadout} • ${trendReadout} • ${deltaReadout} • ${stabilityReadout} • ${pulseReadout} • ${confidenceReadout} • ${commitReadout} • ${tempoReadout} • D ${Math.round(dist)}/${level.orbitalDockRadius} ${distState} • S ${Math.round(speed)}/${level.orbitalSafeSpeed} ${speedState} • ETA ${etaReadout} • A ${alignState} • Fix: ${correction}`
+    return `Dock ${riskState} • ${windowReadout} • ${lineReadout} • ${bufferReadout} • ${focusReadout} • ${biasReadout} • ${trendReadout} • ${deltaReadout} • ${stabilityReadout} • ${pulseReadout} • ${confidenceReadout} • ${commitReadout} • ${tempoReadout} • D ${Math.round(dist)}/${level.orbitalDockRadius} ${distState} • S ${Math.round(speed)}/${level.orbitalSafeSpeed} ${speedState} • ETA ${etaReadout} • A ${alignState} • Fix: ${correction}`
   }
 
   private getLandingAssistCue(level: LevelConfig) {
@@ -2208,6 +2211,10 @@ class EggLanderMissionScene extends Phaser.Scene {
     ]
     const bufferReadout = this.getAssistBufferReadout(landingRatios)
     const focusReadout = this.getAssistFocusReadout(landingRatios, ['Descent', 'Drift', 'Angle'])
+    const biasReadout = this.getAssistBiasReadout([
+      -this.velocity.x / Math.max(horizontalLimit, 1),
+      -Phaser.Math.Angle.Wrap(this.ship.rotation) / Math.max(level.safeAngle * shieldBonus, 0.01)
+    ])
     const landingWorstRatio = landingRatios.reduce((max, ratio) => Math.max(max, ratio), 0)
     const trendReadout = this.getAssistTrendReadout(landingWorstRatio, this.prevLandingAssistWorstRatio)
     const deltaReadout = this.getAssistDeltaReadout(landingWorstRatio, this.prevLandingAssistWorstRatio)
@@ -2220,7 +2227,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     const lineReadout = this.getAssistLineReadout(landingWorstRatio, this.prevLandingAssistWorstRatio)
     this.prevLandingAssistWorstRatio = landingWorstRatio
 
-    return `Landing ${riskState} • ${windowReadout} • ${lineReadout} • ${bufferReadout} • ${focusReadout} • ${trendReadout} • ${deltaReadout} • ${stabilityReadout} • ${pulseReadout} • ${confidenceReadout} • ${commitReadout} • ${tempoReadout} • V ${Math.round(vertical)}/${Math.round(verticalLimit)} ${vState} • H ${Math.round(horizontal)}/${Math.round(horizontalLimit)} ${hState} • A ${Math.round(angleDeg)}°/${Math.round(angleLimitDeg)}° ${aState} • Alt ${altitude}px • ETA ${etaReadout} • Fix: ${correction}`
+    return `Landing ${riskState} • ${windowReadout} • ${lineReadout} • ${bufferReadout} • ${focusReadout} • ${biasReadout} • ${trendReadout} • ${deltaReadout} • ${stabilityReadout} • ${pulseReadout} • ${confidenceReadout} • ${commitReadout} • ${tempoReadout} • V ${Math.round(vertical)}/${Math.round(verticalLimit)} ${vState} • H ${Math.round(horizontal)}/${Math.round(horizontalLimit)} ${hState} • A ${Math.round(angleDeg)}°/${Math.round(angleLimitDeg)}° ${aState} • Alt ${altitude}px • ETA ${etaReadout} • Fix: ${correction}`
   }
 
   private getAssistRiskLabel(ratios: number[]) {
@@ -2249,6 +2256,16 @@ class EggLanderMissionScene extends Phaser.Scene {
 
     const focusLabel = labels[worstIndex] ?? 'Control'
     return `Focus ${focusLabel}`
+  }
+
+  private getAssistBiasReadout(signedRatios: number[]) {
+    let dominant = 0
+    for (const ratio of signedRatios) {
+      if (Math.abs(ratio) > Math.abs(dominant)) dominant = ratio
+    }
+
+    if (Math.abs(dominant) < 0.1) return 'Bias CENTER'
+    return dominant > 0 ? 'Bias RIGHT' : 'Bias LEFT'
   }
 
   private getAssistTrendReadout(currentWorstRatio: number, prevWorstRatio: number | null) {

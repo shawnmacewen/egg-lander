@@ -16,6 +16,14 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ## Entries
 
+### 2026-03-09 17:38 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: `69b96c1` (`gdev-0146`)
+- Summary: Added shared flight-assist directional bias telemetry (`Bias LEFT/CENTER/RIGHT`) to landing and docking cues so hint/HUD guidance now surfaces immediate corrective-side pressure from drift/tilt and centerline offset.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue safe in-run readability polish that improves pilot decision quality without changing mission balance.
+- Blockers: none.
+
 ### 2026-03-09 17:35 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
 - Commit: `297bd8b` (`gdev-0145`)
