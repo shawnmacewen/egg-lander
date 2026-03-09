@@ -16,6 +16,14 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ## Entries
 
+### 2026-03-09 18:08 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: `pending` (`gdev-0152`; see git history)
+- Summary: Added shared flight-assist aggregate load telemetry (`Load LIGHT/MODERATE/HEAVY/SATURATED`) to landing and docking cues so pilots can quickly read total multi-metric approach strain before drilling into individual limiters.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue safe in-run readability polish that improves pilot decision quality without changing mission balance.
+- Blockers: none.
+
 ### 2026-03-09 18:03 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
 - Commit: `982f770` (`gdev-0151`)

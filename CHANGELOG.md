@@ -1,5 +1,24 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0152 flight-assist aggregate load telemetry
+
+### Assistant summary (exact)
+Implemented the next highest-impact flight-readability polish by adding shared assist aggregate load telemetry (`Load LIGHT/MODERATE/HEAVY/SATURATED`) to both landing and docking cues, so pilots can quickly read overall multi-metric control strain before parsing individual limiter details. Verified with `npm run build`.
+
+### Technical details
+- Added `getAssistLoadReadout(ratios)` helper in `src/main.ts`.
+- Load cue classifies average normalized assist pressure across all tracked dimensions:
+  - `Load LIGHT` for low aggregate strain.
+  - `Load MODERATE` for rising multi-metric pressure.
+  - `Load HEAVY` for near-threshold aggregate load.
+  - `Load SATURATED` when aggregate pressure is at/over threshold.
+- Injected load telemetry into both shared assist cues:
+  - `getDockingAssistCue(...)`
+  - `getLandingAssistCue(...)`
+- Existing risk/window/line/control/vector/buffer/focus/watch/stack/shape/bias/trend/delta/stability/pulse/confidence/commit/tempo/fix telemetry remains intact; load is additive readability guidance only.
+- Updated task registry with `gdev-0152` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0151 flight-assist pressure-shape telemetry
 
 ### Assistant summary (exact)
