@@ -1,5 +1,22 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0053 mission push-window telemetry
+
+### Assistant summary (exact)
+Implemented the next high-impact level-select guidance pass: added `Window ...` telemetry that gives a clear go/no-go push signal (`Open/Near/Cautious/Closed`) by combining confidence, readiness, pressure, and recovery state into one decision cue. Verified with `npm run build`.
+
+### Technical details
+- Added derived `missionWindowReadout` in `updateUi()` with no save-schema changes.
+- Window guidance logic branches safely from existing telemetry:
+  - no attempts → `Window Seed (log one completion rep)`
+  - attempts but no clears → `Window Prep (route first clear safely)`
+  - stable/high-confidence states map to `Window Open` or `Window Near`
+  - high retry pressure maps to `Window Closed`
+  - all other post-clear states map to `Window Cautious`
+- Extended level-select telemetry line to include `Window ...` directly after recovery guidance.
+- Updated task registry with `gdev-0053` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0052 mission recovery threshold correctness fix
 
 ### Assistant summary (exact)

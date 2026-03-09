@@ -16,6 +16,14 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ## Entries
 
+### 2026-03-09 09:50 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: `bd88664` (`gdev-0053`)
+- Summary: Added level-select mission push-window telemetry (`Window Open/Near/Cautious/Closed`) to provide a single go/no-go PB signal derived from confidence, readiness, pressure, and recovery state.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue incremental, low-risk level-select/readability polish while preserving save compatibility.
+- Blockers: none.
+
 ### 2026-03-09 09:44 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
 - Commit: `9dbc853` (`gdev-0052`)
