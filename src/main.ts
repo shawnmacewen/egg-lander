@@ -391,11 +391,11 @@ class EggLanderMissionScene extends Phaser.Scene {
     }
 
     if (this.phase === 'level-select') {
-      if (Phaser.Input.Keyboard.JustDown(this.keyN)) {
+      if (Phaser.Input.Keyboard.JustDown(this.keyN) || Phaser.Input.Keyboard.JustDown(this.cursors.right)) {
         this.levelIndex = Math.min(this.levelIndex + 1, this.saveData.unlockedLevel - 1)
         this.updateUi()
       }
-      if (Phaser.Input.Keyboard.JustDown(this.keyL)) {
+      if (Phaser.Input.Keyboard.JustDown(this.keyL) || Phaser.Input.Keyboard.JustDown(this.cursors.left)) {
         this.levelIndex = Math.max(this.levelIndex - 1, 0)
         this.updateUi()
       }
@@ -1945,7 +1945,7 @@ class EggLanderMissionScene extends Phaser.Scene {
 
     const selectedName = this.saveData.selectedPowerup ? POWERUPS[this.saveData.selectedPowerup].name : 'None'
     this.statusText.setText(`Loadout set: ${selectedName}`)
-    this.hintText.setText('Level select: 1-4 jump • L/N level • A/D or Q/E powerup • ↑/Enter/Space launch • T retry (in-run/crash) • H HUD detail')
+    this.hintText.setText('Level select: 1-4 jump • ←/→ or L/N level • A/D or Q/E powerup • ↑/Enter/Space launch • T retry (in-run/crash) • H HUD detail')
   }
 
   private tryUnlockPowerupsForLevel(levelNumber: number) {

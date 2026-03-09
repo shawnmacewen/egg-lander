@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0093 level-select arrow-key level cycling
+
+### Assistant summary (exact)
+Implemented the next high-impact run-loop QoL pass: level select now accepts `←/→` as alternate level-cycle hotkeys alongside `L/N`, making mission browsing faster and more intuitive while preserving unlock gating and existing controls. Verified with `npm run build`.
+
+### Technical details
+- Updated level-select input handling in `EggLanderMissionScene` so level increment/decrement responds to either `L/N` or left/right arrow keys.
+- Kept existing unlock-cap clamps (`0` to `unlockedLevel - 1`) unchanged for safe navigation.
+- Updated level-select control hint copy to advertise `←/→ or L/N level`.
+- Updated task registry with `gdev-0093` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0092 level-select loadout alt hotkeys
 
 ### Assistant summary (exact)

@@ -16,6 +16,14 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ## Entries
 
+### 2026-03-09 13:15 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: pending (`gdev-0093`; see git history)
+- Summary: Added level-select alternate level-cycle hotkeys (`←/→`) alongside `L/N`, reducing mission selection friction while preserving existing unlock clamping.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue safe, incremental gameplay QoL/readability improvements.
+- Blockers: none.
+
 ### 2026-03-09 13:09 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
 - Commit: pending (`gdev-0092`; see git history)

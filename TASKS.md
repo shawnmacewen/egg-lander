@@ -101,3 +101,4 @@
 - `gdev-0090` — Level-select direct numeric jump hotkeys (`1-4`) with unlock gating (completed)
 - `gdev-0091` — Level-select quick launch hotkeys (`Enter`/`Space`) alongside `↑` launch control (completed)
 - `gdev-0092` — Level-select loadout cycle alt hotkeys (`Q/E`) alongside `A/D` (completed)
+- `gdev-0093` — Level-select arrow-key level cycling (`←/→`) alongside `L/N` (completed)
