@@ -18,7 +18,7 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ### 2026-03-09 14:38 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
-- Commit: `aeda2e7` (`gdev-0110`)
+- Commit: `3aad522` (`gdev-0110`)
 - Summary: Added level-select numeric jump parity by accepting numpad `1-4` alongside top-row digits, plus controls-overlay hint copy update for keypad discoverability.
 - Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: continue safe, incremental gameplay QoL/readability improvements that reduce control friction and repeated setup.
