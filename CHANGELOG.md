@@ -272,3 +272,16 @@ Implemented the next gameplay quality pass: added short post-hit invulnerability
 - Cleared combat tint/invulnerability state when resetting/re-entering mission phases.
 - Updated task registry with `gdev-0014` completion.
 - Build verification: `npm run build` (pass).
+
+## 2026-03-09 — gdev-0015 on-foot combat HUD telemetry
+
+### Assistant summary (exact)
+Implemented the next readability-focused combat pass: added live boss HP telemetry and spear cooldown readiness to the HUD during on-foot encounters so players can better pace attacks under projectile pressure, while keeping existing controls and balance unchanged. Verified with a clean production build.
+
+### Technical details
+- Added contextual HUD readouts for:
+  - `Boss X/3` during active on-foot boss encounters.
+  - `Spear ready` / remaining cooldown in milliseconds during on-foot phases.
+- Kept readouts hidden (`-`) outside relevant phases to reduce HUD noise.
+- Updated task registry with `gdev-0015` completion.
+- Build verification: `npm run build` (pass).

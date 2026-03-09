@@ -23,3 +23,4 @@
 - `gdev-0012` — Stability-thrusters-gated optional relic side objective with score bonus (completed)
 - `gdev-0013` — Mission phase tracker + HUD readability pass (completed)
 - `gdev-0014` — On-foot combat damage fairness pass (invulnerability frames + hit feedback) (completed)
+- `gdev-0015` — On-foot combat HUD telemetry pass (boss HP + spear cooldown readability) (completed)

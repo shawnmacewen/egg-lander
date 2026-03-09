@@ -184,3 +184,11 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 - Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: continue combat readability/juice passes while waiting for additional boss/weapon art.
 - Blockers: no new content art beyond runner sheet.
+
+### 2026-03-09 06:34 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: `b89733a` (`gdev-0015`)
+- Summary: Added on-foot combat telemetry readouts for boss HP and spear cooldown readiness to improve combat pacing readability.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue combat juice/readability polish while waiting for additional boss/weapon art.
+- Blockers: no new content art beyond runner sheet.

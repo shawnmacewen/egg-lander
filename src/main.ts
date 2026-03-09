@@ -755,8 +755,13 @@ class EggLanderMissionScene extends Phaser.Scene {
     const hpReadout = this.phase === 'on-foot' && this.bossActive
       ? `${this.playerHp}${this.time.now < this.playerInvulnerableUntil ? ' (i)' : ''}`
       : '-'
+    const bossReadout = this.phase === 'on-foot' && this.bossActive ? `${Math.max(0, this.bossHp)}/3` : '-'
+    const spearCooldownMs = Math.max(0, 180 - (this.time.now - this.lastSpearAt))
+    const spearReadout = this.phase === 'on-foot'
+      ? (spearCooldownMs <= 0 ? 'ready' : `${Math.ceil(spearCooldownMs / 10) * 10}ms`)
+      : '-'
     this.hudText.setText(
-      `Score ${this.sessionScore}   Attempts ${this.attempts}   Fuel ${Math.round(this.fuel)}%   HP ${hpReadout}   V ${Math.abs(this.velocity.y).toFixed(1)}   H ${Math.abs(this.velocity.x).toFixed(1)}   PWR ${powerup}`
+      `Score ${this.sessionScore}   Attempts ${this.attempts}   Fuel ${Math.round(this.fuel)}%   HP ${hpReadout}   Boss ${bossReadout}   Spear ${spearReadout}   V ${Math.abs(this.velocity.y).toFixed(1)}   H ${Math.abs(this.velocity.x).toFixed(1)}   PWR ${powerup}`
     )
     const required = level.requiredPowerup ? POWERUPS[level.requiredPowerup].name : 'None'
     this.levelText.setText(
