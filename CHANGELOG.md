@@ -1,5 +1,22 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0156 flight-assist reserve telemetry
+
+### Assistant summary (exact)
+Implemented the next highest-impact flight-readability polish by adding shared assist reserve telemetry (`Reserve N%`) to both landing and docking cues, so pilots can quickly read remaining secondary-metric headroom while focusing on the primary limiter. Verified with `npm run build`.
+
+### Technical details
+- Added `getAssistReserveReadout(ratios)` helper in `src/main.ts`.
+- Reserve cue reports percent headroom remaining on the second-worst normalized assist ratio:
+  - High `Reserve N%` means backup metrics still have room.
+  - `Reserve 0%` means secondary pressure is already at/over threshold.
+- Injected reserve telemetry into both shared assist cues:
+  - `getDockingAssistCue(...)`
+  - `getLandingAssistCue(...)`
+- Existing risk/window/line/control/vector/buffer/focus/watch/stack/shape/spread/load/ceiling/drift/bias/trend/delta/stability/pulse/confidence/commit/tempo/fix telemetry remains intact; reserve is additive readability guidance only.
+- Updated task registry with `gdev-0156` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0155 flight-assist threshold occupancy telemetry
 
 ### Assistant summary (exact)

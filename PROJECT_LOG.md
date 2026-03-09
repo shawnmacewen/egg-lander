@@ -16,6 +16,14 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ## Entries
 
+### 2026-03-09 18:30 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: `pending` (`gdev-0156`; see git history)
+- Summary: Added shared flight-assist reserve telemetry (`Reserve N%`) to landing and docking cues so pilots can read remaining secondary-metric headroom while managing the active limiter.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue safe in-run readability polish that improves pilot decision quality without changing mission balance.
+- Blockers: none.
+
 ### 2026-03-09 18:23 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
 - Commit: `32c2e7e` (`gdev-0155`)
