@@ -16,6 +16,14 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ## Entries
 
+### 2026-03-09 15:05 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: `pending` (`gdev-0115`; see git history)
+- Summary: Added on-foot hint HUD-toggle parity so landed/relic/combat guidance strings now advertise `H HUD mode` consistently alongside existing retry/exit/pause controls.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue safe, incremental gameplay QoL/readability improvements that reduce control friction and repeated setup.
+- Blockers: none.
+
 ### 2026-03-09 15:01 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
 - Commit: `5ad7f88` (`gdev-0114`)

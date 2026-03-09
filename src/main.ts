@@ -844,13 +844,13 @@ class EggLanderMissionScene extends Phaser.Scene {
     if (this.bossActive) {
       this.statusText.setText('Landed. Defeat boss with spears, then steal egg')
       this.hintText.setText(this.bonusObjectiveActive
-        ? 'On foot: ←/→ or A/D run • Space/Enter spear • grab cyan relic • T retry • Esc/L level select • P pause'
-        : 'On foot: ←/→ or A/D run • Space/Enter throw spear • T retry • Esc/L level select • P pause')
+        ? 'On foot: ←/→ or A/D run • Space/Enter spear • grab cyan relic • T retry • Esc/L level select • P pause • H HUD mode'
+        : 'On foot: ←/→ or A/D run • Space/Enter throw spear • T retry • Esc/L level select • P pause • H HUD mode')
     } else {
       this.statusText.setText('Landed. Exit, steal egg, return')
       this.hintText.setText(this.bonusObjectiveActive
-        ? 'On foot: ←/→ or A/D run • grab cyan relic • steal egg then return • T retry • Esc/L level select • P pause'
-        : 'On foot: ←/→ or A/D run • steal egg then return • T retry • Esc/L level select • P pause')
+        ? 'On foot: ←/→ or A/D run • grab cyan relic • steal egg then return • T retry • Esc/L level select • P pause • H HUD mode'
+        : 'On foot: ←/→ or A/D run • steal egg then return • T retry • Esc/L level select • P pause • H HUD mode')
     }
   }
 
@@ -978,7 +978,7 @@ class EggLanderMissionScene extends Phaser.Scene {
         this.playerInvulnerableUntil = this.time.now + invulnerabilityMs
         const maxHp = this.saveData.selectedPowerup === 'shielded-hull' ? 4 : 3
         this.statusText.setText(`Hit! HP ${this.playerHp}/${maxHp}`)
-        this.hintText.setText('Dodge shots + throw spears (Space/Enter) • T retry • Esc/L level select • P pause')
+        this.hintText.setText('Dodge shots + throw spears (Space/Enter) • T retry • Esc/L level select • P pause • H HUD mode')
         if (this.playerHp <= 0) {
           this.failMission('On-foot defeat')
           return

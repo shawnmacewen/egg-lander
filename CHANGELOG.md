@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0115 on-foot HUD-toggle hint parity (`H`)
+
+### Assistant summary (exact)
+Implemented the next highest-impact control-readability parity polish: on-foot hint strings now consistently advertise the existing `H` HUD toggle alongside retry/exit/pause controls, including landed, relic-objective, and boss-hit reminder contexts. Verified with `npm run build`.
+
+### Technical details
+- Updated on-foot landed hint variants (boss and non-boss, relic and non-relic) to include `H HUD mode`.
+- Updated boss-hit reminder hint copy to include `H HUD mode` for parity under pressure.
+- Kept gameplay behavior unchanged (copy/readability parity only).
+- Updated task registry with `gdev-0115` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0114 control-copy parity sweep (post-dock/crash/level-select)
 
 ### Assistant summary (exact)
