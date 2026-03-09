@@ -1,5 +1,25 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0045 mission-confidence telemetry
+
+### Assistant summary (exact)
+Implemented the next safe high-impact readability pass: level-select telemetry now includes a mission-confidence signal (`Confidence Locked/Ready/Swing/Risk`) with numeric score and concise action cue, blending mastery score, retry-pressure, and mission-match fit into one decision-ready line. Verified with `npm run build`.
+
+### Technical details
+- Added derived `missionConfidenceReadout` in `updateUi()` with no save-schema changes.
+- Confidence score computation combines:
+  - mastery score contribution (30% weight),
+  - retry-pressure points (`Low/Medium/High/Extreme`),
+  - mission-match points (`Overmatch/Fair/Stretch/Spike`, with calibration for no-clear states).
+- Added confidence bands and tactical cues:
+  - `Locked` → `greenlight PB route`
+  - `Ready` → `commit to one score push`
+  - `Swing` → `stabilize one rep first`
+  - `Risk` → `reset to safe fundamentals`
+- Extended level-select telemetry line to include `Confidence ...` alongside pressure/outlook/match/coaching readouts.
+- Updated task registry with `gdev-0045` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0044 mission-match telemetry
 
 ### Assistant summary (exact)

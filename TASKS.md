@@ -53,3 +53,4 @@
 - `gdev-0042` — Level-select mission-outlook guidance derived from pressure + mastery momentum (completed)
 - `gdev-0043` — Level-select coaching cue (weakest-metric action plan + contextual loadout hint) (completed)
 - `gdev-0044` — Level-select mission-match telemetry (Overmatch/Fair/Stretch/Spike vs mission target tier) (completed)
+- `gdev-0045` — Level-select mission-confidence telemetry (band + score + cue from mastery/pressure/match signals) (completed)
