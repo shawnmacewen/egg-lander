@@ -18,7 +18,7 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ### 2026-03-09 16:04 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
-- Commit: `pending` (`gdev-0127`; see git history)
+- Commit: `e010b68` (`gdev-0127`)
 - Summary: Extended on-foot off-screen objective cue with edge-depth telemetry so egg/lander prompts now show `off-screen +Npx`, clarifying how far beyond the viewport the target is during widened-layout traversal.
 - Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: continue safe, incremental readability/feel polish (camera and traversal cues) without changing mission balance.
