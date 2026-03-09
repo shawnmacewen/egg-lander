@@ -18,7 +18,7 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ### 2026-03-09 09:00 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
-- Commit: `09c71a8` (`gdev-0043`)
+- Commit: `1411591` (`gdev-0043`)
 - Summary: Added level-select coaching telemetry (`Coach: ...`) that converts weakest mastery metric into a concrete run plan and supplies contextual loadout hints when matching perks are unlocked.
 - Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: continue incremental, low-risk level-select/readability polish while preserving save compatibility.
