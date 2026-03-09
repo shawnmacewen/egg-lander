@@ -90,3 +90,4 @@
 - `gdev-0079` — Level-select mission stability telemetry (`Stability ...` consistency-spend/protect cue by commitment state) (completed)
 - `gdev-0080` — Level-select mission discipline telemetry (`Discipline ...` anti-overgrind enforcement cue by commitment/window state) (completed)
 - `gdev-0081` — In-run pause/resume control (`P`) with gameplay-state freeze and HUD resume cue (completed)
+- `gdev-0082` — HUD detail toggle (`H`) with compact in-run telemetry mode and control-hint updates (completed)

@@ -1,5 +1,21 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0082 HUD detail toggle + compact telemetry mode
+
+### Assistant summary (exact)
+Implemented the next high-impact readability pass: added an in-game HUD detail toggle (`H`) that switches between the existing full telemetry wall and a compact run-focused HUD, with control-hint updates so players can quickly declutter the screen without leaving gameplay. Verified with `npm run build`.
+
+### Technical details
+- Added a dedicated `H` key binding and `isHudCompact` scene state in `EggLanderMissionScene`.
+- Updated the main input loop so `H` toggles HUD detail mode in both level-select and active mission flow.
+- Added dual HUD string generation in `updateUi()`:
+  - **Full**: existing complete telemetry readout.
+  - **Compact**: condensed run-critical telemetry (score/time/fuel/HP/boss/spear/dock/powerup).
+- Added explicit HUD mode visibility by prefixing level telemetry with `HUD Full/Compact`.
+- Updated gameplay hint copy to advertise `H HUD mode/detail` alongside existing controls.
+- Updated task registry with `gdev-0082` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0081 in-run pause/resume control
 
 ### Assistant summary (exact)

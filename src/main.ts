@@ -187,6 +187,7 @@ class EggLanderMissionScene extends Phaser.Scene {
   private keyD!: Phaser.Input.Keyboard.Key
   private keySpace!: Phaser.Input.Keyboard.Key
   private keyP!: Phaser.Input.Keyboard.Key
+  private keyH!: Phaser.Input.Keyboard.Key
 
   private hudText!: Phaser.GameObjects.Text
   private levelText!: Phaser.GameObjects.Text
@@ -258,6 +259,7 @@ class EggLanderMissionScene extends Phaser.Scene {
   private readonly bossShots: Array<{ obj: Phaser.GameObjects.Ellipse; vx: number; vy: number; life: number }> = []
   private bossTelegraph!: Phaser.GameObjects.Ellipse
   private isPaused = false
+  private isHudCompact = false
   private pauseStatusBackup = ''
   private pauseHintBackup = ''
   private lastSpearAt = 0
@@ -339,6 +341,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.keyD = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.D)
     this.keySpace = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
     this.keyP = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.P)
+    this.keyH = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.H)
 
     if (!this.anims.exists('runner-idle')) {
       this.anims.create({ key: 'runner-idle', frames: this.anims.generateFrameNumbers('runner-v1', { start: 0, end: 3 }), frameRate: 7, repeat: -1 })
@@ -356,6 +359,11 @@ class EggLanderMissionScene extends Phaser.Scene {
     if (Phaser.Input.Keyboard.JustDown(this.keyR)) {
       this.startNewSession()
       return
+    }
+
+    if (Phaser.Input.Keyboard.JustDown(this.keyH)) {
+      this.isHudCompact = !this.isHudCompact
+      this.updateUi()
     }
 
     if (this.phase === 'level-select') {
@@ -389,7 +397,7 @@ class EggLanderMissionScene extends Phaser.Scene {
       this.phase = 'planet-flying'
       this.missionStartAt = this.time.now
       this.statusText.setText('Planet landing in progress')
-      this.hintText.setText('← → rotate • ↑ thrust • P pause • R new session')
+      this.hintText.setText('← → rotate • ↑ thrust • P pause • H HUD mode • R new session')
     }
 
     if (this.phase === 'planet-flying') this.updatePlanetFlight(dt)
@@ -416,7 +424,7 @@ class EggLanderMissionScene extends Phaser.Scene {
       this.pauseStatusBackup = this.statusText.text
       this.pauseHintBackup = this.hintText.text
       this.statusText.setText('Paused')
-      this.hintText.setText('Press P to resume • R new session')
+      this.hintText.setText('Press P to resume • H HUD mode • R new session')
       this.anims.pauseAll()
       return
     }
@@ -523,7 +531,7 @@ class EggLanderMissionScene extends Phaser.Scene {
       this.runner.setVisible(false)
       this.phase = 'takeoff'
       this.statusText.setText('Boarded with egg: launch to orbit')
-      this.hintText.setText('↑ thrust • ←/→ rotate • P pause • R new session')
+      this.hintText.setText('↑ thrust • ←/→ rotate • P pause • H HUD mode • R new session')
       this.ship.setFillStyle(0xffd889)
       this.velocity.set(0, -8)
       this.ship.rotation = 0
@@ -707,7 +715,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.dockingVelocityLine.setVisible(true)
 
     this.statusText.setText('Orbital docking: near-zero-G precision')
-    this.hintText.setText('Dock softly and upright inside ring • ↑ thrust • ←/→ rotate • P pause')
+    this.hintText.setText('Dock softly and upright inside ring • ↑ thrust • ←/→ rotate • P pause • H HUD mode')
   }
 
   private updateBossCombat(dt: number) {
@@ -971,7 +979,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.velocity.set(0, 0)
     this.thruster.setVisible(false)
     this.statusText.setText(`Level Select\nL / N choose • A / D powerup • ↑ launch mission`)
-    this.hintText.setText('R starts a fresh session (keeps saved progression)')
+    this.hintText.setText('R starts a fresh session (keeps saved progression) • H toggles HUD detail')
     this.resetMissionEntities()
     this.updateUi()
   }
@@ -1017,9 +1025,10 @@ class EggLanderMissionScene extends Phaser.Scene {
     const runElapsedMs = this.missionStartAt > 0 && this.phase !== 'level-select'
       ? Math.max(0, Math.floor(this.time.now - this.missionStartAt))
       : 0
-    this.hudText.setText(
-      `Score ${this.sessionScore}   Attempts ${this.attempts}   Clears ${this.saveData.totalClears}   Streak ${this.clearStreak}   Time ${this.formatMs(runElapsedMs)}   Fuel ${Math.round(this.fuel)}/${this.maxFuel}   HP ${hpReadout}   Boss ${bossReadout}   BossShot ${bossShotReadout}   Spear ${spearReadout}   Dock ${dockReadout}   V ${Math.abs(this.velocity.y).toFixed(1)}   H ${Math.abs(this.velocity.x).toFixed(1)}   PWR ${powerup}`
-    )
+    const hudMode = this.isHudCompact ? 'Compact' : 'Full'
+    const fullHud = `Score ${this.sessionScore}   Attempts ${this.attempts}   Clears ${this.saveData.totalClears}   Streak ${this.clearStreak}   Time ${this.formatMs(runElapsedMs)}   Fuel ${Math.round(this.fuel)}/${this.maxFuel}   HP ${hpReadout}   Boss ${bossReadout}   BossShot ${bossShotReadout}   Spear ${spearReadout}   Dock ${dockReadout}   V ${Math.abs(this.velocity.y).toFixed(1)}   H ${Math.abs(this.velocity.x).toFixed(1)}   PWR ${powerup}`
+    const compactHud = `HUD ${hudMode}   Score ${this.sessionScore}   Time ${this.formatMs(runElapsedMs)}   Fuel ${Math.round(this.fuel)}/${this.maxFuel}   HP ${hpReadout}   Boss ${bossReadout}   Spear ${spearReadout}   Dock ${dockReadout}   PWR ${powerup}`
+    this.hudText.setText(this.isHudCompact ? compactHud : fullHud)
     const required = level.requiredPowerup ? POWERUPS[level.requiredPowerup].name : 'None'
     const levelBestDockGrade = this.saveData.bestDockGrades[this.levelIndex] ?? '-'
     const levelBestScore = this.saveData.bestLevelScores[this.levelIndex] ?? 0
@@ -1763,7 +1772,7 @@ class EggLanderMissionScene extends Phaser.Scene {
         })()
       : '--'
     this.levelText.setText(
-      `Level ${level.id}/${LEVELS.length}: ${level.name}   Requires ${required}   Unlocked ${this.saveData.unlockedLevel}/${LEVELS.length}   Best ${this.saveData.bestScore}   Best Streak ${this.saveData.bestStreak}   Best Run ${levelBestScore}   Best Time ${this.formatMs(levelBestTimeMs)}   Best Dock ${levelBestDockGrade}   Record ${levelClears}/${levelAttempts} (${levelClearRate})   ${retriesReadout}   ${missionPressureReadout}   ${missionOutlookReadout}   ${missionMatchReadout}   ${missionConfidenceReadout}   ${missionPlanReadout}   ${missionPaceReadout}   ${missionScoreTargetReadout}   ${missionReadinessReadout}   ${missionRiskBudgetReadout}   ${missionRecoveryReadout}   ${missionWindowReadout}   ${missionCallReadout}   ${missionWinConditionReadout}   ${missionFailCostReadout}   ${missionEdgeReadout}   ${missionCommitReadout}   ${missionFallbackReadout}   ${missionExecutionReadout}   ${missionCadenceReadout}   ${missionStopReadout}   ${missionResetReadout}   ${missionLaunchCheckReadout}   ${missionWarmupReadout}   ${missionDrillReadout}   ${missionSetSizeReadout}   ${missionReassessReadout}   ${missionSessionGoalReadout}   ${missionExitReadout}   ${missionDebriefReadout}   ${missionFocusReadout}   ${missionLoadoutReadout}   ${missionCommandReadout}   ${missionCheckpointReadout}   ${missionGoSignalReadout}   ${missionNoGoReadout}   ${missionPriorityReadout}   ${missionStabilityReadout}   ${missionDisciplineReadout}   ${coachReadout}   First Try ${levelFirstTryClears}/${levelClears} (${levelFirstTryRate})   Clean ${levelCleanClears}/${levelClears} (${levelCleanRate})   Relic ${levelRelicCompletions}/${levelClears} (${levelRelicRate})   S Dock ${levelSDockClears}/${levelClears} (${levelSDockRate})   Mastery ${masteryTier} (${masteryScore}, ${masteryTierProgress})   ${masteryMixReadout}   ${masteryCapsReadout}   Next ${masteryFocus}   Lifetime ${totalLevelClears}/${totalAttempts} (${lifetimeClearRate})   Fastest ${fastestLevelTag}   Perk: ${powerupDescription}`
+      `HUD ${hudMode}   Level ${level.id}/${LEVELS.length}: ${level.name}   Requires ${required}   Unlocked ${this.saveData.unlockedLevel}/${LEVELS.length}   Best ${this.saveData.bestScore}   Best Streak ${this.saveData.bestStreak}   Best Run ${levelBestScore}   Best Time ${this.formatMs(levelBestTimeMs)}   Best Dock ${levelBestDockGrade}   Record ${levelClears}/${levelAttempts} (${levelClearRate})   ${retriesReadout}   ${missionPressureReadout}   ${missionOutlookReadout}   ${missionMatchReadout}   ${missionConfidenceReadout}   ${missionPlanReadout}   ${missionPaceReadout}   ${missionScoreTargetReadout}   ${missionReadinessReadout}   ${missionRiskBudgetReadout}   ${missionRecoveryReadout}   ${missionWindowReadout}   ${missionCallReadout}   ${missionWinConditionReadout}   ${missionFailCostReadout}   ${missionEdgeReadout}   ${missionCommitReadout}   ${missionFallbackReadout}   ${missionExecutionReadout}   ${missionCadenceReadout}   ${missionStopReadout}   ${missionResetReadout}   ${missionLaunchCheckReadout}   ${missionWarmupReadout}   ${missionDrillReadout}   ${missionSetSizeReadout}   ${missionReassessReadout}   ${missionSessionGoalReadout}   ${missionExitReadout}   ${missionDebriefReadout}   ${missionFocusReadout}   ${missionLoadoutReadout}   ${missionCommandReadout}   ${missionCheckpointReadout}   ${missionGoSignalReadout}   ${missionNoGoReadout}   ${missionPriorityReadout}   ${missionStabilityReadout}   ${missionDisciplineReadout}   ${coachReadout}   First Try ${levelFirstTryClears}/${levelClears} (${levelFirstTryRate})   Clean ${levelCleanClears}/${levelClears} (${levelCleanRate})   Relic ${levelRelicCompletions}/${levelClears} (${levelRelicRate})   S Dock ${levelSDockClears}/${levelClears} (${levelSDockRate})   Mastery ${masteryTier} (${masteryScore}, ${masteryTierProgress})   ${masteryMixReadout}   ${masteryCapsReadout}   Next ${masteryFocus}   Lifetime ${totalLevelClears}/${totalAttempts} (${lifetimeClearRate})   Fastest ${fastestLevelTag}   Perk: ${powerupDescription}`
     )
 
     let objective = 'Land on planet, grab egg on foot, return, launch, then precision dock in orbit.'
@@ -1827,7 +1836,7 @@ class EggLanderMissionScene extends Phaser.Scene {
 
     const selectedName = this.saveData.selectedPowerup ? POWERUPS[this.saveData.selectedPowerup].name : 'None'
     this.statusText.setText(`Loadout set: ${selectedName}`)
-    this.hintText.setText('Level select: L/N level • A/D powerup • ↑ launch')
+    this.hintText.setText('Level select: L/N level • A/D powerup • ↑ launch • H HUD detail')
   }
 
   private tryUnlockPowerupsForLevel(levelNumber: number) {
