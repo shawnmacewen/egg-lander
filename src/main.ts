@@ -186,6 +186,8 @@ class EggLanderMissionScene extends Phaser.Scene {
   private keyL!: Phaser.Input.Keyboard.Key
   private keyA!: Phaser.Input.Keyboard.Key
   private keyD!: Phaser.Input.Keyboard.Key
+  private keyW!: Phaser.Input.Keyboard.Key
+  private keyS!: Phaser.Input.Keyboard.Key
   private keyQ!: Phaser.Input.Keyboard.Key
   private keyE!: Phaser.Input.Keyboard.Key
   private keySpace!: Phaser.Input.Keyboard.Key
@@ -352,6 +354,8 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.keyL = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.L)
     this.keyA = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.A)
     this.keyD = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.D)
+    this.keyW = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.W)
+    this.keyS = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.S)
     this.keyQ = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.Q)
     this.keyE = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.E)
     this.keySpace = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
@@ -391,11 +395,15 @@ class EggLanderMissionScene extends Phaser.Scene {
     }
 
     if (this.phase === 'level-select') {
-      if (Phaser.Input.Keyboard.JustDown(this.keyN) || Phaser.Input.Keyboard.JustDown(this.cursors.right)) {
+      if (Phaser.Input.Keyboard.JustDown(this.keyN)
+        || Phaser.Input.Keyboard.JustDown(this.keyS)
+        || Phaser.Input.Keyboard.JustDown(this.cursors.right)) {
         this.levelIndex = Math.min(this.levelIndex + 1, this.saveData.unlockedLevel - 1)
         this.updateUi()
       }
-      if (Phaser.Input.Keyboard.JustDown(this.keyL) || Phaser.Input.Keyboard.JustDown(this.cursors.left)) {
+      if (Phaser.Input.Keyboard.JustDown(this.keyL)
+        || Phaser.Input.Keyboard.JustDown(this.keyW)
+        || Phaser.Input.Keyboard.JustDown(this.cursors.left)) {
         this.levelIndex = Math.max(this.levelIndex - 1, 0)
         this.updateUi()
       }
@@ -1075,7 +1083,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.ship.rotation = 0
     this.velocity.set(0, 0)
     this.thruster.setVisible(false)
-    this.statusText.setText(`Level Select\nL / N choose • A / D / Q / E powerup • ↑ launch mission`)
+    this.statusText.setText(`Level Select\nL / N or W / S choose • A / D / Q / E powerup • ↑ launch mission`)
     this.hintText.setText('R starts a fresh session (keeps saved progression) • H toggles HUD detail')
     this.resetMissionEntities()
     this.updateUi()
@@ -1945,7 +1953,7 @@ class EggLanderMissionScene extends Phaser.Scene {
 
     const selectedName = this.saveData.selectedPowerup ? POWERUPS[this.saveData.selectedPowerup].name : 'None'
     this.statusText.setText(`Loadout set: ${selectedName}`)
-    this.hintText.setText('Level select: 1-4 jump • ←/→ or L/N level • A/D or Q/E powerup • ↑/Enter/Space launch • T retry (in-run/crash) • H HUD detail')
+    this.hintText.setText('Level select: 1-4 jump • ←/→ or L/N or W/S level • A/D or Q/E powerup • ↑/Enter/Space launch • T retry (in-run/crash) • H HUD detail')
   }
 
   private tryUnlockPowerupsForLevel(levelNumber: number) {

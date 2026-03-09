@@ -1,5 +1,18 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0094 level-select W/S level cycling
+
+### Assistant summary (exact)
+Implemented the next high-impact run-loop QoL pass: level select now accepts `W/S` as alternate level-cycle hotkeys alongside `L/N` and `←/→`, improving one-hand navigation while preserving unlock gating and launch/loadout controls. Verified with `npm run build`.
+
+### Technical details
+- Added dedicated `W` and `S` key bindings in `EggLanderMissionScene` input setup.
+- Updated level-select input handling so level increment/decrement responds to `S/N/→` and `W/L/←`.
+- Kept existing bounds and unlock clamps unchanged (`0` to `unlockedLevel - 1`).
+- Updated level-select status and control-hint copy to advertise `W/S` level navigation.
+- Updated task registry with `gdev-0094` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0093 level-select arrow-key level cycling
 
 ### Assistant summary (exact)

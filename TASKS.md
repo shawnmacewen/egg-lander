@@ -102,3 +102,4 @@
 - `gdev-0091` — Level-select quick launch hotkeys (`Enter`/`Space`) alongside `↑` launch control (completed)
 - `gdev-0092` — Level-select loadout cycle alt hotkeys (`Q/E`) alongside `A/D` (completed)
 - `gdev-0093` — Level-select arrow-key level cycling (`←/→`) alongside `L/N` (completed)
+- `gdev-0094` — Level-select vertical movement hotkeys (`W/S`) alongside `L/N` and `←/→` (completed)
