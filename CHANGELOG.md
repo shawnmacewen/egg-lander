@@ -1,5 +1,20 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0052 mission recovery threshold correctness fix
+
+### Assistant summary (exact)
+Implemented a safety/correctness fix for level-select recovery guidance: `Recovery ...` now targets the immediate next lower pressure band (Extreme→High, High→Medium, Medium→Low) instead of over-demanding multi-band drops. This keeps recovery advice achievable and aligned with displayed pressure thresholds. Verified with `npm run build`.
+
+### Technical details
+- Updated recovery band-down logic in `updateUi()` to map pressure transitions explicitly:
+  - `Medium -> Low` (`<=0.5 retries/clear`)
+  - `High -> Medium` (`<=1.5 retries/clear`)
+  - `Extreme -> High` (`<=3.0 retries/clear`)
+- Kept `Low` behavior unchanged (`Recovery Stable`).
+- No save-schema changes; telemetry-only fix.
+- Updated task registry with `gdev-0052` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0051 mission recovery telemetry
 
 ### Assistant summary (exact)

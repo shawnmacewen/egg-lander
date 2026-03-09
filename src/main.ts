@@ -1331,10 +1331,18 @@ class EggLanderMissionScene extends Phaser.Scene {
         ? 'Recovery Land first clear route'
         : (() => {
             if (pressureLabel === 'Low') return 'Recovery Stable (protect streak)'
-            const nextThreshold = pressureLabel === 'Medium' ? 0.5 : 1.5
-            const clearsNeeded = Math.max(1, Math.ceil((levelRetries / nextThreshold) - levelClears))
-            const targetLabel = pressureLabel === 'Medium' ? 'Low' : 'Medium'
-            return `Recovery +${clearsNeeded} clean clear${clearsNeeded === 1 ? '' : 's'} for ${targetLabel}`
+            const targetPressure = pressureLabel === 'Medium'
+              ? 'Low'
+              : pressureLabel === 'High'
+                ? 'Medium'
+                : 'High'
+            const targetRetryThreshold = targetPressure === 'Low'
+              ? 0.5
+              : targetPressure === 'Medium'
+                ? 1.5
+                : 3
+            const clearsNeeded = Math.max(1, Math.ceil((levelRetries / targetRetryThreshold) - levelClears))
+            return `Recovery +${clearsNeeded} clean clear${clearsNeeded === 1 ? '' : 's'} for ${targetPressure}`
           })()
     const totalAttempts = this.saveData.levelAttempts.reduce((sum, value) => sum + (value ?? 0), 0)
     const totalLevelClears = this.saveData.levelClears.reduce((sum, value) => sum + (value ?? 0), 0)

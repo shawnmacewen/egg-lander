@@ -60,3 +60,4 @@
 - `gdev-0049` — Level-select mission-readiness checklist telemetry (`Readiness x/3` with consistency/pace/score gates) (completed)
 - `gdev-0050` — Level-select mission risk-budget telemetry (`Risk Budget ...` from readiness/confidence/pressure) (completed)
 - `gdev-0051` — Level-select mission recovery telemetry (`Recovery ...` clean-clear target to de-escalate pressure) (completed)
+- `gdev-0052` — Mission recovery threshold correctness fix (step-down now targets immediate lower pressure band) (completed)
