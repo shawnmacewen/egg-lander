@@ -34,3 +34,4 @@
 - `gdev-0023` — Level-driven boss scaling pass (HP/cadence/telegraph/spread profile per level) (completed)
 - `gdev-0024` — Save schema migration hardening + lifetime clears telemetry (completed)
 - `gdev-0025` — Per-level best dock grade persistence + level-select telemetry (completed)
+- `gdev-0026` — Per-level best run score persistence + level-select telemetry (completed)

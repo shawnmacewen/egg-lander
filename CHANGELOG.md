@@ -429,3 +429,15 @@ Implemented the next safe progression-readability pass: docking grades are now p
 - Added completion breakdown line when a new per-level dock PB is achieved.
 - Updated task registry with `gdev-0025` completion.
 - Build verification: `npm run build` (pass).
+
+## 2026-03-09 — gdev-0026 per-level best run score persistence
+
+### Assistant summary (exact)
+Added per-level best run score persistence (save schema v5), surfaced Best Run telemetry in level select, and included new-PB level score callouts on mission completion. Verified `npm run build` passes.
+
+### Technical details
+- Updated save schema to v5 in `src/main.ts` with `bestLevelScores: number[]` and backward-safe migration/default handling.
+- On level completion, now tracks and persists new personal best level-run score (`gained`) per level.
+- Level select HUD now shows `Best Run` for the currently selected level alongside `Best Dock`.
+- Mission completion breakdown now includes `new PB level score` callout when beaten.
+- Updated `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
