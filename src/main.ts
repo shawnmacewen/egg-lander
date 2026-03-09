@@ -43,6 +43,7 @@ type SaveData = {
   bestScore: number
   totalClears: number
   bestStreak: number
+  hudCompact: boolean
   bestDockGrades: string[]
   bestLevelScores: number[]
   bestLevelTimesMs: number[]
@@ -63,7 +64,7 @@ type PowerupMeta = {
   description: string
 }
 
-const SAVE_VERSION = 12
+const SAVE_VERSION = 13
 const SAVE_KEY = 'egg-lander-save'
 
 const LEVELS: LevelConfig[] = [
@@ -225,6 +226,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     bestScore: 0,
     totalClears: 0,
     bestStreak: 0,
+    hudCompact: false,
     bestDockGrades: Array(LEVELS.length).fill('-'),
     bestLevelScores: Array(LEVELS.length).fill(0),
     bestLevelTimesMs: Array(LEVELS.length).fill(0),
@@ -352,6 +354,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     }
 
     this.saveData = this.loadSave()
+    this.isHudCompact = this.saveData.hudCompact
     this.enterLevelSelect()
   }
 
@@ -365,6 +368,8 @@ class EggLanderMissionScene extends Phaser.Scene {
 
     if (Phaser.Input.Keyboard.JustDown(this.keyH)) {
       this.isHudCompact = !this.isHudCompact
+      this.saveData.hudCompact = this.isHudCompact
+      this.saveSave(this.saveData)
       this.updateUi()
     }
 
@@ -1011,6 +1016,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.levelIndex = 0
     this.clearStreak = 0
     this.saveData = this.loadSave()
+    this.isHudCompact = this.saveData.hudCompact
     this.enterLevelSelect()
   }
 
@@ -1884,6 +1890,7 @@ class EggLanderMissionScene extends Phaser.Scene {
       bestScore: 0,
       totalClears: 0,
       bestStreak: 0,
+      hudCompact: false,
       bestDockGrades: Array(LEVELS.length).fill('-'),
       bestLevelScores: Array(LEVELS.length).fill(0),
       bestLevelTimesMs: Array(LEVELS.length).fill(0),
@@ -1918,6 +1925,8 @@ class EggLanderMissionScene extends Phaser.Scene {
     if (selectedPowerup && !unlockedPowerups.includes(selectedPowerup)) {
       selectedPowerup = null
     }
+
+    const hudCompact = parsed.hudCompact === true
 
     const bestDockGradesRaw = Array.isArray(parsed.bestDockGrades) ? parsed.bestDockGrades : []
     const bestDockGrades = Array.from({ length: LEVELS.length }, (_, i) => {
@@ -1996,6 +2005,7 @@ class EggLanderMissionScene extends Phaser.Scene {
       bestScore: Math.max(0, Math.floor(parsed.bestScore ?? 0)),
       totalClears: Math.max(0, Math.floor(parsed.totalClears ?? 0)),
       bestStreak: Math.max(0, Math.floor(parsed.bestStreak ?? 0)),
+      hudCompact,
       bestDockGrades,
       bestLevelScores,
       bestLevelTimesMs,

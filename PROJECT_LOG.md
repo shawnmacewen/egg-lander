@@ -16,6 +16,14 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ## Entries
 
+### 2026-03-09 12:39 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: `1f06eaa` (`gdev-0086`)
+- Summary: Persisted HUD detail preference (`H`) across reloads/sessions by adding `hudCompact` to save data, wiring migration-safe defaults, and writing preference immediately on toggle.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue safe, incremental gameplay QoL/readability improvements.
+- Blockers: none.
+
 ### 2026-03-09 12:37 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
 - Commit: `548e691` (`gdev-0085`)

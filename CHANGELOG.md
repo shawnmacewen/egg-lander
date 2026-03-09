@@ -1,5 +1,18 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0086 persistent HUD detail preference
+
+### Assistant summary (exact)
+Implemented the next high-impact QoL pass: HUD detail mode (`H`) now persists across reloads and fresh sessions, so players keep their preferred Full vs Compact telemetry setting without re-toggling every run. Verified with `npm run build`.
+
+### Technical details
+- Extended save schema to v13 with a new `hudCompact` boolean in `SaveData`.
+- Added migration-safe load behavior (`hudCompact` defaults to `false` when absent in older saves).
+- Applied saved HUD preference on scene boot and on `R` new-session reset.
+- Persisted HUD mode immediately when `H` is toggled.
+- Updated task registry with `gdev-0086` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0085 post-clear instant replay hotkey
 
 ### Assistant summary (exact)
