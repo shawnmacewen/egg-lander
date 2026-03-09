@@ -1,5 +1,22 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0058 mission commitment telemetry
+
+### Assistant summary (exact)
+Implemented the next high-impact level-select decision pass: added `Commit ...` telemetry (`Push/Bank/Recover/Hold`) so players get one explicit action commitment after edge/window analysis, reducing indecision before launch. Verified with `npm run build`.
+
+### Technical details
+- Added derived `missionCommitReadout` in `updateUi()` with no save-schema changes.
+- Commitment guidance branches from existing decision signals:
+  - pre-attempt → `Commit Seed`
+  - attempts/no clears → `Commit Breakthrough`
+  - favorable edge + open window → `Commit Push`
+  - even edge → `Commit Bank`
+  - recover call / costly states → `Commit Recover` or `Commit Hold`.
+- Extended level-select telemetry line to include `Commit ...` directly after edge guidance.
+- Updated task registry with `gdev-0058` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0057 risk/reward edge telemetry
 
 ### Assistant summary (exact)
