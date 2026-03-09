@@ -1,5 +1,21 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0051 mission recovery telemetry
+
+### Assistant summary (exact)
+Implemented the next safe high-impact readability pass: level-select telemetry now includes a `Recovery ...` cue that tells players how many clean clears are needed to de-escalate mission pressure (`to Medium/Low`) before attempting aggressive PB lines. Verified with `npm run build`.
+
+### Technical details
+- Added derived `missionRecoveryReadout` in `updateUi()` with no save-schema changes.
+- Recovery logic safely branches from existing telemetry:
+  - no attempts → `Recovery Seed first clear`
+  - attempts but no clears → `Recovery Land first clear route`
+  - low pressure → `Recovery Stable (protect streak)`
+  - medium/high/extreme pressure → computes minimum clean clears needed (without new failures) to step pressure down one band.
+- Extended level-select telemetry line to include `Recovery ...` directly after risk budget guidance.
+- Updated task registry with `gdev-0051` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0050 mission risk-budget telemetry
 
 ### Assistant summary (exact)

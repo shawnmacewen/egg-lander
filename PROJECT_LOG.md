@@ -16,6 +16,14 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ## Entries
 
+### 2026-03-09 09:40 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: pending (`gdev-0051`)
+- Summary: Added level-select mission recovery telemetry (`Recovery ...`) that computes clean-clear targets needed to step retry pressure down one band before aggressive pushes.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue incremental, low-risk level-select/readability polish while preserving save compatibility.
+- Blockers: none.
+
 ### 2026-03-09 09:33 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
 - Commit: `dec5a01` (`gdev-0050`)
