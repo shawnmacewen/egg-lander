@@ -1190,7 +1190,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.velocity.set(0, 0)
     this.thruster.setVisible(false)
     this.statusText.setText(`Level Select\n← / → or L / N or W / S choose • A / D / Q / E powerup • Z/X/C/V direct loadout • ↑ / Enter / Space launch mission`)
-    this.hintText.setText('R starts a fresh session (keeps saved progression) • H toggles HUD detail')
+    this.hintText.setText(this.getLevelSelectHintText())
     this.resetMissionEntities()
     this.updateUi()
   }
@@ -2112,6 +2112,10 @@ class EggLanderMissionScene extends Phaser.Scene {
     }
   }
 
+  private getLevelSelectHintText() {
+    return 'Level select: 1-4 jump • ←/→ or L/N or W/S level • A/D or Q/E powerup • Z/X/C/V direct loadout • ↑/Enter/Space launch • / or Tab controls • H HUD detail • R new session'
+  }
+
   private persistSelectedLevelIndex() {
     this.saveData.selectedLevelIndex = Phaser.Math.Clamp(this.levelIndex, 0, this.saveData.unlockedLevel - 1)
     this.saveSave(this.saveData)
@@ -2129,7 +2133,7 @@ class EggLanderMissionScene extends Phaser.Scene {
 
     const selectedName = this.saveData.selectedPowerup ? POWERUPS[this.saveData.selectedPowerup].name : 'None'
     this.statusText.setText(`Loadout set: ${selectedName}`)
-    this.hintText.setText('Level select: 1-4 jump • ←/→ or L/N or W/S level • A/D or Q/E powerup • Z/X/C/V direct loadout • ↑/Enter/Space launch • T retry (in-run/crash) • Esc/L abort run (in-run) • H HUD detail')
+    this.hintText.setText(this.getLevelSelectHintText())
   }
 
   private tryUnlockPowerupsForLevel(levelNumber: number) {

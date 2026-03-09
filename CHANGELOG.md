@@ -1,5 +1,18 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0116 level-select dynamic hint parity (`/`/`Tab` + `R`)
+
+### Assistant summary (exact)
+Implemented the next highest-impact control-discoverability polish: level-select hint copy is now unified and always advertises controls-overlay toggle (`/` or `Tab`) plus `R` new-session reminder, including the loadout-change hint path that previously omitted both cues. Verified with `npm run build`.
+
+### Technical details
+- Added `getLevelSelectHintText()` helper to centralize level-select hint copy.
+- Updated `enterLevelSelect()` to use the shared level-select hint helper.
+- Updated `cycleSelectedPowerup()` to reuse the same helper so post-loadout hint text remains parity-safe.
+- Hint now consistently includes: level/loadout keys, launch aliases, `/`/`Tab` controls overlay toggle, `H` HUD detail toggle, and `R` new-session reminder.
+- Updated task registry with `gdev-0116` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0115 on-foot HUD-toggle hint parity (`H`)
 
 ### Assistant summary (exact)

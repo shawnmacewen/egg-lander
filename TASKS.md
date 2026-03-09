@@ -124,3 +124,4 @@
 - `gdev-0113` — On-foot movement hint parity (`←/→` + `A/D` run guidance alignment across on-foot status hints) (completed)
 - `gdev-0114` — Control-copy parity sweep for post-dock/crash/level-select hints (advertise actual accepted aliases consistently) (completed)
 - `gdev-0115` — On-foot hint HUD-toggle parity (`H`) across landed/combat guidance strings (completed)
+- `gdev-0116` — Level-select dynamic hint parity (`/`/`Tab` controls toggle + `R` new-session reminder in loadout-change hint) (completed)
