@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0100 mission-brief launch hint alias parity
+
+### Assistant summary (exact)
+Implemented the next high-impact input-readability polish: mission-brief launch hint copy now explicitly advertises `↑ / Enter / Space` so on-screen guidance matches the already-supported alias keys and reduces pre-launch misinputs. Verified with `npm run build`.
+
+### Technical details
+- Updated mission-brief hint text to say `Press ↑ / Enter / Space to start landing run`.
+- Kept gameplay behavior unchanged (copy/readability-only parity fix).
+- Updated task registry with `gdev-0100` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0099 planet-brief launch key aliases
 
 ### Assistant summary (exact)

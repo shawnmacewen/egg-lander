@@ -108,3 +108,4 @@
 - `gdev-0097` — Toggleable in-game controls overlay (`/`) for quick hotkey reference across level-select and mission phases (completed)
 - `gdev-0098` — Persist controls-overlay preference (`/`) across sessions and reloads (completed)
 - `gdev-0099` — Planet-brief launch accepts `Enter`/`Space` aliases alongside `↑` (completed)
+- `gdev-0100` — Mission-brief launch hint copy updated to advertise `↑/Enter/Space` alias support (completed)

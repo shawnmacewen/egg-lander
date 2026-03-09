@@ -955,7 +955,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.orbitalLayer.setVisible(false)
     this.resetMissionEntities()
     this.statusText.setText(`${level.name}\n1) Land 2) Steal egg 3) Return 4) Take off`)
-    this.hintText.setText('Press ↑ to start landing run • T retry • Esc level select • R new session')
+    this.hintText.setText('Press ↑ / Enter / Space to start landing run • T retry • Esc level select • R new session')
   }
 
   private resetMissionEntities() {
