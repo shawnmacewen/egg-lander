@@ -49,6 +49,7 @@ type SaveData = {
   levelAttempts: number[]
   levelClears: number[]
   cleanLevelClears: number[]
+  firstTryLevelClears: number[]
   unlockedPowerups: PowerupId[]
   selectedPowerup: PowerupId | null
 }
@@ -60,7 +61,7 @@ type PowerupMeta = {
   description: string
 }
 
-const SAVE_VERSION = 9
+const SAVE_VERSION = 10
 const SAVE_KEY = 'egg-lander-save'
 
 const LEVELS: LevelConfig[] = [
@@ -225,6 +226,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     levelAttempts: Array(LEVELS.length).fill(0),
     levelClears: Array(LEVELS.length).fill(0),
     cleanLevelClears: Array(LEVELS.length).fill(0),
+    firstTryLevelClears: Array(LEVELS.length).fill(0),
     unlockedPowerups: [],
     selectedPowerup: null
   }
@@ -877,6 +879,10 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.saveData.totalClears += 1
     this.saveData.levelAttempts[this.levelIndex] = (this.saveData.levelAttempts[this.levelIndex] ?? 0) + 1
     this.saveData.levelClears[this.levelIndex] = (this.saveData.levelClears[this.levelIndex] ?? 0) + 1
+    const isFirstTryClear = this.missionFailuresOnLevel === 0
+    if (isFirstTryClear) {
+      this.saveData.firstTryLevelClears[this.levelIndex] = (this.saveData.firstTryLevelClears[this.levelIndex] ?? 0) + 1
+    }
     const isCleanClear = level.id >= 2 && !this.tookDamageThisAttempt
     if (isCleanClear) {
       this.saveData.cleanLevelClears[this.levelIndex] = (this.saveData.cleanLevelClears[this.levelIndex] ?? 0) + 1
@@ -890,6 +896,7 @@ class EggLanderMissionScene extends Phaser.Scene {
       isNewBestLevelTime ? `new PB time (${this.formatMs(previousBestLevelTimeMs)}→${this.formatMs(elapsedMs)})` : elapsedMs > 0 ? `time ${this.formatMs(elapsedMs)}` : undefined,
       dockingBonus > 0 ? `+${dockingBonus} dock bonus` : undefined,
       firstTryBonus ? '+100 first-try bonus' : undefined,
+      isFirstTryClear ? `first-try clears ${this.saveData.firstTryLevelClears[this.levelIndex]}/${this.saveData.levelClears[this.levelIndex]}` : undefined,
       noHitBonus ? '+150 clean-fight bonus' : undefined,
       isCleanClear ? `clean clears ${this.saveData.cleanLevelClears[this.levelIndex]}/${this.saveData.levelClears[this.levelIndex]}` : undefined,
       streakBonus ? `+${streakBonus} streak bonus (x${this.clearStreak})` : undefined,
@@ -975,8 +982,10 @@ class EggLanderMissionScene extends Phaser.Scene {
     const levelAttempts = this.saveData.levelAttempts[this.levelIndex] ?? 0
     const levelClears = this.saveData.levelClears[this.levelIndex] ?? 0
     const levelCleanClears = this.saveData.cleanLevelClears[this.levelIndex] ?? 0
+    const levelFirstTryClears = this.saveData.firstTryLevelClears[this.levelIndex] ?? 0
     const levelClearRate = levelAttempts > 0 ? `${Math.round((levelClears / levelAttempts) * 100)}%` : '--'
     const levelCleanRate = levelClears > 0 ? `${Math.round((levelCleanClears / levelClears) * 100)}%` : '--'
+    const levelFirstTryRate = levelClears > 0 ? `${Math.round((levelFirstTryClears / levelClears) * 100)}%` : '--'
     const totalAttempts = this.saveData.levelAttempts.reduce((sum, value) => sum + (value ?? 0), 0)
     const totalLevelClears = this.saveData.levelClears.reduce((sum, value) => sum + (value ?? 0), 0)
     const lifetimeClearRate = totalAttempts > 0 ? `${Math.round((totalLevelClears / totalAttempts) * 100)}%` : '--'
@@ -990,7 +999,7 @@ class EggLanderMissionScene extends Phaser.Scene {
         })()
       : '--'
     this.levelText.setText(
-      `Level ${level.id}/${LEVELS.length}: ${level.name}   Requires ${required}   Unlocked ${this.saveData.unlockedLevel}/${LEVELS.length}   Best ${this.saveData.bestScore}   Best Streak ${this.saveData.bestStreak}   Best Run ${levelBestScore}   Best Time ${this.formatMs(levelBestTimeMs)}   Best Dock ${levelBestDockGrade}   Record ${levelClears}/${levelAttempts} (${levelClearRate})   Clean ${levelCleanClears}/${levelClears} (${levelCleanRate})   Lifetime ${totalLevelClears}/${totalAttempts} (${lifetimeClearRate})   Fastest ${fastestLevelTag}   Perk: ${powerupDescription}`
+      `Level ${level.id}/${LEVELS.length}: ${level.name}   Requires ${required}   Unlocked ${this.saveData.unlockedLevel}/${LEVELS.length}   Best ${this.saveData.bestScore}   Best Streak ${this.saveData.bestStreak}   Best Run ${levelBestScore}   Best Time ${this.formatMs(levelBestTimeMs)}   Best Dock ${levelBestDockGrade}   Record ${levelClears}/${levelAttempts} (${levelClearRate})   First Try ${levelFirstTryClears}/${levelClears} (${levelFirstTryRate})   Clean ${levelCleanClears}/${levelClears} (${levelCleanRate})   Lifetime ${totalLevelClears}/${totalAttempts} (${lifetimeClearRate})   Fastest ${fastestLevelTag}   Perk: ${powerupDescription}`
     )
 
     let objective = 'Land on planet, grab egg on foot, return, launch, then precision dock in orbit.'
@@ -1090,6 +1099,7 @@ class EggLanderMissionScene extends Phaser.Scene {
       levelAttempts: Array(LEVELS.length).fill(0),
       levelClears: Array(LEVELS.length).fill(0),
       cleanLevelClears: Array(LEVELS.length).fill(0),
+      firstTryLevelClears: Array(LEVELS.length).fill(0),
       unlockedPowerups: [],
       selectedPowerup: null
     }
@@ -1162,6 +1172,14 @@ class EggLanderMissionScene extends Phaser.Scene {
       return typeof clears === 'number' && Number.isFinite(clears) ? Math.max(0, Math.floor(clears)) : 0
     })
 
+    const firstTryLevelClearsRaw = Array.isArray((parsed as { firstTryLevelClears?: unknown[] }).firstTryLevelClears)
+      ? ((parsed as { firstTryLevelClears?: unknown[] }).firstTryLevelClears ?? [])
+      : []
+    const firstTryLevelClears = Array.from({ length: LEVELS.length }, (_, i) => {
+      const clears = firstTryLevelClearsRaw[i]
+      return typeof clears === 'number' && Number.isFinite(clears) ? Math.max(0, Math.floor(clears)) : 0
+    })
+
     return {
       version: SAVE_VERSION,
       unlockedLevel: Phaser.Math.Clamp(Math.floor(parsed.unlockedLevel ?? 1), 1, LEVELS.length),
@@ -1175,6 +1193,7 @@ class EggLanderMissionScene extends Phaser.Scene {
       levelAttempts,
       levelClears,
       cleanLevelClears,
+      firstTryLevelClears,
       unlockedPowerups,
       selectedPowerup
     }

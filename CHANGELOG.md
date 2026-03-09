@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0032 first-try clear persistence + telemetry pass
+
+### Assistant summary (exact)
+Implemented the next safe mastery-feedback task: per-level first-try clears now persist (save schema v10), level-select telemetry now surfaces first-try clear rate, and mission-complete breakdowns now call out first-try clear progress. Verified with `npm run build`.
+
+### Technical details
+- Bumped save schema version to `v10`.
+- Extended `SaveData` with `firstTryLevelClears` and added backward-safe migration/default handling.
+- On mission completion, now increments per-level first-try clear count when the level is cleared without any prior failed attempts on that mission (`missionFailuresOnLevel === 0`).
+- Added level-select telemetry readout: `First Try x/y (z%)` per level.
+- Added mission-complete breakdown callout: `first-try clears x/y` when applicable.
+- Updated task registry for `gdev-0032` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0030 lifetime pilot telemetry pass
 
 ### Assistant summary (exact)
