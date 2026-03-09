@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0106 level-select cursor persistence
+
+### Assistant summary (exact)
+Implemented the next highest-impact session-flow polish: the currently selected mission in level select now persists across reloads/sessions (alongside existing loadout persistence), with unlock-safe clamping so saved selection never points past unlocked progress. Verified with `npm run build`.
+
+### Technical details
+- Bumped save schema to v15 and added `selectedLevelIndex` to persisted `SaveData`.
+- Added migration-safe parsing/defaults for `selectedLevelIndex` (falls back to level 1 when absent/invalid).
+- Added `persistSelectedLevelIndex()` and wired it into level-select navigation (`L/N`, `W/S`, `←/→`, `1-4`) plus next-level advance flow.
+- On boot/enter-level-select, selected level now restores from save and clamps to unlocked range.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0105 controls-overlay toggle parity (`Tab` alias)
 
 ### Assistant summary (exact)

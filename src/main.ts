@@ -56,6 +56,7 @@ type SaveData = {
   sDockLevelClears: number[]
   unlockedPowerups: PowerupId[]
   selectedPowerup: PowerupId | null
+  selectedLevelIndex: number
 }
 
 type PowerupMeta = {
@@ -65,7 +66,7 @@ type PowerupMeta = {
   description: string
 }
 
-const SAVE_VERSION = 14
+const SAVE_VERSION = 15
 const SAVE_KEY = 'egg-lander-save'
 
 const LEVELS: LevelConfig[] = [
@@ -252,7 +253,8 @@ class EggLanderMissionScene extends Phaser.Scene {
     relicLevelCompletions: Array(LEVELS.length).fill(0),
     sDockLevelClears: Array(LEVELS.length).fill(0),
     unlockedPowerups: [],
-    selectedPowerup: null
+    selectedPowerup: null,
+    selectedLevelIndex: 0
   }
 
   private sessionScore = 0
@@ -393,6 +395,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     }
 
     this.saveData = this.loadSave()
+    this.levelIndex = Phaser.Math.Clamp(this.saveData.selectedLevelIndex ?? 0, 0, this.saveData.unlockedLevel - 1)
     this.isHudCompact = this.saveData.hudCompact
     this.controlsOverlayVisible = this.saveData.controlsOverlayVisible
     this.enterLevelSelect()
@@ -425,12 +428,14 @@ class EggLanderMissionScene extends Phaser.Scene {
         || Phaser.Input.Keyboard.JustDown(this.keyS)
         || Phaser.Input.Keyboard.JustDown(this.cursors.right)) {
         this.levelIndex = Math.min(this.levelIndex + 1, this.saveData.unlockedLevel - 1)
+        this.persistSelectedLevelIndex()
         this.updateUi()
       }
       if (Phaser.Input.Keyboard.JustDown(this.keyL)
         || Phaser.Input.Keyboard.JustDown(this.keyW)
         || Phaser.Input.Keyboard.JustDown(this.cursors.left)) {
         this.levelIndex = Math.max(this.levelIndex - 1, 0)
+        this.persistSelectedLevelIndex()
         this.updateUi()
       }
       if (Phaser.Input.Keyboard.JustDown(this.key1)) this.selectLevelByHotkey(0)
@@ -534,6 +539,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     if (targetIndex < 0 || targetIndex >= LEVELS.length) return
     if (targetIndex >= this.saveData.unlockedLevel) return
     this.levelIndex = targetIndex
+    this.persistSelectedLevelIndex()
     this.updateUi()
   }
 
@@ -1126,11 +1132,14 @@ class EggLanderMissionScene extends Phaser.Scene {
     if (this.levelIndex < this.saveData.unlockedLevel - 1 && this.levelIndex < LEVELS.length - 1) {
       this.levelIndex += 1
     }
+    this.persistSelectedLevelIndex()
     this.enterLevelSelect()
   }
 
   private enterLevelSelect() {
     this.phase = 'level-select'
+    this.levelIndex = Phaser.Math.Clamp(this.levelIndex, 0, this.saveData.unlockedLevel - 1)
+    this.persistSelectedLevelIndex()
     this.missionFailuresOnLevel = 0
     this.missionStartAt = 0
     this.planetLayer.setVisible(true)
@@ -2032,6 +2041,11 @@ class EggLanderMissionScene extends Phaser.Scene {
     }
   }
 
+  private persistSelectedLevelIndex() {
+    this.saveData.selectedLevelIndex = Phaser.Math.Clamp(this.levelIndex, 0, this.saveData.unlockedLevel - 1)
+    this.saveSave(this.saveData)
+  }
+
   private cycleSelectedPowerup(direction: 1 | -1) {
     const options: (PowerupId | null)[] = [null, ...this.saveData.unlockedPowerups]
     if (options.length === 0) return
@@ -2086,7 +2100,8 @@ class EggLanderMissionScene extends Phaser.Scene {
       relicLevelCompletions: Array(LEVELS.length).fill(0),
       sDockLevelClears: Array(LEVELS.length).fill(0),
       unlockedPowerups: [],
-      selectedPowerup: null
+      selectedPowerup: null,
+      selectedLevelIndex: 0
     }
 
     try {
@@ -2184,6 +2199,11 @@ class EggLanderMissionScene extends Phaser.Scene {
       return typeof clears === 'number' && Number.isFinite(clears) ? Math.max(0, Math.floor(clears)) : 0
     })
 
+    const selectedLevelIndexRaw = (parsed as { selectedLevelIndex?: unknown }).selectedLevelIndex
+    const selectedLevelIndex = typeof selectedLevelIndexRaw === 'number' && Number.isFinite(selectedLevelIndexRaw)
+      ? Math.floor(selectedLevelIndexRaw)
+      : 0
+
     return {
       version: SAVE_VERSION,
       unlockedLevel: Phaser.Math.Clamp(Math.floor(parsed.unlockedLevel ?? 1), 1, LEVELS.length),
@@ -2203,7 +2223,8 @@ class EggLanderMissionScene extends Phaser.Scene {
       relicLevelCompletions,
       sDockLevelClears,
       unlockedPowerups,
-      selectedPowerup
+      selectedPowerup,
+      selectedLevelIndex: Phaser.Math.Clamp(selectedLevelIndex, 0, Math.max(0, Math.min(LEVELS.length - 1, Math.floor(parsed.unlockedLevel ?? 1) - 1)))
     }
   }
 
