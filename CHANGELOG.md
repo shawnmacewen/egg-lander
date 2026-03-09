@@ -1,5 +1,21 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0047 pace-target telemetry
+
+### Assistant summary (exact)
+Implemented the next safe high-impact readability pass: level-select telemetry now includes a dynamic `Pace Target ...` cue that recommends either a safer consistency pace or a faster PB push based on mission confidence and retry pressure, anchored to each level's saved best mission time. Verified with `npm run build`.
+
+### Technical details
+- Added derived `missionPaceReadout` in `updateUi()` with no save-schema changes.
+- Pace-target logic branches safely on existing telemetry state:
+  - no clears → `Pace Target log first finish time`
+  - clears but no PB time yet → `Pace Target set from next clear`
+  - otherwise computes a target time from saved PB using blended pressure/confidence factors.
+- Target pace includes a delta cue versus PB (`Xs faster` / `Xs safer` / `on PB pace`) to clarify intent.
+- Extended level-select telemetry line to include `Pace Target ...` directly after mission plan guidance.
+- Updated task registry with `gdev-0047` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0046 mission-plan telemetry
 
 ### Assistant summary (exact)

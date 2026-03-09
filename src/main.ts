@@ -1232,6 +1232,34 @@ class EggLanderMissionScene extends Phaser.Scene {
             if (hasStrongConfidence) return `Plan Push ${weakestFocusArea.label} quality rep`
             return `Plan Practice ${weakestFocusArea.label} fundamentals`
           })()
+    const missionPaceReadout = levelClears <= 0
+      ? 'Pace Target log first finish time'
+      : levelBestTimeMs <= 0
+        ? 'Pace Target set from next clear'
+        : (() => {
+            const pressureFactor = pressureLabel === 'Low'
+              ? 0.97
+              : pressureLabel === 'Medium'
+                ? 1
+                : pressureLabel === 'High'
+                  ? 1.04
+                  : 1.08
+            const confidenceFactor = missionConfidenceReadout.includes('Locked')
+              ? 0.97
+              : missionConfidenceReadout.includes('Ready')
+                ? 0.99
+                : missionConfidenceReadout.includes('Swing')
+                  ? 1.02
+                  : 1.06
+            const targetMs = Math.max(1000, Math.round(levelBestTimeMs * ((pressureFactor + confidenceFactor) / 2)))
+            const deltaMs = targetMs - levelBestTimeMs
+            const deltaLabel = deltaMs < 0
+              ? `${Math.abs((deltaMs / 1000)).toFixed(1)}s faster`
+              : deltaMs > 0
+                ? `${(deltaMs / 1000).toFixed(1)}s safer`
+                : 'on PB pace'
+            return `Pace Target ${this.formatMs(targetMs)} (${deltaLabel})`
+          })()
     const totalAttempts = this.saveData.levelAttempts.reduce((sum, value) => sum + (value ?? 0), 0)
     const totalLevelClears = this.saveData.levelClears.reduce((sum, value) => sum + (value ?? 0), 0)
     const lifetimeClearRate = totalAttempts > 0 ? `${Math.round((totalLevelClears / totalAttempts) * 100)}%` : '--'
@@ -1245,7 +1273,7 @@ class EggLanderMissionScene extends Phaser.Scene {
         })()
       : '--'
     this.levelText.setText(
-      `Level ${level.id}/${LEVELS.length}: ${level.name}   Requires ${required}   Unlocked ${this.saveData.unlockedLevel}/${LEVELS.length}   Best ${this.saveData.bestScore}   Best Streak ${this.saveData.bestStreak}   Best Run ${levelBestScore}   Best Time ${this.formatMs(levelBestTimeMs)}   Best Dock ${levelBestDockGrade}   Record ${levelClears}/${levelAttempts} (${levelClearRate})   ${retriesReadout}   ${missionPressureReadout}   ${missionOutlookReadout}   ${missionMatchReadout}   ${missionConfidenceReadout}   ${missionPlanReadout}   ${coachReadout}   First Try ${levelFirstTryClears}/${levelClears} (${levelFirstTryRate})   Clean ${levelCleanClears}/${levelClears} (${levelCleanRate})   Relic ${levelRelicCompletions}/${levelClears} (${levelRelicRate})   S Dock ${levelSDockClears}/${levelClears} (${levelSDockRate})   Mastery ${masteryTier} (${masteryScore}, ${masteryTierProgress})   ${masteryMixReadout}   ${masteryCapsReadout}   Next ${masteryFocus}   Lifetime ${totalLevelClears}/${totalAttempts} (${lifetimeClearRate})   Fastest ${fastestLevelTag}   Perk: ${powerupDescription}`
+      `Level ${level.id}/${LEVELS.length}: ${level.name}   Requires ${required}   Unlocked ${this.saveData.unlockedLevel}/${LEVELS.length}   Best ${this.saveData.bestScore}   Best Streak ${this.saveData.bestStreak}   Best Run ${levelBestScore}   Best Time ${this.formatMs(levelBestTimeMs)}   Best Dock ${levelBestDockGrade}   Record ${levelClears}/${levelAttempts} (${levelClearRate})   ${retriesReadout}   ${missionPressureReadout}   ${missionOutlookReadout}   ${missionMatchReadout}   ${missionConfidenceReadout}   ${missionPlanReadout}   ${missionPaceReadout}   ${coachReadout}   First Try ${levelFirstTryClears}/${levelClears} (${levelFirstTryRate})   Clean ${levelCleanClears}/${levelClears} (${levelCleanRate})   Relic ${levelRelicCompletions}/${levelClears} (${levelRelicRate})   S Dock ${levelSDockClears}/${levelClears} (${levelSDockRate})   Mastery ${masteryTier} (${masteryScore}, ${masteryTierProgress})   ${masteryMixReadout}   ${masteryCapsReadout}   Next ${masteryFocus}   Lifetime ${totalLevelClears}/${totalAttempts} (${lifetimeClearRate})   Fastest ${fastestLevelTag}   Perk: ${powerupDescription}`
     )
 
     let objective = 'Land on planet, grab egg on foot, return, launch, then precision dock in orbit.'

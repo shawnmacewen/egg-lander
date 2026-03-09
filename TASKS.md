@@ -55,3 +55,4 @@
 - `gdev-0044` — Level-select mission-match telemetry (Overmatch/Fair/Stretch/Spike vs mission target tier) (completed)
 - `gdev-0045` — Level-select mission-confidence telemetry (band + score + cue from mastery/pressure/match signals) (completed)
 - `gdev-0046` — Level-select mission-plan telemetry (stabilize/practice/PB push call based on confidence + pressure + weakest metric) (completed)
+- `gdev-0047` — Level-select pace-target telemetry (`Pace Target` time cue from PB + confidence/pressure) (completed)
