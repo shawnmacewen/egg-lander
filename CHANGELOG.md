@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0107 post-clear next-level alias parity (`↑`)
+
+### Assistant summary (exact)
+Implemented the next highest-impact control-flow parity pass: post-clear next-level advance now also accepts `↑` (alongside `N/Enter/Space`), and completion hint copy now advertises the full alias set so progression flow stays consistent with other launch/advance interactions. Verified with `npm run build`.
+
+### Technical details
+- Updated `level-complete` input handling so `↑` triggers `advanceFromComplete()` in addition to `N`, `Enter`, and `Space`.
+- Updated completion status and hint copy to advertise `↑/N/Enter/Space` next-level controls.
+- Updated task registry with `gdev-0107` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0106 level-select cursor persistence
 
 ### Assistant summary (exact)

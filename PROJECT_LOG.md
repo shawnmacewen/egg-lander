@@ -16,6 +16,14 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ## Entries
 
+### 2026-03-09 14:23 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: pending (`gdev-0107`; see git history)
+- Summary: Added post-clear next-level input parity so `↑` now advances alongside `N/Enter/Space`, and updated completion hint copy to advertise full alias support.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue safe, incremental gameplay QoL/readability improvements that reduce control friction and repeated setup.
+- Blockers: none.
+
 ### 2026-03-09 14:18 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
 - Commit: `1aaeca6` (`gdev-0106`)

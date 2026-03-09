@@ -515,6 +515,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     if (this.phase === 'level-complete') {
       if (Phaser.Input.Keyboard.JustDown(this.keyT)) this.replayCurrentLevelFromComplete()
       if (Phaser.Input.Keyboard.JustDown(this.keyN)
+        || Phaser.Input.Keyboard.JustDown(this.cursors.up)
         || Phaser.Input.Keyboard.JustDown(this.keyEnter)
         || Phaser.Input.Keyboard.JustDown(this.keySpace)) this.advanceFromComplete()
       if (Phaser.Input.Keyboard.JustDown(this.keyL)) this.enterLevelSelect()
@@ -1124,8 +1125,8 @@ class EggLanderMissionScene extends Phaser.Scene {
       relicBonus ? '+250 relic bonus' : undefined
     ].filter(Boolean)
 
-    this.statusText.setText(`Dock complete! +${gained} (${breakdownBits.join(' • ')})\nT replay level • N next level • Esc/L level select`)
-    this.hintText.setText('Mission loop clear: land → run → steal → return → takeoff → dock • T replay • N/Enter/Space next')
+    this.statusText.setText(`Dock complete! +${gained} (${breakdownBits.join(' • ')})\nT replay level • ↑/N next level • Esc/L level select`)
+    this.hintText.setText('Mission loop clear: land → run → steal → return → takeoff → dock • T replay • ↑/N/Enter/Space next')
   }
 
   private advanceFromComplete() {

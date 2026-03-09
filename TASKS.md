@@ -115,3 +115,4 @@
 - `gdev-0104` — On-foot control-hint parity (`T` retry + `Esc/L` exit + `P` pause) including boss-hit reminder copy (completed)
 - `gdev-0105` — Controls overlay toggle parity: add `Tab` alias alongside `/` and update on-screen control cues (completed)
 - `gdev-0106` — Persist level-select mission cursor across sessions/reloads with unlock-safe clamping (completed)
+- `gdev-0107` — Post-clear next-level alias parity (`↑` alongside `N/Enter/Space`) + completion hint copy update (completed)
