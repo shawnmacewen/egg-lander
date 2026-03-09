@@ -1,5 +1,23 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0067 mission set-size telemetry
+
+### Assistant summary (exact)
+Implemented the next high-impact level-select pacing pass: added `Set Size ...` telemetry that recommends how many runs to execute in the current block (seed/breakthrough/push/bank/recover/hold) before reassessing, so sessions stay disciplined and lower tilt risk. Verified with `npm run build`.
+
+### Technical details
+- Added derived `missionSetSizeReadout` in `updateUi()` with no save-schema changes.
+- Set-size guidance branches from existing progression + commitment signals:
+  - pre-attempt → `Set Size 1 run (seed baseline only)`
+  - attempts/no clears → `Set Size 2 runs (safe clear reps, then reassess)`
+  - `Commit Push` → `Set Size 2 runs (bank + one PB shot)`
+  - `Commit Bank` → `Set Size 2 runs (clean reps only)`
+  - `Commit Recover` → `Set Size 3 runs (fundamentals reset block)`
+  - `Commit Hold` → `Set Size 1 run (hold line then evaluate)`
+- Extended level-select telemetry line to include `Set Size ...` immediately after `Drill ...` guidance.
+- Updated task registry with `gdev-0067` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0066 targeted drill telemetry
 
 ### Assistant summary (exact)

@@ -75,3 +75,4 @@
 - `gdev-0064` — Level-select mission launch-check telemetry (`Launch Check ...` final go/no-go PB gate from commitment/window/pressure signals) (completed)
 - `gdev-0065` — Level-select mission warmup telemetry (`Warmup ...` prep-rep cue before launch) (completed)
 - `gdev-0066` — Level-select targeted drill telemetry (`Drill ...` weakest-metric rep prescription) (completed)
+- `gdev-0067` — Level-select mission set-size telemetry (`Set Size ...` run-block recommendation by commitment state) (completed)

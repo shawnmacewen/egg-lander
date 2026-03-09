@@ -1539,6 +1539,17 @@ class EggLanderMissionScene extends Phaser.Scene {
               : weakestFocusArea.label === 'Relic'
                 ? 'Drill Relic set: 2 relic pickups before egg steal'
                 : 'Drill Dock set: 3 controlled S-grade dock entries'
+    const missionSetSizeReadout = levelAttempts <= 0
+      ? 'Set Size 1 run (seed baseline only)'
+      : levelClears <= 0
+        ? 'Set Size 2 runs (safe clear reps, then reassess)'
+        : missionCommitReadout.includes('Push')
+          ? 'Set Size 2 runs (bank + one PB shot)'
+          : missionCommitReadout.includes('Bank')
+            ? 'Set Size 2 runs (clean reps only)'
+            : missionCommitReadout.includes('Recover')
+              ? 'Set Size 3 runs (fundamentals reset block)'
+              : 'Set Size 1 run (hold line then evaluate)'
     const totalAttempts = this.saveData.levelAttempts.reduce((sum, value) => sum + (value ?? 0), 0)
     const totalLevelClears = this.saveData.levelClears.reduce((sum, value) => sum + (value ?? 0), 0)
     const lifetimeClearRate = totalAttempts > 0 ? `${Math.round((totalLevelClears / totalAttempts) * 100)}%` : '--'
@@ -1552,7 +1563,7 @@ class EggLanderMissionScene extends Phaser.Scene {
         })()
       : '--'
     this.levelText.setText(
-      `Level ${level.id}/${LEVELS.length}: ${level.name}   Requires ${required}   Unlocked ${this.saveData.unlockedLevel}/${LEVELS.length}   Best ${this.saveData.bestScore}   Best Streak ${this.saveData.bestStreak}   Best Run ${levelBestScore}   Best Time ${this.formatMs(levelBestTimeMs)}   Best Dock ${levelBestDockGrade}   Record ${levelClears}/${levelAttempts} (${levelClearRate})   ${retriesReadout}   ${missionPressureReadout}   ${missionOutlookReadout}   ${missionMatchReadout}   ${missionConfidenceReadout}   ${missionPlanReadout}   ${missionPaceReadout}   ${missionScoreTargetReadout}   ${missionReadinessReadout}   ${missionRiskBudgetReadout}   ${missionRecoveryReadout}   ${missionWindowReadout}   ${missionCallReadout}   ${missionWinConditionReadout}   ${missionFailCostReadout}   ${missionEdgeReadout}   ${missionCommitReadout}   ${missionFallbackReadout}   ${missionExecutionReadout}   ${missionCadenceReadout}   ${missionStopReadout}   ${missionResetReadout}   ${missionLaunchCheckReadout}   ${missionWarmupReadout}   ${missionDrillReadout}   ${coachReadout}   First Try ${levelFirstTryClears}/${levelClears} (${levelFirstTryRate})   Clean ${levelCleanClears}/${levelClears} (${levelCleanRate})   Relic ${levelRelicCompletions}/${levelClears} (${levelRelicRate})   S Dock ${levelSDockClears}/${levelClears} (${levelSDockRate})   Mastery ${masteryTier} (${masteryScore}, ${masteryTierProgress})   ${masteryMixReadout}   ${masteryCapsReadout}   Next ${masteryFocus}   Lifetime ${totalLevelClears}/${totalAttempts} (${lifetimeClearRate})   Fastest ${fastestLevelTag}   Perk: ${powerupDescription}`
+      `Level ${level.id}/${LEVELS.length}: ${level.name}   Requires ${required}   Unlocked ${this.saveData.unlockedLevel}/${LEVELS.length}   Best ${this.saveData.bestScore}   Best Streak ${this.saveData.bestStreak}   Best Run ${levelBestScore}   Best Time ${this.formatMs(levelBestTimeMs)}   Best Dock ${levelBestDockGrade}   Record ${levelClears}/${levelAttempts} (${levelClearRate})   ${retriesReadout}   ${missionPressureReadout}   ${missionOutlookReadout}   ${missionMatchReadout}   ${missionConfidenceReadout}   ${missionPlanReadout}   ${missionPaceReadout}   ${missionScoreTargetReadout}   ${missionReadinessReadout}   ${missionRiskBudgetReadout}   ${missionRecoveryReadout}   ${missionWindowReadout}   ${missionCallReadout}   ${missionWinConditionReadout}   ${missionFailCostReadout}   ${missionEdgeReadout}   ${missionCommitReadout}   ${missionFallbackReadout}   ${missionExecutionReadout}   ${missionCadenceReadout}   ${missionStopReadout}   ${missionResetReadout}   ${missionLaunchCheckReadout}   ${missionWarmupReadout}   ${missionDrillReadout}   ${missionSetSizeReadout}   ${coachReadout}   First Try ${levelFirstTryClears}/${levelClears} (${levelFirstTryRate})   Clean ${levelCleanClears}/${levelClears} (${levelCleanRate})   Relic ${levelRelicCompletions}/${levelClears} (${levelRelicRate})   S Dock ${levelSDockClears}/${levelClears} (${levelSDockRate})   Mastery ${masteryTier} (${masteryScore}, ${masteryTierProgress})   ${masteryMixReadout}   ${masteryCapsReadout}   Next ${masteryFocus}   Lifetime ${totalLevelClears}/${totalAttempts} (${lifetimeClearRate})   Fastest ${fastestLevelTag}   Perk: ${powerupDescription}`
     )
 
     let objective = 'Land on planet, grab egg on foot, return, launch, then precision dock in orbit.'

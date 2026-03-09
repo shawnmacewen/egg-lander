@@ -16,6 +16,14 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ## Entries
 
+### 2026-03-09 11:00 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: pending (`gdev-0067`; latest in git history)
+- Summary: Added level-select mission set-size telemetry (`Set Size ...`) to prescribe run-block length by commitment state (seed/breakthrough/push/bank/recover/hold), helping players reassess at disciplined intervals instead of over-grinding.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue incremental, low-risk level-select/readability polish while preserving save compatibility.
+- Blockers: none.
+
 ### 2026-03-09 10:55 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
 - Commit: `e2883fb` (`gdev-0066`)
