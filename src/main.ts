@@ -686,7 +686,7 @@ class EggLanderMissionScene extends Phaser.Scene {
       moving = true
     }
 
-    if (Phaser.Input.Keyboard.JustDown(this.keySpace)) this.throwSpear()
+    if (Phaser.Input.Keyboard.JustDown(this.keySpace) || Phaser.Input.Keyboard.JustDown(this.keyEnter)) this.throwSpear()
 
     if (moving) {
       if (this.runner.anims.currentAnim?.key !== 'runner-run') this.runner.play('runner-run', true)
@@ -712,7 +712,7 @@ class EggLanderMissionScene extends Phaser.Scene {
 
     if (!this.eggStolen && Math.abs(this.runner.x - this.egg.x) < 16) {
       if (this.bossActive) {
-        this.statusText.setText('Boss blocks the egg — throw spears (Space)!')
+        this.statusText.setText('Boss blocks the egg — throw spears (Space/Enter)!')
       } else {
         this.eggStolen = true
         this.hasEgg = true
@@ -725,7 +725,7 @@ class EggLanderMissionScene extends Phaser.Scene {
       this.runner.setVisible(false)
       this.phase = 'takeoff'
       this.statusText.setText('Boarded with egg: launch to orbit')
-      this.hintText.setText('↑/W thrust • ←/→ or A/D rotate • Space spear • T retry • Esc/L level select • P pause • H HUD mode • R new session')
+      this.hintText.setText('↑/W thrust • ←/→ or A/D rotate • Space/Enter spear • T retry • Esc/L level select • P pause • H HUD mode • R new session')
       this.ship.setFillStyle(0xffd889)
       this.velocity.set(0, -8)
       this.ship.rotation = 0
@@ -844,8 +844,8 @@ class EggLanderMissionScene extends Phaser.Scene {
     if (this.bossActive) {
       this.statusText.setText('Landed. Defeat boss with spears, then steal egg')
       this.hintText.setText(this.bonusObjectiveActive
-        ? 'On foot: ←/→ run • Space spear • grab cyan relic • T retry • Esc/L level select • P pause'
-        : 'On foot: ←/→ run • Space throw spear • T retry • Esc/L level select • P pause')
+        ? 'On foot: ←/→ run • Space/Enter spear • grab cyan relic • T retry • Esc/L level select • P pause'
+        : 'On foot: ←/→ run • Space/Enter throw spear • T retry • Esc/L level select • P pause')
     } else {
       this.statusText.setText('Landed. Exit, steal egg, return')
       this.hintText.setText(this.bonusObjectiveActive
@@ -978,7 +978,7 @@ class EggLanderMissionScene extends Phaser.Scene {
         this.playerInvulnerableUntil = this.time.now + invulnerabilityMs
         const maxHp = this.saveData.selectedPowerup === 'shielded-hull' ? 4 : 3
         this.statusText.setText(`Hit! HP ${this.playerHp}/${maxHp}`)
-        this.hintText.setText('Dodge shots + throw spears (Space) • T retry • Esc/L level select • P pause')
+        this.hintText.setText('Dodge shots + throw spears (Space/Enter) • T retry • Esc/L level select • P pause')
         if (this.playerHp <= 0) {
           this.failMission('On-foot defeat')
           return
@@ -2003,7 +2003,7 @@ class EggLanderMissionScene extends Phaser.Scene {
           ? 'Optional: secure cyan relic (+250), defeat boss, then steal egg.'
           : 'Optional: secure cyan relic (+250), then run right to steal egg.'
       } else {
-        objective = this.bossActive ? 'Defeat boss with Space spears, then steal egg.' : 'Run right to steal egg.'
+        objective = this.bossActive ? 'Defeat boss with Space/Enter spears, then steal egg.' : 'Run right to steal egg.'
       }
     }
     if (this.phase === 'on-foot' && this.hasEgg) objective = 'Run back left to board lander with egg.'
@@ -2066,7 +2066,7 @@ class EggLanderMissionScene extends Phaser.Scene {
                 'CONTROLS',
                 '↑/W  Thrust / confirm',
                 '←/→ or A/D  Rotate / run',
-                'Space  Spear throw',
+                'Space/Enter  Spear throw',
                 'T  Quick retry',
                 'Esc/L  Back to level select',
                 'P or Enter/Space  Pause/resume',

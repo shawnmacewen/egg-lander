@@ -16,6 +16,14 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ## Entries
 
+### 2026-03-09 14:50 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: pending (`gdev-0112`; see git history)
+- Summary: Added on-foot spear-throw parity by accepting `Enter` alongside `Space`, and updated objective/hint/controls-overlay copy to advertise `Space/Enter` in boss/combat contexts.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue safe, incremental gameplay QoL/readability improvements that reduce control friction and repeated setup.
+- Blockers: none.
+
 ### 2026-03-09 14:47 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
 - Commit: pending (`gdev-0111`; see git history)

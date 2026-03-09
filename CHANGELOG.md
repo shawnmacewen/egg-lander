@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0112 on-foot spear alias parity (`Enter`)
+
+### Assistant summary (exact)
+Implemented the next highest-impact control-flow parity improvement: on-foot spear throw now accepts `Enter` alongside `Space`, with objective/hint/controls-overlay copy updated for consistency so players can stay hands-on-home-row during boss encounters. Verified with `npm run build`.
+
+### Technical details
+- Updated on-foot input handling so `throwSpear()` triggers on `Enter` in addition to `Space`.
+- Updated on-foot objective and hint copy to advertise `Space/Enter` spear controls (including boss guidance and relic phase messaging).
+- Updated controls overlay in active run phases from `Space` to `Space/Enter` for spear throw parity.
+- Updated task registry with `gdev-0112` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0111 in-run WASD control parity pass
 
 ### Assistant summary (exact)
