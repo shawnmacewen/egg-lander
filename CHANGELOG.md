@@ -1,5 +1,18 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0136 flight-assist focus telemetry
+
+### Assistant summary (exact)
+Implemented the next highest-impact flight-readability polish by adding shared assist focus telemetry (`Focus ...`) to both landing and docking cues, so players can instantly see which control dimension is currently the limiting factor before parsing full metrics. Verified with `npm run build`.
+
+### Technical details
+- Added `getAssistFocusReadout(ratios, labels)` helper in `src/main.ts`.
+- Docking assist now includes `Focus Center/Speed/Angle` based on the worst normalized approach ratio (distance/speed/alignment).
+- Landing assist now includes `Focus Descent/Drift/Angle` based on the worst normalized landing ratio (vertical/horizontal/tilt).
+- Existing cue fields (`Risk`, `Buffer`, metric rows, `ETA`, `Fix`) remain intact; focus is additive prioritization telemetry only.
+- Updated task registry with `gdev-0136` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0135 flight-assist buffer telemetry
 
 ### Assistant summary (exact)

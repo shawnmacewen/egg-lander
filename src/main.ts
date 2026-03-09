@@ -2137,13 +2137,15 @@ class EggLanderMissionScene extends Phaser.Scene {
       ? `${etaSeconds.toFixed(1)}s`
       : '--'
 
-    const bufferReadout = this.getAssistBufferReadout([
+    const dockingRatios = [
       dist / Math.max(level.orbitalDockRadius, 1),
       speed / Math.max(level.orbitalSafeSpeed, 1),
       aligned ? 0 : 1
-    ])
+    ]
+    const bufferReadout = this.getAssistBufferReadout(dockingRatios)
+    const focusReadout = this.getAssistFocusReadout(dockingRatios, ['Center', 'Speed', 'Angle'])
 
-    return `Dock ${riskState} • ${bufferReadout} • D ${Math.round(dist)}/${level.orbitalDockRadius} ${distState} • S ${Math.round(speed)}/${level.orbitalSafeSpeed} ${speedState} • ETA ${etaReadout} • A ${alignState} • Fix: ${correction}`
+    return `Dock ${riskState} • ${bufferReadout} • ${focusReadout} • D ${Math.round(dist)}/${level.orbitalDockRadius} ${distState} • S ${Math.round(speed)}/${level.orbitalSafeSpeed} ${speedState} • ETA ${etaReadout} • A ${alignState} • Fix: ${correction}`
   }
 
   private getLandingAssistCue(level: LevelConfig) {
@@ -2184,13 +2186,15 @@ class EggLanderMissionScene extends Phaser.Scene {
       correction = 'slow descent'
     }
 
-    const bufferReadout = this.getAssistBufferReadout([
+    const landingRatios = [
       vertical / Math.max(verticalLimit, 1),
       horizontal / Math.max(horizontalLimit, 1),
       angleDeg / Math.max(angleLimitDeg, 1)
-    ])
+    ]
+    const bufferReadout = this.getAssistBufferReadout(landingRatios)
+    const focusReadout = this.getAssistFocusReadout(landingRatios, ['Descent', 'Drift', 'Angle'])
 
-    return `Landing ${riskState} • ${bufferReadout} • V ${Math.round(vertical)}/${Math.round(verticalLimit)} ${vState} • H ${Math.round(horizontal)}/${Math.round(horizontalLimit)} ${hState} • A ${Math.round(angleDeg)}°/${Math.round(angleLimitDeg)}° ${aState} • Alt ${altitude}px • ETA ${etaReadout} • Fix: ${correction}`
+    return `Landing ${riskState} • ${bufferReadout} • ${focusReadout} • V ${Math.round(vertical)}/${Math.round(verticalLimit)} ${vState} • H ${Math.round(horizontal)}/${Math.round(horizontalLimit)} ${hState} • A ${Math.round(angleDeg)}°/${Math.round(angleLimitDeg)}° ${aState} • Alt ${altitude}px • ETA ${etaReadout} • Fix: ${correction}`
   }
 
   private getAssistRiskLabel(ratios: number[]) {
@@ -2205,6 +2209,20 @@ class EggLanderMissionScene extends Phaser.Scene {
     const bufferPercent = Math.round(Math.abs(1 - worstRatio) * 100)
     if (worstRatio <= 1) return `Buffer +${bufferPercent}%`
     return `Buffer -${bufferPercent}%`
+  }
+
+  private getAssistFocusReadout(ratios: number[], labels: string[]) {
+    let worstIndex = 0
+    let worstRatio = ratios[0] ?? 0
+    for (let i = 1; i < ratios.length; i += 1) {
+      if (ratios[i] > worstRatio) {
+        worstRatio = ratios[i]
+        worstIndex = i
+      }
+    }
+
+    const focusLabel = labels[worstIndex] ?? 'Control'
+    return `Focus ${focusLabel}`
   }
 
   private getOnFootObjectiveCue(targetX: number, label: string) {

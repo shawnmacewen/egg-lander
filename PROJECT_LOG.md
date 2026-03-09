@@ -16,6 +16,14 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ## Entries
 
+### 2026-03-09 16:50 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: `pending` (`gdev-0136`; see git history)
+- Summary: Added shared assist focus telemetry (`Focus ...`) to landing and docking cues so hint/HUD guidance now surfaces the current limiting control dimension (descent/drift/angle or center/speed/angle) before detailed metrics.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue safe, incremental readability/feel polish focused on landing/docking decision clarity.
+- Blockers: none.
+
 ### 2026-03-09 16:43 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
 - Commit: `pending` (`gdev-0135`; see git history)
