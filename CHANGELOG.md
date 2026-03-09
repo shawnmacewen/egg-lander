@@ -258,3 +258,17 @@ Implemented a mission readability polish pass: added a live phase-progress track
 - Adjusted HUD text layout to fit objective + phase + hint lines cleanly.
 - Updated task registry with `gdev-0013` completion.
 - Build verification: `npm run build` (pass).
+
+## 2026-03-09 — gdev-0014 on-foot damage fairness + hit feedback
+
+### Assistant summary (exact)
+Implemented the next gameplay quality pass: added short post-hit invulnerability frames during on-foot boss combat, visual damage blink feedback on the runner, and HUD invulnerability indicator so damage feels fair and readable under projectile pressure. Verified with a clean production build.
+
+### Technical details
+- Added `playerInvulnerableUntil` timing state for on-foot combat.
+- Applied a ~900ms invulnerability window after taking boss-shot damage to prevent instant multi-hit HP deletion.
+- Added runner tint blink during invulnerability for immediate visual feedback.
+- Updated HUD HP readout to show temporary invulnerability state (`HP X (i)`) during active boss fights.
+- Cleared combat tint/invulnerability state when resetting/re-entering mission phases.
+- Updated task registry with `gdev-0014` completion.
+- Build verification: `npm run build` (pass).

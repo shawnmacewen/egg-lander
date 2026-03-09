@@ -162,6 +162,7 @@ class EggLanderMissionScene extends Phaser.Scene {
   private bossActive = false
   private bossHp = 0
   private playerHp = 3
+  private playerInvulnerableUntil = 0
   private readonly spears: Array<{ obj: Phaser.GameObjects.Rectangle; vx: number; life: number }> = []
   private readonly bossShots: Array<{ obj: Phaser.GameObjects.Ellipse; vx: number; vy: number; life: number }> = []
   private lastSpearAt = 0
@@ -357,6 +358,14 @@ class EggLanderMissionScene extends Phaser.Scene {
     } else if (!this.runner.anims.isPlaying || this.runner.anims.currentAnim?.key === 'runner-run') {
       this.runner.play('runner-idle', true)
     }
+
+    if (this.time.now < this.playerInvulnerableUntil) {
+      const blinkOn = Math.floor(this.time.now / 80) % 2 === 0
+      this.runner.setTint(blinkOn ? 0xff8a8a : 0xffffff)
+    } else {
+      this.runner.clearTint()
+    }
+
     this.updateSpears(dt)
     this.updateBossCombat(dt)
 
@@ -483,6 +492,8 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.bossActive = LEVELS[this.levelIndex].id >= 2
     this.bossHp = this.bossActive ? 3 : 0
     this.playerHp = 3
+    this.playerInvulnerableUntil = 0
+    this.runner.clearTint()
     this.bossBody.setVisible(this.bossActive)
     this.bossEye.setVisible(this.bossActive)
     if (this.bossActive) {
@@ -591,7 +602,13 @@ class EggLanderMissionScene extends Phaser.Scene {
       if (Phaser.Math.Distance.Between(b.obj.x, b.obj.y, this.runner.x, this.runner.y) < 14) {
         b.obj.destroy()
         this.bossShots.splice(i, 1)
+
+        if (this.time.now < this.playerInvulnerableUntil) {
+          continue
+        }
+
         this.playerHp -= 1
+        this.playerInvulnerableUntil = this.time.now + 900
         this.statusText.setText(`Hit! HP ${this.playerHp}/3`)
         this.hintText.setText('Dodge boss shots and throw spears (Space)')
         if (this.playerHp <= 0) {
@@ -637,6 +654,8 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.bossActive = false
     this.bossHp = 0
     this.playerHp = 3
+    this.playerInvulnerableUntil = 0
+    this.runner.clearTint()
     this.bossBody.setVisible(false)
     this.bossEye.setVisible(false)
 
@@ -733,7 +752,9 @@ class EggLanderMissionScene extends Phaser.Scene {
     const level = LEVELS[this.levelIndex]
     const powerup = this.saveData.selectedPowerup ? POWERUPS[this.saveData.selectedPowerup].name : 'None'
 
-    const hpReadout = this.phase === 'on-foot' && this.bossActive ? `${this.playerHp}` : '-'
+    const hpReadout = this.phase === 'on-foot' && this.bossActive
+      ? `${this.playerHp}${this.time.now < this.playerInvulnerableUntil ? ' (i)' : ''}`
+      : '-'
     this.hudText.setText(
       `Score ${this.sessionScore}   Attempts ${this.attempts}   Fuel ${Math.round(this.fuel)}%   HP ${hpReadout}   V ${Math.abs(this.velocity.y).toFixed(1)}   H ${Math.abs(this.velocity.x).toFixed(1)}   PWR ${powerup}`
     )
