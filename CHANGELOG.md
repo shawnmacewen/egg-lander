@@ -1,5 +1,27 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0153 flight-assist aggregate drift telemetry
+
+### Assistant summary (exact)
+Implemented the next highest-impact flight-readability polish by adding shared assist aggregate drift telemetry (`Drift EASING/RISING/HOLD`) to both landing and docking cues, so pilots can quickly see whether total multi-metric pressure is easing or building between frames (not just worst-metric movement). Verified with `npm run build`.
+
+### Technical details
+- Added assist trend memory for average load ratios:
+  - `prevDockingAssistAvgRatio`
+  - `prevLandingAssistAvgRatio`
+- Added `getAssistDriftReadout(currentAvgRatio, prevAvgRatio)` helper in `src/main.ts`.
+- Drift cue classifies aggregate assist-pressure direction:
+  - `Drift EASING` when average multi-metric pressure drops meaningfully.
+  - `Drift RISING` when average multi-metric pressure rises meaningfully.
+  - `Drift HOLD` when change is within a small deadzone or no baseline exists.
+- Injected drift telemetry into both shared assist cues:
+  - `getDockingAssistCue(...)`
+  - `getLandingAssistCue(...)`
+- Reset average-ratio assist baselines in `resetMissionEntities()` to avoid cross-attempt carry-over.
+- Existing risk/window/line/control/vector/buffer/focus/watch/stack/shape/load/bias/trend/delta/stability/pulse/confidence/commit/tempo/fix telemetry remains intact; drift is additive readability guidance only.
+- Updated task registry with `gdev-0153` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0152 flight-assist aggregate load telemetry
 
 ### Assistant summary (exact)

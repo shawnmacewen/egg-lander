@@ -161,3 +161,4 @@
 - `gdev-0150` — Flight-assist pressure-stack telemetry (`Stack SOLO/DUAL/TRIPLE`) for landing and docking multi-limiter load awareness (completed)
 - `gdev-0151` — Flight-assist pressure-shape telemetry (`Shape PINPOINT/SPLIT/EVEN`) for landing and docking limiter-distribution awareness (completed)
 - `gdev-0152` — Flight-assist aggregate load telemetry (`Load LIGHT/MODERATE/HEAVY/SATURATED`) for landing and docking multi-metric pressure awareness (completed)
+- `gdev-0153` — Flight-assist aggregate drift telemetry (`Drift EASING/RISING/HOLD`) for landing and docking multi-metric trend readability (completed)
