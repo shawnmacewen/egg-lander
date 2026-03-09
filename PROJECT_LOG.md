@@ -311,3 +311,11 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 - Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: continue incremental progression/readability passes with small, safe telemetry and UX upgrades.
 - Blockers: none.
+
+### 2026-03-09 08:00 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: pending (`gdev-0031`)
+- Summary: Added per-level clean-clear persistence (save schema v9), level-select clean-rate telemetry (`Clean x/y`), and mission-complete clean-progress callouts for no-hit clears.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue incremental progression/readability passes with safe mastery telemetry and UX feedback improvements.
+- Blockers: none.

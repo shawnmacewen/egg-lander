@@ -494,3 +494,17 @@ Implemented the next safe progression telemetry pass: per-level attempts and cle
 - On mission complete, both per-level attempts and clears increment and persist.
 - Added level-select telemetry: `Record clears/attempts (rate%)` for the selected mission.
 - Updated task registry for `gdev-0028` completion.
+
+## 2026-03-09 — gdev-0031 clean-clear telemetry persistence pass
+
+### Assistant summary (exact)
+Added per-level clean-clear persistence with backward-safe save migration, surfaced clean-rate telemetry in level select, and added mission-complete clean-clear progress callouts when a no-hit clear is achieved. Verified with `npm run build`.
+
+### Technical details
+- Bumped save schema to `v9` and added `cleanLevelClears: number[]` to persisted save data.
+- Added migration/sanitization defaults for legacy saves missing `cleanLevelClears`.
+- On level completion, now tracks a clean clear (levels 2+) when the run finishes without on-foot damage.
+- Updated level-select telemetry with `Clean x/y (rate%)` using per-level clean clears vs clears.
+- Added completion breakdown line showing updated clean-clear progress after clean clears.
+- Updated task registry for `gdev-0031` completion.
+- Build verification: `npm run build` (pass).

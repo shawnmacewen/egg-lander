@@ -39,3 +39,4 @@
 - `gdev-0028` — Per-level attempts/clears persistence + level-select clear-rate telemetry (completed)
 - `gdev-0029` — Persist lifetime best mission-clear streak + level-select/readout telemetry (completed)
 - `gdev-0030` — Lifetime pilot telemetry pass (overall clear rate + fastest-level spotlight in level-select HUD) (completed)
+- `gdev-0031` — Per-level clean-clear persistence + level-select clean-rate telemetry (completed)

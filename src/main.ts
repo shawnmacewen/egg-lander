@@ -48,6 +48,7 @@ type SaveData = {
   bestLevelTimesMs: number[]
   levelAttempts: number[]
   levelClears: number[]
+  cleanLevelClears: number[]
   unlockedPowerups: PowerupId[]
   selectedPowerup: PowerupId | null
 }
@@ -59,7 +60,7 @@ type PowerupMeta = {
   description: string
 }
 
-const SAVE_VERSION = 8
+const SAVE_VERSION = 9
 const SAVE_KEY = 'egg-lander-save'
 
 const LEVELS: LevelConfig[] = [
@@ -223,6 +224,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     bestLevelTimesMs: Array(LEVELS.length).fill(0),
     levelAttempts: Array(LEVELS.length).fill(0),
     levelClears: Array(LEVELS.length).fill(0),
+    cleanLevelClears: Array(LEVELS.length).fill(0),
     unlockedPowerups: [],
     selectedPowerup: null
   }
@@ -875,6 +877,10 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.saveData.totalClears += 1
     this.saveData.levelAttempts[this.levelIndex] = (this.saveData.levelAttempts[this.levelIndex] ?? 0) + 1
     this.saveData.levelClears[this.levelIndex] = (this.saveData.levelClears[this.levelIndex] ?? 0) + 1
+    const isCleanClear = level.id >= 2 && !this.tookDamageThisAttempt
+    if (isCleanClear) {
+      this.saveData.cleanLevelClears[this.levelIndex] = (this.saveData.cleanLevelClears[this.levelIndex] ?? 0) + 1
+    }
     this.saveSave(this.saveData)
 
     const breakdownBits = [
@@ -885,6 +891,7 @@ class EggLanderMissionScene extends Phaser.Scene {
       dockingBonus > 0 ? `+${dockingBonus} dock bonus` : undefined,
       firstTryBonus ? '+100 first-try bonus' : undefined,
       noHitBonus ? '+150 clean-fight bonus' : undefined,
+      isCleanClear ? `clean clears ${this.saveData.cleanLevelClears[this.levelIndex]}/${this.saveData.levelClears[this.levelIndex]}` : undefined,
       streakBonus ? `+${streakBonus} streak bonus (x${this.clearStreak})` : undefined,
       isNewBestStreak ? `new best streak (${previousBestStreak}→${this.clearStreak})` : undefined,
       relicBonus ? '+250 relic bonus' : undefined
@@ -967,7 +974,9 @@ class EggLanderMissionScene extends Phaser.Scene {
     const levelBestTimeMs = this.saveData.bestLevelTimesMs[this.levelIndex] ?? 0
     const levelAttempts = this.saveData.levelAttempts[this.levelIndex] ?? 0
     const levelClears = this.saveData.levelClears[this.levelIndex] ?? 0
+    const levelCleanClears = this.saveData.cleanLevelClears[this.levelIndex] ?? 0
     const levelClearRate = levelAttempts > 0 ? `${Math.round((levelClears / levelAttempts) * 100)}%` : '--'
+    const levelCleanRate = levelClears > 0 ? `${Math.round((levelCleanClears / levelClears) * 100)}%` : '--'
     const totalAttempts = this.saveData.levelAttempts.reduce((sum, value) => sum + (value ?? 0), 0)
     const totalLevelClears = this.saveData.levelClears.reduce((sum, value) => sum + (value ?? 0), 0)
     const lifetimeClearRate = totalAttempts > 0 ? `${Math.round((totalLevelClears / totalAttempts) * 100)}%` : '--'
@@ -981,7 +990,7 @@ class EggLanderMissionScene extends Phaser.Scene {
         })()
       : '--'
     this.levelText.setText(
-      `Level ${level.id}/${LEVELS.length}: ${level.name}   Requires ${required}   Unlocked ${this.saveData.unlockedLevel}/${LEVELS.length}   Best ${this.saveData.bestScore}   Best Streak ${this.saveData.bestStreak}   Best Run ${levelBestScore}   Best Time ${this.formatMs(levelBestTimeMs)}   Best Dock ${levelBestDockGrade}   Record ${levelClears}/${levelAttempts} (${levelClearRate})   Lifetime ${totalLevelClears}/${totalAttempts} (${lifetimeClearRate})   Fastest ${fastestLevelTag}   Perk: ${powerupDescription}`
+      `Level ${level.id}/${LEVELS.length}: ${level.name}   Requires ${required}   Unlocked ${this.saveData.unlockedLevel}/${LEVELS.length}   Best ${this.saveData.bestScore}   Best Streak ${this.saveData.bestStreak}   Best Run ${levelBestScore}   Best Time ${this.formatMs(levelBestTimeMs)}   Best Dock ${levelBestDockGrade}   Record ${levelClears}/${levelAttempts} (${levelClearRate})   Clean ${levelCleanClears}/${levelClears} (${levelCleanRate})   Lifetime ${totalLevelClears}/${totalAttempts} (${lifetimeClearRate})   Fastest ${fastestLevelTag}   Perk: ${powerupDescription}`
     )
 
     let objective = 'Land on planet, grab egg on foot, return, launch, then precision dock in orbit.'
@@ -1080,6 +1089,7 @@ class EggLanderMissionScene extends Phaser.Scene {
       bestLevelTimesMs: Array(LEVELS.length).fill(0),
       levelAttempts: Array(LEVELS.length).fill(0),
       levelClears: Array(LEVELS.length).fill(0),
+      cleanLevelClears: Array(LEVELS.length).fill(0),
       unlockedPowerups: [],
       selectedPowerup: null
     }
@@ -1144,6 +1154,14 @@ class EggLanderMissionScene extends Phaser.Scene {
       return typeof clears === 'number' && Number.isFinite(clears) ? Math.max(0, Math.floor(clears)) : 0
     })
 
+    const cleanLevelClearsRaw = Array.isArray((parsed as { cleanLevelClears?: unknown[] }).cleanLevelClears)
+      ? ((parsed as { cleanLevelClears?: unknown[] }).cleanLevelClears ?? [])
+      : []
+    const cleanLevelClears = Array.from({ length: LEVELS.length }, (_, i) => {
+      const clears = cleanLevelClearsRaw[i]
+      return typeof clears === 'number' && Number.isFinite(clears) ? Math.max(0, Math.floor(clears)) : 0
+    })
+
     return {
       version: SAVE_VERSION,
       unlockedLevel: Phaser.Math.Clamp(Math.floor(parsed.unlockedLevel ?? 1), 1, LEVELS.length),
@@ -1156,6 +1174,7 @@ class EggLanderMissionScene extends Phaser.Scene {
       bestLevelTimesMs,
       levelAttempts,
       levelClears,
+      cleanLevelClears,
       unlockedPowerups,
       selectedPowerup
     }
