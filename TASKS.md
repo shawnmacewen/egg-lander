@@ -122,3 +122,4 @@
 - `gdev-0111` — In-run WASD control parity (`A/D` rotate-run + `W` thrust) with hint/overlay updates (completed)
 - `gdev-0112` — On-foot spear-throw alias parity (`Enter` alongside `Space`) with hint/objective/controls-overlay copy updates (completed)
 - `gdev-0113` — On-foot movement hint parity (`←/→` + `A/D` run guidance alignment across on-foot status hints) (completed)
+- `gdev-0114` — Control-copy parity sweep for post-dock/crash/level-select hints (advertise actual accepted aliases consistently) (completed)

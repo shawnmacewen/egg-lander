@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0114 control-copy parity sweep (post-dock/crash/level-select)
+
+### Assistant summary (exact)
+Implemented the next highest-impact readability polish: cleaned up lingering control-copy mismatches so post-dock, crash-retry, and level-select status text now consistently advertises the full set of accepted key aliases (`↑/N/Enter/Space`, `Esc/L`, and `←/→` parity). Verified with `npm run build`.
+
+### Technical details
+- Updated dock-complete status controls to advertise full next-level aliases: `↑/N/Enter/Space`.
+- Updated crash retry hint copy to advertise `Esc/L level select` (matching universal quick-exit handling).
+- Updated level-select status line to include arrow-key level navigation parity (`←/→`) alongside `L/N` and `W/S`.
+- Updated task registry with `gdev-0114` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0113 on-foot movement hint parity (`←/→` + `A/D`)
 
 ### Assistant summary (exact)

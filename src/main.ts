@@ -1072,7 +1072,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.lastFailReason = reason
     this.crashRetryDueAt = this.time.now + 900
     this.statusText.setText(`Mission failed: ${reason}`)
-    this.hintText.setText('Retrying this level… (T/Enter/Space now • L level select • R new session)')
+    this.hintText.setText('Retrying this level… (T/Enter/Space now • Esc/L level select • R new session)')
     this.saveSave(this.saveData)
 
     this.pendingCrashRetryTimer = this.time.delayedCall(900, () => {
@@ -1165,7 +1165,7 @@ class EggLanderMissionScene extends Phaser.Scene {
       relicBonus ? '+250 relic bonus' : undefined
     ].filter(Boolean)
 
-    this.statusText.setText(`Dock complete! +${gained} (${breakdownBits.join(' • ')})\nT replay level • ↑/N next level • Esc/L level select`)
+    this.statusText.setText(`Dock complete! +${gained} (${breakdownBits.join(' • ')})\nT replay level • ↑/N/Enter/Space next level • Esc/L level select`)
     this.hintText.setText('Mission loop clear: land → run → steal → return → takeoff → dock • T replay • ↑/N/Enter/Space next')
   }
 
@@ -1189,7 +1189,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.ship.rotation = 0
     this.velocity.set(0, 0)
     this.thruster.setVisible(false)
-    this.statusText.setText(`Level Select\nL / N or W / S choose • A / D / Q / E powerup • Z/X/C/V direct loadout • ↑ / Enter / Space launch mission`)
+    this.statusText.setText(`Level Select\n← / → or L / N or W / S choose • A / D / Q / E powerup • Z/X/C/V direct loadout • ↑ / Enter / Space launch mission`)
     this.hintText.setText('R starts a fresh session (keeps saved progression) • H toggles HUD detail')
     this.resetMissionEntities()
     this.updateUi()
