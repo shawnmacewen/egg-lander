@@ -733,3 +733,11 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 - Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: continue safe level-select guidance polish with low-risk readability improvements.
 - Blockers: none.
+
+### 2026-03-09 12:32 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: pending (`gdev-0084`)
+- Summary: Added compact level-select telemetry mode via existing `H` toggle to surface only high-signal launch data while preserving full-detail mode.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue safe readability/UX improvements that reduce cognitive load without changing mission balance.
+- Blockers: none.

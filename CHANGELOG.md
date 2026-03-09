@@ -1340,3 +1340,16 @@ Added a level-select `Stability` telemetry cue that tells players when to spend 
 - Integrated `Stability ...` into the level-select telemetry line immediately after `Priority`.
 - Updated task registry in `TASKS.md` with `gdev-0079` marked completed.
 - Build verification: `npm run build` (pass).
+
+## 2026-03-09 — gdev-0084 compact level-select telemetry mode
+
+### Assistant summary (exact)
+Added a compact level-select telemetry mode tied to the existing `H` HUD toggle so players can quickly read high-signal mission context without the full guidance wall, while keeping full telemetry available on demand. Verified with `npm run build`.
+
+### Technical details
+- Split level-select telemetry output into two variants in `src/main.ts`:
+  - `conciseLevelTelemetry` for compact HUD mode with essential mission-readiness signals.
+  - `fullLevelTelemetry` preserving the complete guidance stack.
+- Switched `levelText` assignment to respect `this.isHudCompact`, so `H` now controls both top HUD density and level-select telemetry density.
+- Updated task registry in `TASKS.md` with `gdev-0084` marked completed.
+- Build verification: `npm run build` (pass).
