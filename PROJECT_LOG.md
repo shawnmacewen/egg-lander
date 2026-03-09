@@ -16,6 +16,14 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ## Entries
 
+### 2026-03-09 16:43 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: `pending` (`gdev-0135`; see git history)
+- Summary: Added shared assist buffer telemetry (`Buffer +N%`/`Buffer -N%`) to landing and docking cues so hint/HUD guidance now shows immediate safety headroom (or over-limit severity) before detailed metric rows.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue safe, incremental readability/feel polish focused on landing/docking decision clarity.
+- Blockers: none.
+
 ### 2026-03-09 16:38 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
 - Commit: `pending` (`gdev-0134`; see git history)

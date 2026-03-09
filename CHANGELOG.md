@@ -1,5 +1,18 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0135 flight-assist buffer telemetry
+
+### Assistant summary (exact)
+Implemented the next highest-impact flight-readability polish by adding shared assist buffer telemetry (`Buffer +N%` / `Buffer -N%`) to both landing and docking cues, so players can see remaining safety headroom (or over-limit severity) at a glance before parsing detailed metrics. Verified with `npm run build`.
+
+### Technical details
+- Added `getAssistBufferReadout(ratios)` helper in `src/main.ts`.
+- Docking assist now includes `Buffer +/-N%` derived from the worst normalized approach ratio (distance/speed/alignment) against safe thresholds.
+- Landing assist now includes `Buffer +/-N%` derived from the worst normalized landing ratio (vertical/horizontal/angle) against current limits (including Shielded Hull bonus).
+- Existing cue fields (`Risk`, metric rows, `ETA`, `Fix`) remain intact; buffer is additive readability telemetry only.
+- Updated task registry with `gdev-0135` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0134 flight-assist risk-band telemetry
 
 ### Assistant summary (exact)

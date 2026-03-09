@@ -2137,7 +2137,13 @@ class EggLanderMissionScene extends Phaser.Scene {
       ? `${etaSeconds.toFixed(1)}s`
       : '--'
 
-    return `Dock ${riskState} • D ${Math.round(dist)}/${level.orbitalDockRadius} ${distState} • S ${Math.round(speed)}/${level.orbitalSafeSpeed} ${speedState} • ETA ${etaReadout} • A ${alignState} • Fix: ${correction}`
+    const bufferReadout = this.getAssistBufferReadout([
+      dist / Math.max(level.orbitalDockRadius, 1),
+      speed / Math.max(level.orbitalSafeSpeed, 1),
+      aligned ? 0 : 1
+    ])
+
+    return `Dock ${riskState} • ${bufferReadout} • D ${Math.round(dist)}/${level.orbitalDockRadius} ${distState} • S ${Math.round(speed)}/${level.orbitalSafeSpeed} ${speedState} • ETA ${etaReadout} • A ${alignState} • Fix: ${correction}`
   }
 
   private getLandingAssistCue(level: LevelConfig) {
@@ -2178,7 +2184,13 @@ class EggLanderMissionScene extends Phaser.Scene {
       correction = 'slow descent'
     }
 
-    return `Landing ${riskState} • V ${Math.round(vertical)}/${Math.round(verticalLimit)} ${vState} • H ${Math.round(horizontal)}/${Math.round(horizontalLimit)} ${hState} • A ${Math.round(angleDeg)}°/${Math.round(angleLimitDeg)}° ${aState} • Alt ${altitude}px • ETA ${etaReadout} • Fix: ${correction}`
+    const bufferReadout = this.getAssistBufferReadout([
+      vertical / Math.max(verticalLimit, 1),
+      horizontal / Math.max(horizontalLimit, 1),
+      angleDeg / Math.max(angleLimitDeg, 1)
+    ])
+
+    return `Landing ${riskState} • ${bufferReadout} • V ${Math.round(vertical)}/${Math.round(verticalLimit)} ${vState} • H ${Math.round(horizontal)}/${Math.round(horizontalLimit)} ${hState} • A ${Math.round(angleDeg)}°/${Math.round(angleLimitDeg)}° ${aState} • Alt ${altitude}px • ETA ${etaReadout} • Fix: ${correction}`
   }
 
   private getAssistRiskLabel(ratios: number[]) {
@@ -2186,6 +2198,13 @@ class EggLanderMissionScene extends Phaser.Scene {
     if (worstRatio <= 0.75) return 'Risk SAFE'
     if (worstRatio <= 1) return 'Risk CAUTION'
     return 'Risk DANGER'
+  }
+
+  private getAssistBufferReadout(ratios: number[]) {
+    const worstRatio = ratios.reduce((max, ratio) => Math.max(max, ratio), 0)
+    const bufferPercent = Math.round(Math.abs(1 - worstRatio) * 100)
+    if (worstRatio <= 1) return `Buffer +${bufferPercent}%`
+    return `Buffer -${bufferPercent}%`
   }
 
   private getOnFootObjectiveCue(targetX: number, label: string) {
