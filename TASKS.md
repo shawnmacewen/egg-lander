@@ -71,3 +71,4 @@
 - `gdev-0060` — Level-select mission execution telemetry (`Execute ...` immediate rep plan from commitment state) (completed)
 - `gdev-0061` — Level-select mission cadence telemetry (`Cadence ...` run-tempo cue from commitment state) (completed)
 - `gdev-0062` — Level-select mission stop-rule telemetry (`Stop Rule ...` anti-tilt cutoff cue from commitment state) (completed)
+- `gdev-0063` — Level-select mission reset-cue telemetry (`Reset Cue ...` post-stop relaunch protocol from commitment state) (completed)

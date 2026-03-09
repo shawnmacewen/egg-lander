@@ -1,5 +1,23 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0063 mission reset-cue telemetry
+
+### Assistant summary (exact)
+Implemented the next high-impact level-select decision pass: added `Reset Cue ...` telemetry that tells players exactly how to relaunch after a stop condition (pause/bank/fundamentals/composure) based on commitment state, reducing tilt loops after failed reps. Verified with `npm run build`.
+
+### Technical details
+- Added derived `missionResetReadout` in `updateUi()` with no save-schema changes.
+- Reset-cue guidance branches from existing progression + commitment signals:
+  - pre-attempt → `Reset Cue None (complete seed run first)`
+  - attempts/no clears → `Reset Cue 30s pause, then replay safe first-clear route`
+  - `Commit Push` → `Reset Cue After stop, bank one clean rep before next push`
+  - `Commit Bank` → `Reset Cue 20s breath reset, then keep same clean line`
+  - `Commit Recover` → `Reset Cue Drop aggression one notch; rebuild fundamentals`
+  - `Commit Hold` → `Reset Cue Full composure reset before relaunching`
+- Extended level-select telemetry line to include `Reset Cue ...` immediately after stop-rule guidance.
+- Updated task registry with `gdev-0063` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0062 mission stop-rule telemetry
 
 ### Assistant summary (exact)
