@@ -329,3 +329,16 @@ Implemented the next highest-impact progression pass by making all currently unl
 - Updated HUD fuel display from percent to explicit `current/max` for readability.
 - Updated task registry with `gdev-0018` completion.
 - Build verification: `npm run build` (pass).
+
+## 2026-03-09 — gdev-0019 orbital docking grade + precision bonus scoring
+
+### Assistant summary (exact)
+Implemented the next highest-impact scoring/readability pass: successful orbital docks now award a visible letter grade (S/A/B/C) plus a precision bonus based on docking distance and approach speed, and the post-dock summary/HUD now surfaces that grade for clearer performance feedback. Verified with a clean production build.
+
+### Technical details
+- Updated docking completion path to pass live docking metrics into score resolution.
+- Added weighted precision scoring (distance + speed) with up to +120 docking bonus.
+- Added dock letter-grade thresholds and persistent per-clear `lastDockGrade` HUD readout during level-complete state.
+- Updated completion status text with score breakdown (`grade`, `dock bonus`, optional relic bonus).
+- Updated task registry with `gdev-0019` completion.
+- Build verification: `npm run build` (pass).

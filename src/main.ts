@@ -193,6 +193,7 @@ class EggLanderMissionScene extends Phaser.Scene {
   private bossTelegraph!: Phaser.GameObjects.Ellipse
   private lastSpearAt = 0
   private lastBossShotAt = 0
+  private lastDockGrade = '-'
 
   private readonly rotationSpeed = 2.75
 
@@ -490,7 +491,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     )
 
     if (dist <= level.orbitalDockRadius && speed <= level.orbitalSafeSpeed && aligned) {
-      this.completeLevel()
+      this.completeLevel(dist, speed)
     } else if (dist <= level.orbitalDockRadius && speed > level.orbitalSafeSpeed * 1.6) {
       this.failMission('Docking impact too fast')
     }
@@ -690,6 +691,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     }
 
     this.phase = 'planet-brief'
+    this.lastDockGrade = '-'
     this.planetLayer.setVisible(true)
     this.orbitalLayer.setVisible(false)
     this.resetMissionEntities()
@@ -754,7 +756,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     })
   }
 
-  private completeLevel() {
+  private completeLevel(dockDist: number, dockSpeed: number) {
     const level = LEVELS[this.levelIndex]
     this.phase = 'level-complete'
     this.attempts += 1
@@ -762,8 +764,15 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.dockingApproachLine.setVisible(false)
     this.dockingVelocityLine.setVisible(false)
 
-    const bonus = this.bonusObjectiveCollected ? 250 : 0
-    const gained = level.completionScore + Math.round(this.fuel * 0.5) + bonus
+    const relicBonus = this.bonusObjectiveCollected ? 250 : 0
+    const distanceScore = Phaser.Math.Clamp(1 - dockDist / level.orbitalDockRadius, 0, 1)
+    const speedScore = Phaser.Math.Clamp(1 - dockSpeed / level.orbitalSafeSpeed, 0, 1)
+    const dockingPrecision = distanceScore * 0.6 + speedScore * 0.4
+    const dockingBonus = Math.round(dockingPrecision * 120)
+    const dockingGrade = dockingPrecision >= 0.86 ? 'S' : dockingPrecision >= 0.68 ? 'A' : dockingPrecision >= 0.5 ? 'B' : 'C'
+    this.lastDockGrade = dockingGrade
+
+    const gained = level.completionScore + Math.round(this.fuel * 0.5) + relicBonus + dockingBonus
     this.sessionScore += gained
 
     const levelNumber = this.levelIndex + 1
@@ -775,7 +784,13 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.saveData.bestScore = Math.max(this.saveData.bestScore, this.sessionScore)
     this.saveSave(this.saveData)
 
-    this.statusText.setText(`Dock complete! +${gained}${bonus ? ' (includes +250 relic bonus)' : ''}\nN next level • L level select`)
+    const breakdownBits = [
+      `grade ${dockingGrade}`,
+      dockingBonus > 0 ? `+${dockingBonus} dock bonus` : undefined,
+      relicBonus ? '+250 relic bonus' : undefined
+    ].filter(Boolean)
+
+    this.statusText.setText(`Dock complete! +${gained} (${breakdownBits.join(' • ')})\nN next level • L level select`)
     this.hintText.setText('Mission loop clear: land → run → steal → return → takeoff → dock')
   }
 
@@ -833,7 +848,9 @@ class EggLanderMissionScene extends Phaser.Scene {
     const dockingSpeed = this.velocity.length()
     const dockReadout = this.phase === 'orbital-docking'
       ? `${Math.round(dockingDist)}/${level.orbitalDockRadius} @ ${Math.round(dockingSpeed)}/${level.orbitalSafeSpeed}`
-      : '-'
+      : this.phase === 'level-complete'
+        ? `grade ${this.lastDockGrade}`
+        : '-'
     this.hudText.setText(
       `Score ${this.sessionScore}   Attempts ${this.attempts}   Fuel ${Math.round(this.fuel)}/${this.maxFuel}   HP ${hpReadout}   Boss ${bossReadout}   BossShot ${bossShotReadout}   Spear ${spearReadout}   Dock ${dockReadout}   V ${Math.abs(this.velocity.y).toFixed(1)}   H ${Math.abs(this.velocity.x).toFixed(1)}   PWR ${powerup}`
     )
