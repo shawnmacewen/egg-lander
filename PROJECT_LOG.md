@@ -16,6 +16,14 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ## Entries
 
+### 2026-03-09 09:54 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: pending (`gdev-0054`)
+- Summary: Added level-select mission call telemetry (`Call Seed/Breakthrough/Push/Prime/Recover/Probe/Stabilize`) so existing pressure/readiness/window signals resolve into one explicit next-run action cue.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue incremental, low-risk level-select/readability polish while preserving save compatibility.
+- Blockers: none.
+
 ### 2026-03-09 09:50 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
 - Commit: `af4969b` (`gdev-0053`)

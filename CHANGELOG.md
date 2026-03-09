@@ -1,5 +1,23 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0054 mission call telemetry
+
+### Assistant summary (exact)
+Implemented the next high-impact level-select guidance pass: added `Call ...` telemetry that turns the current readiness/window state into a single immediate action cue (`Seed/Breakthrough/Push/Prime/Recover/Probe/Stabilize`) so players know exactly what kind of run to take next. Verified with `npm run build`.
+
+### Technical details
+- Added derived `missionCallReadout` in `updateUi()` with no save-schema changes.
+- Call guidance logic branches safely from existing telemetry:
+  - no attempts → `Call Seed`
+  - attempts but no clears → `Call Breakthrough`
+  - `Window Open` → `Call Push`
+  - `Window Near` → `Call Prime`
+  - high/extreme pressure → `Call Recover`
+  - otherwise uses readiness to choose `Call Probe` vs `Call Stabilize`.
+- Extended level-select telemetry line to include `Call ...` directly after window guidance.
+- Updated task registry with `gdev-0054` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0053 mission push-window telemetry
 
 ### Assistant summary (exact)
