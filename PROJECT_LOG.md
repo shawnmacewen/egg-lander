@@ -18,7 +18,7 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ### 2026-03-09 18:18 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
-- Commit: `pending` (`gdev-0154`; see git history)
+- Commit: `ddf0afd` (`gdev-0154`)
 - Summary: Added shared flight-assist pressure spread telemetry (`Spread N%`) to landing and docking cues so pilots can read limiter-pressure separation magnitude (how concentrated vs distributed pressure is) alongside existing shape labels.
 - Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: continue safe in-run readability polish that improves pilot decision quality without changing mission balance.
