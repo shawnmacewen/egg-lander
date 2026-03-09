@@ -1,5 +1,26 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0049 mission-readiness checklist telemetry
+
+### Assistant summary (exact)
+Implemented the next safe high-impact readability pass: level-select telemetry now includes a compact `Readiness x/3` checklist that rolls consistency pressure, pace intent, and score intent into one at-a-glance push/stabilize signal. Verified with `npm run build`.
+
+### Technical details
+- Added derived `missionReadinessReadout` in `updateUi()` with no save-schema changes.
+- Readiness checklist aggregates three existing guidance gates:
+  - consistency gate: at least one clear and non-extreme pressure (`Low`/`Medium`)
+  - pace gate: pace target is not currently in safer/stabilize mode
+  - score gate: score target is not currently in safe/stabilize mode
+- Emits actionable cue bands from the checklist total:
+  - `0/3 rebuild fundamentals`
+  - `1/3 stabilize then push`
+  - `2/3 strong push window`
+  - `3/3 full-send PB window`
+  - pre-attempt state falls back to `seed first clear`.
+- Extended level-select telemetry line to include `Readiness ...` after pace/score targets and before coach guidance.
+- Updated task registry with `gdev-0049` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0048 score-target telemetry
 
 ### Assistant summary (exact)

@@ -57,3 +57,4 @@
 - `gdev-0046` — Level-select mission-plan telemetry (stabilize/practice/PB push call based on confidence + pressure + weakest metric) (completed)
 - `gdev-0047` — Level-select pace-target telemetry (`Pace Target` time cue from PB + confidence/pressure) (completed)
 - `gdev-0048` — Level-select score-target telemetry (`Score Target` cue from per-level run PB + confidence/pressure) (completed)
+- `gdev-0049` — Level-select mission-readiness checklist telemetry (`Readiness x/3` with consistency/pace/score gates) (completed)
