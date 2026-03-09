@@ -18,7 +18,7 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ### 2026-03-09 17:35 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
-- Commit: `cd17cf0` (`gdev-0145`)
+- Commit: `297bd8b` (`gdev-0145`)
 - Summary: Added shared assist pulse telemetry (`Pulse CALM/ACTIVE/SWING/HOT/SPIKE`) to landing and docking cues so hint/HUD guidance now surfaces control-intensity pressure alongside existing trend/stability/confidence metrics.
 - Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: continue safe in-run readability polish that improves pilot decision quality without changing mission balance.
