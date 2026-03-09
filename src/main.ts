@@ -2107,8 +2107,15 @@ class EggLanderMissionScene extends Phaser.Scene {
   private getOnFootObjectiveCue(targetX: number, label: string) {
     const delta = Math.round(targetX - this.runner.x)
     if (Math.abs(delta) <= 8) return `${label}: here`
+
     const direction = delta > 0 ? '→' : '←'
-    return `${label}: ${Math.abs(delta)}px ${direction}`
+    const camera = this.cameras.main
+    const view = camera.worldView
+    const offscreenPadding = 36
+    const isOffscreen = targetX < view.left + offscreenPadding || targetX > view.right - offscreenPadding
+    const offscreenTag = isOffscreen ? ' off-screen' : ''
+
+    return `${label}: ${Math.abs(delta)}px ${direction}${offscreenTag}`
   }
 
   private formatMs(ms: number): string {

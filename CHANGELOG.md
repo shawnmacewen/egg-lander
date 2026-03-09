@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0126 on-foot objective off-screen tagging cue
+
+### Assistant summary (exact)
+Implemented the next highest-impact traversal-readability polish by tagging on-foot objective cues as `off-screen` whenever the current target (egg/lander) is outside the active camera view, so players instantly know when to keep running instead of scanning the visible frame. Verified with `npm run build`.
+
+### Technical details
+- Updated `getOnFootObjectiveCue()` in `src/main.ts` to inspect `this.cameras.main.worldView`.
+- Added off-screen detection padding and appended `off-screen` tag to objective telemetry when target X lies outside the current viewport bounds.
+- Preserved existing near-target collapse behavior (`Label: here`) and directional/distance readout (`Npx ←/→`).
+- Updated task registry with `gdev-0126` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0125 on-foot objective distance cue telemetry
 
 ### Assistant summary (exact)

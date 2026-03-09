@@ -16,6 +16,14 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ## Entries
 
+### 2026-03-09 15:58 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: `pending` (`gdev-0126`; see git history)
+- Summary: Added on-foot objective off-screen tagging so egg/lander cue telemetry now appends `off-screen` whenever the target is outside the active camera view, reducing hesitation during widened-layout traversal.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue safe, incremental readability/feel polish (camera and traversal cues) without changing mission balance.
+- Blockers: none.
+
 ### 2026-03-09 15:55 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
 - Commit: `9024b0b` (`gdev-0125`)
