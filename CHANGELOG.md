@@ -1,5 +1,23 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0078 mission priority telemetry
+
+### Assistant summary (exact)
+Implemented the next high-impact level-select guidance pass: added `Priority ...` telemetry that compresses the current run posture into one highest-impact next action (seed/first-clear/recover/push/bank/hold), so players can act immediately without scanning the full guidance stack. Verified with `npm run build`.
+
+### Technical details
+- Added derived `missionPriorityReadout` in `updateUi()` with no save-schema changes.
+- Priority guidance branches from existing progression + commitment/window signals:
+  - pre-attempt → `Priority Seed one clean baseline clear to unlock real guidance`
+  - attempts/no clears → `Priority Secure first clear on safest route (score is secondary)`
+  - recover posture → `Priority Lower pressure one band before any push attempts`
+  - push posture + open window → `Priority Take exactly one disciplined PB shot this block`
+  - bank posture → `Priority Stack two clean banks and protect quality`
+  - hold/other posture → `Priority Hold composure and finish one stable rep`
+- Extended level-select telemetry line to include `Priority ...` immediately after `No-Go ...` guidance.
+- Updated task registry with `gdev-0078` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0077 mission no-go telemetry
 
 ### Assistant summary (exact)

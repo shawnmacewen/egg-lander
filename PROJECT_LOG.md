@@ -16,6 +16,14 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ## Entries
 
+### 2026-03-09 12:00 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: pending (`gdev-0078`; see git history)
+- Summary: Added level-select `Priority` telemetry that surfaces one highest-impact next action cue from current run posture (seed/first-clear/recover/push/bank/hold) to reduce pre-launch decision overload.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue safe level-select guidance polish with low-risk readability improvements.
+- Blockers: none.
+
 ### 2026-03-09 11:53 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
 - Commit: pending (`gdev-0077`; see git history)
