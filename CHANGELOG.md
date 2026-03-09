@@ -1,5 +1,28 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0157 flight-assist reserve-drift telemetry
+
+### Assistant summary (exact)
+Implemented the next highest-impact flight-readability polish by adding shared reserve-drift telemetry (`Reserve Drift RISING/FALLING/HOLD`) to both landing and docking cues, so pilots can see whether secondary-metric headroom is opening or collapsing between frames while managing the active limiter. Verified with `npm run build`.
+
+### Technical details
+- Added shared reserve-ratio helper (`getAssistReserveRatio`) to derive second-worst assist pressure in both landing and docking contexts.
+- Added `getAssistReserveTrendReadout(currentReserveRatio, prevReserveRatio)` helper in `src/main.ts`.
+- Reserve-drift cue behavior:
+  - `Reserve Drift RISING` when secondary headroom is improving.
+  - `Reserve Drift FALLING` when secondary headroom is shrinking.
+  - `Reserve Drift HOLD` when movement is minimal or no prior baseline exists.
+- Added reserve-ratio trend memory:
+  - `prevDockingAssistReserveRatio`
+  - `prevLandingAssistReserveRatio`
+- Reset reserve-ratio baselines in `resetMissionEntities()` to avoid cross-attempt carry-over.
+- Injected reserve-drift telemetry into both shared assist cues:
+  - `getDockingAssistCue(...)`
+  - `getLandingAssistCue(...)`
+- Existing assist telemetry stack remains intact; reserve-drift is additive readability guidance only.
+- Updated task registry with `gdev-0157` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0156 flight-assist reserve telemetry
 
 ### Assistant summary (exact)

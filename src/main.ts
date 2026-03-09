@@ -306,6 +306,8 @@ class EggLanderMissionScene extends Phaser.Scene {
   private prevLandingAssistWorstRatio: number | null = null
   private prevDockingAssistAvgRatio: number | null = null
   private prevLandingAssistAvgRatio: number | null = null
+  private prevDockingAssistReserveRatio: number | null = null
+  private prevLandingAssistReserveRatio: number | null = null
 
   private readonly rotationSpeed = 2.75
 
@@ -1087,6 +1089,8 @@ class EggLanderMissionScene extends Phaser.Scene {
     this.prevLandingAssistWorstRatio = null
     this.prevDockingAssistAvgRatio = null
     this.prevLandingAssistAvgRatio = null
+    this.prevDockingAssistReserveRatio = null
+    this.prevLandingAssistReserveRatio = null
   }
 
   private failMission(reason: string) {
@@ -2159,6 +2163,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     const loadReadout = this.getAssistLoadReadout(dockingRatios)
     const ceilingReadout = this.getAssistCeilingReadout(dockingRatios)
     const reserveReadout = this.getAssistReserveReadout(dockingRatios)
+    const reserveRatio = this.getAssistReserveRatio(dockingRatios)
     const biasReadout = this.getAssistBiasReadout([
       (this.dockingTarget.x - this.ship.x) / Math.max(level.orbitalDockRadius, 1)
     ])
@@ -2176,10 +2181,12 @@ class EggLanderMissionScene extends Phaser.Scene {
     const controlReadout = this.getAssistControlReadout(dockingWorstRatio, this.prevDockingAssistWorstRatio)
     const vectorReadout = this.getAssistVectorReadout(dockingWorstRatio, this.prevDockingAssistWorstRatio)
     const driftReadout = this.getAssistDriftReadout(dockingAvgRatio, this.prevDockingAssistAvgRatio)
+    const reserveTrendReadout = this.getAssistReserveTrendReadout(reserveRatio, this.prevDockingAssistReserveRatio)
     this.prevDockingAssistWorstRatio = dockingWorstRatio
     this.prevDockingAssistAvgRatio = dockingAvgRatio
+    this.prevDockingAssistReserveRatio = reserveRatio
 
-    return `Dock ${riskState} • ${windowReadout} • ${lineReadout} • ${controlReadout} • ${vectorReadout} • ${bufferReadout} • ${focusReadout} • ${watchReadout} • ${stackReadout} • ${shapeReadout} • ${spreadReadout} • ${loadReadout} • ${ceilingReadout} • ${reserveReadout} • ${driftReadout} • ${biasReadout} • ${trendReadout} • ${deltaReadout} • ${stabilityReadout} • ${pulseReadout} • ${confidenceReadout} • ${commitReadout} • ${tempoReadout} • D ${Math.round(dist)}/${level.orbitalDockRadius} ${distState} • S ${Math.round(speed)}/${level.orbitalSafeSpeed} ${speedState} • ETA ${etaReadout} • A ${alignState} • Fix: ${correction}`
+    return `Dock ${riskState} • ${windowReadout} • ${lineReadout} • ${controlReadout} • ${vectorReadout} • ${bufferReadout} • ${focusReadout} • ${watchReadout} • ${stackReadout} • ${shapeReadout} • ${spreadReadout} • ${loadReadout} • ${ceilingReadout} • ${reserveReadout} • ${reserveTrendReadout} • ${driftReadout} • ${biasReadout} • ${trendReadout} • ${deltaReadout} • ${stabilityReadout} • ${pulseReadout} • ${confidenceReadout} • ${commitReadout} • ${tempoReadout} • D ${Math.round(dist)}/${level.orbitalDockRadius} ${distState} • S ${Math.round(speed)}/${level.orbitalSafeSpeed} ${speedState} • ETA ${etaReadout} • A ${alignState} • Fix: ${correction}`
   }
 
   private getLandingAssistCue(level: LevelConfig) {
@@ -2234,6 +2241,7 @@ class EggLanderMissionScene extends Phaser.Scene {
     const loadReadout = this.getAssistLoadReadout(landingRatios)
     const ceilingReadout = this.getAssistCeilingReadout(landingRatios)
     const reserveReadout = this.getAssistReserveReadout(landingRatios)
+    const reserveRatio = this.getAssistReserveRatio(landingRatios)
     const biasReadout = this.getAssistBiasReadout([
       -this.velocity.x / Math.max(horizontalLimit, 1),
       -Phaser.Math.Angle.Wrap(this.ship.rotation) / Math.max(level.safeAngle * shieldBonus, 0.01)
@@ -2252,10 +2260,12 @@ class EggLanderMissionScene extends Phaser.Scene {
     const controlReadout = this.getAssistControlReadout(landingWorstRatio, this.prevLandingAssistWorstRatio)
     const vectorReadout = this.getAssistVectorReadout(landingWorstRatio, this.prevLandingAssistWorstRatio)
     const driftReadout = this.getAssistDriftReadout(landingAvgRatio, this.prevLandingAssistAvgRatio)
+    const reserveTrendReadout = this.getAssistReserveTrendReadout(reserveRatio, this.prevLandingAssistReserveRatio)
     this.prevLandingAssistWorstRatio = landingWorstRatio
     this.prevLandingAssistAvgRatio = landingAvgRatio
+    this.prevLandingAssistReserveRatio = reserveRatio
 
-    return `Landing ${riskState} • ${windowReadout} • ${lineReadout} • ${controlReadout} • ${vectorReadout} • ${bufferReadout} • ${focusReadout} • ${watchReadout} • ${stackReadout} • ${shapeReadout} • ${spreadReadout} • ${loadReadout} • ${ceilingReadout} • ${reserveReadout} • ${driftReadout} • ${biasReadout} • ${trendReadout} • ${deltaReadout} • ${stabilityReadout} • ${pulseReadout} • ${confidenceReadout} • ${commitReadout} • ${tempoReadout} • V ${Math.round(vertical)}/${Math.round(verticalLimit)} ${vState} • H ${Math.round(horizontal)}/${Math.round(horizontalLimit)} ${hState} • A ${Math.round(angleDeg)}°/${Math.round(angleLimitDeg)}° ${aState} • Alt ${altitude}px • ETA ${etaReadout} • Fix: ${correction}`
+    return `Landing ${riskState} • ${windowReadout} • ${lineReadout} • ${controlReadout} • ${vectorReadout} • ${bufferReadout} • ${focusReadout} • ${watchReadout} • ${stackReadout} • ${shapeReadout} • ${spreadReadout} • ${loadReadout} • ${ceilingReadout} • ${reserveReadout} • ${reserveTrendReadout} • ${driftReadout} • ${biasReadout} • ${trendReadout} • ${deltaReadout} • ${stabilityReadout} • ${pulseReadout} • ${confidenceReadout} • ${commitReadout} • ${tempoReadout} • V ${Math.round(vertical)}/${Math.round(verticalLimit)} ${vState} • H ${Math.round(horizontal)}/${Math.round(horizontalLimit)} ${hState} • A ${Math.round(angleDeg)}°/${Math.round(angleLimitDeg)}° ${aState} • Alt ${altitude}px • ETA ${etaReadout} • Fix: ${correction}`
   }
 
   private getAssistRiskLabel(ratios: number[]) {
@@ -2354,13 +2364,28 @@ class EggLanderMissionScene extends Phaser.Scene {
     return `Ceiling ${Math.round(worstRatio * 100)}%`
   }
 
-  private getAssistReserveReadout(ratios: number[]) {
-    if (ratios.length < 2) return 'Reserve --'
+  private getAssistReserveRatio(ratios: number[]) {
+    if (ratios.length < 2) return null
 
     const sorted = [...ratios].sort((a, b) => b - a)
-    const secondWorstRatio = sorted[1] ?? 0
-    const reservePercent = Math.max(0, Math.round((1 - secondWorstRatio) * 100))
+    return sorted[1] ?? null
+  }
+
+  private getAssistReserveReadout(ratios: number[]) {
+    const reserveRatio = this.getAssistReserveRatio(ratios)
+    if (reserveRatio === null) return 'Reserve --'
+
+    const reservePercent = Math.max(0, Math.round((1 - reserveRatio) * 100))
     return `Reserve ${reservePercent}%`
+  }
+
+  private getAssistReserveTrendReadout(currentReserveRatio: number | null, prevReserveRatio: number | null) {
+    if (currentReserveRatio === null || prevReserveRatio === null) return 'Reserve Drift HOLD'
+
+    const delta = currentReserveRatio - prevReserveRatio
+    if (delta <= -0.03) return 'Reserve Drift RISING'
+    if (delta >= 0.03) return 'Reserve Drift FALLING'
+    return 'Reserve Drift HOLD'
   }
 
   private getAssistSpreadReadout(ratios: number[]) {

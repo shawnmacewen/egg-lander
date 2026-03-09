@@ -165,3 +165,4 @@
 - `gdev-0154` — Flight-assist pressure spread telemetry (`Spread N%`) for landing and docking limiter-distribution magnitude readability (completed)
 - `gdev-0155` — Flight-assist threshold occupancy telemetry (`Ceiling N%`) for landing and docking worst-metric limit-fill readability (completed)
 - `gdev-0156` — Flight-assist reserve telemetry (`Reserve N%`) for landing and docking secondary-metric headroom readability (completed)
+- `gdev-0157` — Flight-assist reserve-drift telemetry (`Reserve Drift RISING/FALLING/HOLD`) for landing and docking secondary-headroom trend readability (completed)
