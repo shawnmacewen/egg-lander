@@ -18,7 +18,7 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ### 2026-03-09 13:09 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
-- Commit: `3552347` (`gdev-0092`)
+- Commit: pending (`gdev-0092`; see git history)
 - Summary: Added level-select alternate loadout-cycle hotkeys (`Q/E`) alongside `A/D`, reducing pre-launch loadout friction across layouts while preserving existing controls.
 - Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
 - Next: continue safe, incremental gameplay QoL/readability improvements.
