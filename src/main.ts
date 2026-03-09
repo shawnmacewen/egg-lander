@@ -474,6 +474,12 @@ class EggLanderMissionScene extends Phaser.Scene {
       return
     }
 
+    if (this.isPaused && (Phaser.Input.Keyboard.JustDown(this.keyEnter) || Phaser.Input.Keyboard.JustDown(this.keySpace)) && this.canTogglePause()) {
+      this.togglePause()
+      this.updateUi()
+      return
+    }
+
     if (Phaser.Input.Keyboard.JustDown(this.keyP) && this.canTogglePause()) {
       this.togglePause()
     }
@@ -563,7 +569,7 @@ class EggLanderMissionScene extends Phaser.Scene {
       this.pauseStatusBackup = this.statusText.text
       this.pauseHintBackup = this.hintText.text
       this.statusText.setText('Paused')
-      this.hintText.setText('Press P to resume • T retry • Esc level select • H HUD mode • R new session')
+      this.hintText.setText('Press P / Enter / Space to resume • T retry • Esc level select • H HUD mode • R new session')
       this.anims.pauseAll()
       return
     }
@@ -1977,7 +1983,7 @@ class EggLanderMissionScene extends Phaser.Scene {
           'Space  Spear throw',
           'T  Quick retry',
           'Esc/L  Back to level select',
-          'P  Pause/resume',
+          'P or Enter/Space  Pause/resume',
           'H  HUD detail',
           '/  Hide this panel',
           'R  New session'

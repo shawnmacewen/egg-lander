@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0101 pause resume Enter/Space aliases
+
+### Assistant summary (exact)
+Implemented the next high-impact control-flow polish: while paused, `Enter` and `Space` now resume gameplay alongside `P`, with pause hint text and controls-overlay copy updated for parity so quick-action keys stay consistent across crash/launch/pause loops. Verified with `npm run build`.
+
+### Technical details
+- Added paused-state resume handling for `Enter`/`Space` (in addition to `P`) with an early return so resume does not trigger same-frame phase actions.
+- Updated pause hint copy to advertise `P / Enter / Space` resume controls.
+- Updated controls overlay entry to show `P or Enter/Space  Pause/resume`.
+- Updated task registry with `gdev-0101` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0100 mission-brief launch hint alias parity
 
 ### Assistant summary (exact)

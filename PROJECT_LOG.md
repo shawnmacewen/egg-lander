@@ -16,6 +16,14 @@ Purpose: preserve durable context for Egg Lander so progress does not get lost a
 
 ## Entries
 
+### 2026-03-09 13:56 UTC
+- Branch: `feat/gdev-0001-phaser-scaffold`
+- Commit: pending (`gdev-0101`; see git history)
+- Summary: Added pause-state resume aliases (`Enter`/`Space`) alongside `P`, plus pause/control-overlay hint parity updates so quick-action keys remain consistent across loops.
+- Files: `src/main.ts`, `TASKS.md`, `CHANGELOG.md`, `PROJECT_LOG.md`.
+- Next: continue safe, incremental gameplay QoL/readability improvements that reduce control friction and repeated setup.
+- Blockers: none.
+
 ### 2026-03-09 13:49 UTC
 - Branch: `feat/gdev-0001-phaser-scaffold`
 - Commit: `b056ad4` (`gdev-0100`)
