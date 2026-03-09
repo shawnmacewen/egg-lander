@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## 2026-03-09 — gdev-0133 planet-landing closure ETA telemetry
+
+### Assistant summary (exact)
+Implemented the next highest-impact landing-readability polish by extending the shared landing assist cue with live touchdown ETA telemetry (`ETA Ns`) derived from current descent rate and altitude, so players can better time final throttle corrections before pad contact. Verified with `npm run build`.
+
+### Technical details
+- Updated `getLandingAssistCue(level)` in `src/main.ts`.
+- Added `ETA` readout for landing assist based on current altitude and downward vertical speed:
+  - finite ETA when descending fast enough for meaningful estimate
+  - `ETA --` when hovering/ascending (or descent too slow for stable estimate).
+- Inserted ETA into both hint/HUD landing cue text via existing shared assist formatter.
+- Updated task registry with `gdev-0133` completion.
+- Build verification: `npm run build` (pass).
+
 ## 2026-03-09 — gdev-0132 orbital docking closure ETA telemetry
 
 ### Assistant summary (exact)

@@ -2152,6 +2152,9 @@ class EggLanderMissionScene extends Phaser.Scene {
     const overV = vertical > verticalLimit
     const overH = horizontal > horizontalLimit
     const overA = angleDeg > angleLimitDeg
+    const descentSpeed = this.velocity.y
+    const etaToTouchdown = descentSpeed > 5 ? altitude / descentSpeed : Infinity
+    const etaReadout = Number.isFinite(etaToTouchdown) ? `${etaToTouchdown.toFixed(1)}s` : '--'
 
     let correction = 'ready'
     if (overA) {
@@ -2165,7 +2168,7 @@ class EggLanderMissionScene extends Phaser.Scene {
       correction = 'slow descent'
     }
 
-    return `Landing V ${Math.round(vertical)}/${Math.round(verticalLimit)} ${vState} • H ${Math.round(horizontal)}/${Math.round(horizontalLimit)} ${hState} • A ${Math.round(angleDeg)}°/${Math.round(angleLimitDeg)}° ${aState} • Alt ${altitude}px • Fix: ${correction}`
+    return `Landing V ${Math.round(vertical)}/${Math.round(verticalLimit)} ${vState} • H ${Math.round(horizontal)}/${Math.round(horizontalLimit)} ${hState} • A ${Math.round(angleDeg)}°/${Math.round(angleLimitDeg)}° ${aState} • Alt ${altitude}px • ETA ${etaReadout} • Fix: ${correction}`
   }
 
   private getOnFootObjectiveCue(targetX: number, label: string) {
